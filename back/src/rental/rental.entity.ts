@@ -24,7 +24,7 @@ export class Rental {
     @Column()
     capacity: number;
 
-    @Column()
+    @Column("decimal" ,{ precision: 10, scale: 3 })
     price: number;
 
     @Column()

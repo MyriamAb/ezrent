@@ -36,9 +36,6 @@ export class RentalService {
     }
 
     async updateRent(id, rental: Rental){
-        console.log("id : " + id)
-        console.log("rental : ") ; console.log(rental)
-
         const updatedUser = await this.findOne(id);
         if (rental.title)
             updatedUser.title = rental.title;
