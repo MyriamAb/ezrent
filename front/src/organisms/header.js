@@ -11,13 +11,12 @@ function Header() {
   return (
     <div>
       <Menu fixed='top' inverted>
-        <Container>
+        <Container fluid>
           <Menu.Item as='a' header>
-            <Image size='mini' src='/logo_white.png' style={{ marginRight: '1.5em' }} />
-            E.Z Rent
+            <Image size='tiny' src='/logo_white.png' circular />
           </Menu.Item>
           <Menu.Item as='a'>Home</Menu.Item>
-          <Menu.Item as='a'>Register</Menu.Item>
+          <Menu.Item as='a' position='right'>Register</Menu.Item>
            <Menu.Item as='a'>Login</Menu.Item>
           <Dropdown item simple text='Profile'>
             <Dropdown.Menu>
