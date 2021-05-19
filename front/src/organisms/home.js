@@ -4,6 +4,7 @@ import {
   Image,
 } from 'semantic-ui-react'
 import Search from '../molecules/search'
+import CardCarousel from '../molecules/adCardHome'
 
 function Home() {
   const styles = {
@@ -28,9 +29,9 @@ function Home() {
     <div>
 
     <div style={styles.container}>
-      <Search style={styles.search}/>
-       
+      <Search style={styles.search}/> 
     </div>
+    <CardCarousel/>  
     <Review/>
  </div>
     
