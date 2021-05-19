@@ -9,8 +9,8 @@ import {
 function Header() {
 
   return (
-    <div>
-      <Menu fixed='top' inverted stackable>
+    
+      <Menu  inverted stackable style={{ margin: 0 }}>
         <Container fluid>
           <Menu.Item as='a' href='/' header>
             <Image size='tiny' src='/logo_white2.png' circular />
@@ -28,7 +28,7 @@ function Header() {
           </Dropdown>
         </Container>
           </Menu>
-    </div>
+  
   )
 }
   

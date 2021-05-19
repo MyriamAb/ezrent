@@ -9,7 +9,7 @@ import Register from './organisms/register'
 
 function App() {
   return (
-      <Router>
+    <Router>
         <Header />
         <Switch>
           <Route exact path='/' component={Home} />
