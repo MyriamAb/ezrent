@@ -10,12 +10,14 @@ function Home() {
       backgroundImage: `url('https://i.ibb.co/LCFVjr4/background-home-resize.jpg')`,
       backgroundSize: 'cover',
       paddingTop: 300,
-      paddingLeft: 400,
-      paddingRIght:400,
+      /* paddingLeft: 400,
+      paddingRIght:400, */
       height: 600
     },
     search: {
-      width: 300,
+      FontWeight: 'bold',
+      display: 'flex',
+      justifyContent: 'center',
       opacity: 0.7
 
     }
@@ -23,8 +25,7 @@ function Home() {
   
   return (
     <div style={styles.container}>
-{/*       <Image src="https://i.ibb.co/LCFVjr4/background-home-resize.jpg"/>
- */}      <Search style={styles.search}/>
+      <Search style={styles.search}/>
        
     </div>
    
