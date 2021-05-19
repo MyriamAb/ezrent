@@ -10,14 +10,13 @@ function Header() {
 
   return (
     <div>
-      <Menu fixed='top' inverted>
+      <Menu fixed='top' inverted stackable>
         <Container fluid>
-          <Menu.Item as='a' header>
-            <Image size='tiny' src='/logo_white.png' circular />
+          <Menu.Item as='a' href='/' header>
+            <Image size='tiny' src='/logo_white2.png' circular />
           </Menu.Item>
-          <Menu.Item as='a'>Home</Menu.Item>
-          <Menu.Item as='a' position='right'>Register</Menu.Item>
-           <Menu.Item as='a'>Login</Menu.Item>
+          <Menu.Item as='a' href='/register' position='right'>Register</Menu.Item>
+          <Menu.Item as='a' href="/login">Login</Menu.Item>
           <Dropdown item simple text='Profile'>
             <Dropdown.Menu>
               <Dropdown.Item as ="a" href="/profile">Profile</Dropdown.Item>
