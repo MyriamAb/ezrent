@@ -1,5 +1,4 @@
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm'
-import { User } from '../users/user.entity';
 
 @Entity()
 export class Rental {

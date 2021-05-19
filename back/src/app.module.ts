@@ -6,6 +6,7 @@ import { User } from './users/user.entity';
 import { UsersModule } from './users/users.module';
 import { RentalModule } from './rental/rental.module';
 import { ReservationModule } from './reservation/reservation.module';
+import { ActivityModule } from './activity/activity.module';
 
 @Module({
   imports: [
@@ -14,7 +15,8 @@ import { ReservationModule } from './reservation/reservation.module';
      
     ),
     RentalModule,
-    ReservationModule
+    ReservationModule,
+    ActivityModule
   ],
   controllers: [AppController],
   providers: [AppService],
