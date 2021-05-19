@@ -10,7 +10,7 @@ function Header() {
 
   return (
     <div>
-      <Menu fixed='top' inverted>
+      <Menu inverted>
         <Container>
           <Menu.Item as='a' header>
             <Image size='tiny' src='/logo_white2.png' style={{ marginRight: '1.5em' }} circular/>
