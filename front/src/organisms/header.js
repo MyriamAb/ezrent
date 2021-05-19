@@ -9,16 +9,13 @@ import {
 function Header() {
 
   return (
-    <div>
-      <Menu inverted>
-        <Container>
-          <Menu.Item as='a' header>
-            <Image size='tiny' src='/logo_white2.png' style={{ marginRight: '1.5em' }} circular/>
-            E.Z Rent
+      <Menu  inverted stackable style={{ margin: 0 }}>
+        <Container fluid>
+          <Menu.Item as='a' href='/' header>
+            <Image size='tiny' src='/logo_white2.png' circular />
           </Menu.Item>
-          <Menu.Item as='a'>Home</Menu.Item>
-          <Menu.Item as='a' href='/register'>Register</Menu.Item>
-           <Menu.Item as='a' href="/login">Login</Menu.Item>
+          <Menu.Item as='a' href='/register' position='right'>Register</Menu.Item>
+          <Menu.Item as='a' href="/login">Login</Menu.Item>
           <Dropdown item simple text='Profile'>
             <Dropdown.Menu>
               <Dropdown.Item as ="a" href="/profile">Profile</Dropdown.Item>
@@ -30,7 +27,7 @@ function Header() {
           </Dropdown>
         </Container>
           </Menu>
-    </div>
+  
   )
 }
   
