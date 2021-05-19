@@ -10,7 +10,6 @@ const [open, setOpen] = React.useState(false)
 return (
   <Modal
     dimmer='blurring'
-    onClose={() => setOpen(false)}
     onOpen={() => setOpen(true)}
     open={open}
     trigger={<ButtonType color='green' content="Add a review"/>}
@@ -26,6 +25,6 @@ return (
       <ButtonType color='red' content="Cancel" size='large' onClick={() => setOpen(false)}/>
       <ButtonType color='green' content="Send" size='large' onClick={() => setOpen(false)}/>
     </Modal.Actions>
-    </Modal>
+  </Modal>
   )
 }
