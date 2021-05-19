@@ -1,3 +1,4 @@
+import Review from './review'
 import {
   Container,
   Image,
@@ -24,11 +25,14 @@ function Home() {
   }
   
   return (
+    <div>
+
     <div style={styles.container}>
       <Search style={styles.search}/>
        
     </div>
-   
+    <Review/>
+ </div>
     
   )
 }

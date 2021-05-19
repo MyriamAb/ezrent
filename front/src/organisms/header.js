@@ -9,7 +9,6 @@ import {
 function Header() {
 
   return (
-    
       <Menu  inverted stackable style={{ margin: 0 }}>
         <Container fluid>
           <Menu.Item as='a' href='/' header>
