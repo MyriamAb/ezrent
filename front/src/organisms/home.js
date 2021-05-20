@@ -1,4 +1,3 @@
-import Review from './review'
 import {
   Container,
   Image,
@@ -32,7 +31,7 @@ function Home() {
       <Search style={styles.search}/> 
     </div>
     <CardCarousel/>  
-    <Review/>
+    
  </div>
     
   )
