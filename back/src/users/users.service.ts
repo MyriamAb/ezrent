@@ -4,6 +4,7 @@ import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
 
+
 @Injectable()
 export class UsersService {
     constructor(@InjectRepository(User) private usersRepository: Repository<User>) { }
@@ -12,14 +13,17 @@ export class UsersService {
         name: string,
         email: string,
         password: string,
-        phone: string
+        phone: string,
+        confirmationCode: string,
     ) {
         const newUser = new User();
         newUser.name = name;
         newUser.email = email;
         newUser.password = password;
         newUser.phone = phone;
+        newUser.verif_email = confirmationCode
         const result = await this.usersRepository.save(newUser);
+        this.sendConfirmationEmail(name, email, confirmationCode);
         return result;
   }
 
@@ -68,4 +72,60 @@ export class UsersService {
         const result = await this.usersRepository.remove(deletedUser);
         return result;
     }
+
+    async findLogin(email: string) {
+        const user = await this.usersRepository.findOne({ where: [{ "email": email }] })
+        return user;
+    }
+
+    async findOneByToken(confirmationCode: string): Promise<User | undefined> {
+    const user = await this.usersRepository.findOne({ verif_email: confirmationCode });
+    return user;
+    /* return this.usersModel.find(user => user.username === username); */
+    }
+
+    createEmailToken(): string {
+        const characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        let token = '';
+        for (let i = 0; i < 25; i++) {
+            token += characters[Math.floor(Math.random() * characters.length )];
+        }
+        return token;
+    }
+
+    async verifyUser(confirmationCode: string): Promise<User | undefined> {
+        const user = await this.findOneByToken(confirmationCode);
+        if (user) {
+        user.status = "Active";
+        this.usersRepository.save(user)
+        return user;
+        }
+    }
+
+    sendConfirmationEmail(name, email, confirmationCode) {
+
+        const Nodemailer = require("nodemailer");
+        process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
+        const transport = Nodemailer.createTransport({
+            host: "smtp.mailtrap.io",
+            port: 2525,
+            auth: {
+                user: "a4d15c48ccd1ba",
+                pass: "fe7ca2d17c37c4"
+            }
+        });
+        console.log("Check");
+        transport.sendMail({
+            from: "GIRLPOWER",
+            to: email,
+            subject: "Please confirm your account",
+            html: `<h1>Email Confirmation</h1>
+            <h2>Hello ${name}</h2>
+            <p>Thank you for subscribing. Please confirm your email by clicking on the following link</p>
+            <a href=http://localhost:5000/users/confirm/${confirmationCode}> Click here</a>
+            </div>`,
+        }).catch(err => console.log(err));
+    }
+        
 }
