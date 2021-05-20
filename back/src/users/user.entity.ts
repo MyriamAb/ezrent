@@ -14,15 +14,15 @@ export class User {
     @Column()
     password: string;
 
-    @Column()
+    @Column({nullable: true})
     phone: string;
 
-    @Column()
+    @Column({nullable: true})
     reset_password: string;
 
-    @Column()
+    @Column({nullable: true})
     verif_email: string;
 
-    @Column()
-    profil_picture: string;
+    @Column({nullable: true})
+    profile_picture: BinaryType;
 }

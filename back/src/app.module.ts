@@ -7,16 +7,18 @@ import { UsersModule } from './users/users.module';
 import { RentalModule } from './rental/rental.module';
 import { ReservationModule } from './reservation/reservation.module';
 import { ActivityModule } from './activity/activity.module';
+import { ReviewsModule } from './reviews/reviews.module';
+import { PicturesModule } from './pictures/pictures.module';
 
 @Module({
   imports: [
+    TypeOrmModule.forRoot(),
     UsersModule,
-    TypeOrmModule.forRoot(
-     
-    ),
     RentalModule,
     ReservationModule,
-    ActivityModule
+    ActivityModule,
+    ReviewsModule,
+    PicturesModule
   ],
   controllers: [AppController],
   providers: [AppService],
