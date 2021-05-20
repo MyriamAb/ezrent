@@ -9,15 +9,24 @@ export class Activity {
     rental_id: number;
 
     @Column()
-    service_1: boolean;
+    vacation: boolean;
 
     @Column()
-    service_2: boolean;
+    party: boolean;
 
     @Column()
-    service_3: boolean;
+    photo_shooting: boolean;
 
     @Column()
-    service_4: boolean;
+    movie_shooting: boolean;
+
+    @Column()
+    seminaries: boolean;
+
+    @Column()
+    business_trip: boolean;
+
+    @Column()
+    other: boolean;
 
 }

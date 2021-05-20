@@ -17,11 +17,17 @@ export class ActivityController {
     }
 
     @Post()
-    postActivity(){
+    async postActivity(@Body() activity: Activity){
+        const postedActivity= await this.service.postActivity(activity);
+        return {
+            statusCode: HttpStatus.OK,
+            message: 'Activity added successfully',
+            data: postedActivity,
+        };    
     }
     
-/*     @Delete(':id')
+    @Delete(':id')
     deleteActivity(@Param() params) {
         return this.service.deleteActivity(params.id)
-    } */
+    }
 }

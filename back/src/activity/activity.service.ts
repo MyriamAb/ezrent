@@ -19,4 +19,13 @@ export class ActivityService {
             where: [{ [activity]:true}]
         });  
     }
+
+    async postActivity(activity){
+        this.activitiesRepository.save(activity)
+        return activity
+    }
+
+    async deleteActivity(id) {
+        this.activitiesRepository.delete({rental_id : id})
+    }
 }
