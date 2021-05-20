@@ -20,7 +20,7 @@ function Home() {
       FontWeight: 'bold',
       display: 'flex',
       justifyContent: 'center',
-      opacity: 0.7
+      opacity: 0.8
 
     }
   }
