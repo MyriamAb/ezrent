@@ -1,8 +1,7 @@
 import React from 'react'
-import { CarouselProvider, Slider} from "pure-react-carousel";
+import { CarouselProvider } from "pure-react-carousel";
 import { Card } from "semantic-ui-react";
 import CardType from "../molecules/card";
-import ImageCarousel from '../molecules/imageCarousel'
 import "pure-react-carousel/dist/react-carousel.es.css"
 
 function CardCarousel() {

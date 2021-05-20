@@ -1,7 +1,6 @@
 import React from 'react'
 import InputType from '../atoms/input'
 import SelectType from '../atoms/select'
-import { Container } from 'semantic-ui-react'
 
 function Search(props) {
   const optionService = [
