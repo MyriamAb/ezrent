@@ -1,8 +1,4 @@
 import Review from './review'
-import {
-  Container,
-  Image,
-} from 'semantic-ui-react'
 import Search from '../molecules/search'
 import CardCarousel from '../molecules/adCardHome'
 
