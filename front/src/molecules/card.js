@@ -1,7 +1,7 @@
 import React from "react";
-import { Card, Image, Icon } from "semantic-ui-react";
+import { Card, Icon } from "semantic-ui-react";
 import ImageCarousel from '../molecules/imageCarousel'
-import { CarouselProvider, Slider} from "pure-react-carousel";
+import { CarouselProvider } from "pure-react-carousel";
 
 
 function CardType(props) {

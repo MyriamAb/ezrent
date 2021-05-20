@@ -1,6 +1,5 @@
-import { CarouselProvider, Image, Slide, Slider } from "pure-react-carousel";
+import { CarouselProvider, Slider } from "pure-react-carousel";
 import React from "react";
-import { Divider } from "semantic-ui-react";
 import ImageSlide from '../atoms/imageSlide'
 import CustomDotGroup from "../atoms/cardDotGroup";
 
