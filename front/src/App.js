@@ -11,8 +11,8 @@ import { UserProvider } from './context/user'
 
 function App() {
   return (
-    <UserProvider>
-      <Router>
+    <Router>
+        <UserProvider>
           <Header />
           <Switch>
             <Route exact path='/' component={Home} />
@@ -21,8 +21,8 @@ function App() {
             <Route path='/register' component={Register}/>
         </Switch>
         <Footer/>
-        </Router>
       </UserProvider>
+    </Router>
   )
 }
 
