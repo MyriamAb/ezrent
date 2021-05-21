@@ -32,7 +32,7 @@ export function UserProvider({children}) {
     const history = useHistory();
     const [token, setToken] = useLocalStorage('token')
     const [user, setUser] = useLocalStorage('user')
-    const [userProfile, setUserProfile] = useState('user')
+    const [userProfile, setUserProfile] = useState({})
     const [msg, setMsg]= useState({
         registerOk:"",
         loginOK:"",
@@ -132,11 +132,11 @@ export function UserProvider({children}) {
           body: JSON.stringify(body_update)
         })
         .then(response => response.json())
-        .then(data => console.log(data) /* setUserProfile({
+        .then(data => setUserProfile({
           name: data.data.username,
           email: data.data.email,
           phone: data.data.phone
-        }) */)
+        }))
     }, [token, user]);
 
     return (

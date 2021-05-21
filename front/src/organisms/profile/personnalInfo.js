@@ -16,6 +16,8 @@ export default function PersonnalInfo(){
       })
 
       useEffect(()=>{
+        if(!userContext.userProfile[0])
+          return
         setData({
           email : userContext.userProfile[0].email,
           name: userContext.userProfile[0].name,
