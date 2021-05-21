@@ -25,7 +25,21 @@ export class UsersService {
         const result = await this.usersRepository.save(newUser);
         this.sendConfirmationEmail(name, email, confirmationCode);
         return result;
-  }
+    }
+    
+    async insertUserGoogle(
+        name: string,
+        email: string,
+    ) {
+        const newUser = new User();
+        newUser.name = name;
+        newUser.email = email;
+        newUser.status = "Active";
+        console.log("CP2");
+        const result = await this.usersRepository.save(newUser);
+        console.log("CP3");
+        return result;
+    }
 
 
     async getUsers(user: User): Promise<User[]> {
@@ -68,13 +82,14 @@ export class UsersService {
     }
 
     async deleteUser(id: number) {
-        const deletedUser = await this.usersRepository.findOne(id)
+        const deletedUser = await this.usersRepository.findOne(id);
         const result = await this.usersRepository.remove(deletedUser);
         return result;
     }
 
     async findLogin(email: string) {
-        const user = await this.usersRepository.findOne({ where: [{ "email": email }] })
+        const user = await this.usersRepository.findOne({ where: [{ "email": email }] });
+        console.log(user);
         return user;
     }
 

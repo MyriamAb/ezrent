@@ -1,4 +1,4 @@
-import { Injectable, Request, Response, Res } from '@nestjs/common';
+import { Injectable, Request, Response, Res, HttpStatus } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
@@ -33,14 +33,33 @@ export class AuthService {
       access_token: this.jwtService.sign(payload),
     };
   }
-  googleLogin(req) {
+  
+  async googleLogin(req) {
     if (!req.user) {
-      return 'No user from google'
+      return {
+        statusCode: HttpStatus.NOT_FOUND,
+        message: 'No user from google'
+      };
     }
+    
+    if (await this.usersService.findLogin(req.user.email) == undefined) {
+      console.log("CP1")
+      await this.usersService.insertUserGoogle(
+        `${req.user.firstName} ${req.user.lastName}`,
+        req.user.email
+      ) 
+    }
+    const user = await this.usersService.findLogin(req.user.email)
+    console.log(user)
     return {
+      access_token: this.jwtService.sign({ username: user.name, email: user.email, id: user.id })
+    };
+/*     return {
+      statusCode: HttpStatus.OK,
       message: 'User information from google',
-      user: req.user
-    }
+      data: req.user
+    } */
   }
+
 }
 
