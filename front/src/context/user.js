@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, useCallback} from 'react';
 import  { useHistory } from 'react-router-dom'
 
 function useLocalStorage(key, initialValue) {
@@ -33,6 +33,7 @@ export function UserProvider({children}) {
     const [token, setToken] = useLocalStorage('token')
     const [msg, setMsg]= useState({
         registerOk:"",
+        login:"",
       })
 
     function register(data){
@@ -57,8 +58,35 @@ export function UserProvider({children}) {
           .catch(err => console.log("error"))  
     }
 
+    const login = useCallback((data) => {
+      fetch('http://localhost:5000/auth/login', {
+          method: "POST",
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+          },
+        
+          body: JSON.stringify({
+              email: data.email,
+              password: data.password,
+          })
+        })
+          .then(response => response.json())
+          .then(data => {
+            if(data.access_token){
+              setToken(data.access_token)
+              setMsg({login: "Login successfull"})
+              history.push({pathname: '/'})
+            }else if(data.status && data.status === 401)
+              setMsg({login: "Please, confirm your registration in your email"}) 
+            else
+              setMsg({login: "Wrong credentials. Please, try again."})
+          })
+          .catch(err => console.log("error"))
+        }, []);
+
     return (
-        <UserContext.Provider value={{token, register}}>
+        <UserContext.Provider value={{token, login, register}}>
             {children}
         </UserContext.Provider>
     );
