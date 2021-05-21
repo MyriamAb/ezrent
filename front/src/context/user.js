@@ -33,7 +33,8 @@ export function UserProvider({children}) {
     const [token, setToken] = useLocalStorage('token')
     const [msg, setMsg]= useState({
         registerOk:"",
-        login:"",
+        loginOK:"",
+        loginNotOK:"",
       })
 
     function register(data){
@@ -75,18 +76,18 @@ export function UserProvider({children}) {
           .then(data => {
             if(data.access_token){
               setToken(data.access_token)
-              setMsg({login: "Login successfull"})
+              setMsg({loginOK: "Login successfull"})
               history.push({pathname: '/'})
             }else if(data.status && data.status === 401)
-              setMsg({login: "Please, confirm your registration in your email"}) 
+              setMsg({loginNotOK: "Please, confirm your registration in your email"}) 
             else
-              setMsg({login: "Wrong credentials. Please, try again."})
+              setMsg({loginNotOK: "Wrong credentials. Please, try again."})
           })
           .catch(err => console.log("error"))
         }, []);
 
     return (
-        <UserContext.Provider value={{token, login, register}}>
+        <UserContext.Provider value={{token, msg, login, register}}>
             {children}
         </UserContext.Provider>
     );

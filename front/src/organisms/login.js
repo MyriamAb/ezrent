@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Grid, Form, Segment, Message, Icon } from 'semantic-ui-react'
 import Button from '../atoms/button'
 import InputFormType from '../atoms/inputForm'
@@ -11,6 +11,10 @@ function LoginForm() {
     email:"",
     password:"",
   })
+  const [message, setMessage] = useState({
+    registerOk:"",
+    loginNotOK:""
+  })
 
   function handle(e){
     const newdata={...data}
@@ -21,11 +25,31 @@ function LoginForm() {
 
   function submit(e){
     e.preventDefault()
-    userContext.login(data)           
+    userContext.login(data)
+
+    if(userContext.msg.loginNotOK != ""){
+      setMessage({loginNotOK: <div class="ui negative message"><div class="header">{userContext.msg.loginNotOK}</div></div>})
+      setTimeout(() => {
+        setMessage("")
+        }, 20000);
+    }
   }
+
+  useEffect(() => {
+    console.log(userContext.msg.registerOk)
+    if(userContext.msg.registerOk != ""){
+      setMessage({registerOk: <div class="ui success message"><div class="header">{userContext.msg.registerOk}</div></div>})
+      setTimeout(() => {
+        setMessage("")
+        }, 20000);
+    }
+  },[])
+
 
 return(
   <div style={{backgroundImage: `url("https://www.lodgify.com/blog/wp-content/uploads/2019/12/far-away.jpg.webp")`, backgroundSize:'cover'}}>
+    {message.loginNotOK}
+    {message.registerOk}
     <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
       <Grid.Column style={{ maxWidth: 450 }}>
         <HeaderForm asHeader='h1' colorHeader='black' textAlignHeader='center' srcImage='/logo_grey2.png' contentHeader='Log-in to your account'/>
