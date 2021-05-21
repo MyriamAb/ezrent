@@ -10,6 +10,7 @@ type={props.type}
 onChange={props.onChange}
 id={props.id}
 onKeyUp={props.onKeyUp}
+value={props.value}
 />
 
 export default InputFormType

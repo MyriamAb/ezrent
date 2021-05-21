@@ -27,7 +27,7 @@ function LoginForm() {
     e.preventDefault()
     userContext.login(data)
 
-    if(userContext.msg.loginNotOK != ""){
+    if(userContext.msg.loginNotOK !== ""){
       setMessage({loginNotOK: <div class="ui negative message"><div class="header">{userContext.msg.loginNotOK}</div></div>})
       setTimeout(() => {
         setMessage("")
@@ -37,7 +37,7 @@ function LoginForm() {
 
   useEffect(() => {
     console.log(userContext.msg.registerOk)
-    if(userContext.msg.registerOk != ""){
+    if(userContext.msg.registerOk !== ""){
       setMessage({registerOk: <div class="ui success message"><div class="header">{userContext.msg.registerOk}</div></div>})
       setTimeout(() => {
         setMessage("")
