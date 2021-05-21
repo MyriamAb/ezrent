@@ -5,7 +5,7 @@ import {
 
 function Footer() {
   return (
-    <Segment inverted style={{ margin: '5em 0em 0em', padding: '5em 0em' }}>
+    <Segment inverted style={{ margin: '5em 0em 0em 0em', padding: '5em 0em' }}>
       Contact us
     </Segment>
   )
