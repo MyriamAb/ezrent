@@ -26,24 +26,25 @@ function LoginForm() {
   function submit(e){
     e.preventDefault()
     userContext.login(data)
-
-    if(userContext.msg.loginNotOK !== ""){
-      setMessage({loginNotOK: <div class="ui negative message"><div class="header">{userContext.msg.loginNotOK}</div></div>})
-      setTimeout(() => {
-        setMessage("")
-        }, 20000);
-    }
   }
-
+  
   useEffect(() => {
     console.log(userContext.msg.registerOk)
     if(userContext.msg.registerOk !== ""){
       setMessage({registerOk: <div class="ui success message"><div class="header">{userContext.msg.registerOk}</div></div>})
       setTimeout(() => {
         setMessage("")
+      }, 20000);
+    }
+
+    if(userContext.msg.loginNotOK !== ""){
+      console.log("message: ");console.log(userContext.msg.loginNotOK)
+      setMessage({loginNotOK: <div class="ui negative message"><div class="header">{userContext.msg.loginNotOK}</div></div>})
+      setTimeout(() => {
+        setMessage("")
         }, 20000);
     }
-  },[])
+  },[userContext.msg])
 
 
 return(
