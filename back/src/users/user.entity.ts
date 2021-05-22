@@ -8,10 +8,10 @@ export class User {
     @Column()
     name: string;
 
-    @Column()
+    @Column({unique: true})
     email: string;
 
-    @Column()
+    @Column({nullable: true})
     password: string;
 
     @Column({nullable: true})
@@ -23,6 +23,9 @@ export class User {
     @Column({nullable: true})
     verif_email: string;
 
-    @Column({nullable: true})
+    @Column({ nullable: true })
     profile_picture: BinaryType;
+
+    @Column({ default: "Pending" })
+    status: string;
 }
