@@ -1,7 +1,5 @@
-import Review from './review'
 import Search from '../molecules/search'
 import CardCarousel from '../molecules/adCardHome'
-import CreateAdContentP1 from '../molecules/createAdContentP1'
 
 function Home() {
   const styles = {
@@ -29,8 +27,6 @@ function Home() {
       <Search style={styles.search}/> 
     </div>
     <CardCarousel/>  
-    <Review/>
-    <CreateAdContentP1/>
  </div>
     
   )

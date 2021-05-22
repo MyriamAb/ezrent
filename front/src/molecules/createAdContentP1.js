@@ -1,14 +1,13 @@
 import React from 'react'
-import { Modal } from 'semantic-ui-react'
+import { Table, Grid } from 'semantic-ui-react'
 import TextAreaType from '../atoms/textArea'
-import ButtonType from '../atoms/button'
 import SearchAddress from '../molecules/searchAddress'
 import Input from '../atoms/input'
 import Select from '../atoms/select'
+import Checkbox from '../atoms/checkbox'
 
-export default function Review () {
-const [open, setOpen] = React.useState(false)
-const optionService = [
+export default function AdPartie1 () {
+const optionServiceSelect = [
   { key: '1', value: '1', text: '1 person' },
   { key: '2', value: '2', text: '2 persons' },
   { key: '3', value: '3', text: '3 persons' },
@@ -26,25 +25,42 @@ const optionService = [
 ]
 
 return (
-  <Modal
-    dimmer='blurring'
-    onOpen={() => setOpen(true)}
-    open={open}
-    trigger={<ButtonType color='green' content="Add a ad"/>}
-    >
-    <Modal.Header>
-         Do you want rent a place? Good place for that
-    </Modal.Header>
-    <Modal.Content>
-      <SearchAddress />
-      <Input placeholder='Title of your ad...' />
-      <TextAreaType placeholder='Write a description of your ad...' minWidth={ 800 } minHeight={ 100 } marginLeft='auto' marginRight='auto'/>
-      <Select placeholder="Logement's capacity" options={optionService}/>
-    </Modal.Content>
-    <Modal.Actions>
-      <ButtonType color='red' content="Cancel" size='large' onClick={() => setOpen(false)}/>
-      <ButtonType color='green' content="Submit" size='large' onClick={() => setOpen(false)}/>
-    </Modal.Actions>
-  </Modal>
+  <div>
+    <SearchAddress />
+    <Input icon="home" placeholder='Title of your ad...' />
+    <TextAreaType placeholder='Write a description of your ad...' minWidth={ 800 } minHeight={ 100 } marginLeft='auto' marginRight='auto' marginTop={15}/>
+    <Select placeholder="Logement's capacity" options={optionServiceSelect} style={{ marginTop: 15 }}/>
+    <Table>
+      <h3 style={{ marginTop:5 }}>Choose services for your ad:</h3>
+      <Grid columns={2} style={{ marginBottom: 2 }}>
+        <Grid.Row>
+          <Grid.Column>
+            <Checkbox label="Vacation" value="vacation" />
+          </Grid.Column>
+          <Grid.Column>
+            <Checkbox label="Party" value="party" />
+          </Grid.Column>
+          <Grid.Column>
+            <Checkbox label="Photo Shooting" value="photo_shooting" />
+          </Grid.Column>
+          <Grid.Column>
+            <Checkbox label="Movie Shooting" value="movie_shooting" />
+          </Grid.Column>
+            <Grid.Column>
+              <Checkbox label="Celebration" value="celebration" /> 
+            </Grid.Column>
+            <Grid.Column>
+              <Checkbox label="Seminaries" value="seminaries" /> 
+            </Grid.Column>
+            <Grid.Column>
+              <Checkbox label="Business trip" value="business_trip" />
+            </Grid.Column>
+            <Grid.Column>
+              <Checkbox label="Other" value="other" />    
+            </Grid.Column>
+          </Grid.Row>
+      </Grid>
+    </Table>
+  </div>
   )
 }

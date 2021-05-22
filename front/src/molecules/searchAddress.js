@@ -11,8 +11,6 @@ export default function SearchAddress () {
         setAddress(newdata)
     }   
         useEffect(() =>{
-            console.log('useEffect')
-            // console.log(data.searchAddress)
             if (data) {
 
                 fetch('https://api-adresse.data.gouv.fr/search/?q=' + data.searchAddress,
@@ -27,7 +25,6 @@ export default function SearchAddress () {
     const listItems = result?.features.map((feature) =>
       <ul>{feature.properties.label}</ul>
     )
-    console.log(listItems)
     return (
       <div>
       <label 
