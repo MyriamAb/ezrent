@@ -50,7 +50,7 @@ export class UsersController {
     }
 
     @Patch(':id')
-    update(
+    async update(
         @Param('id') userId: number,
         @Body('name') userName: string,
         @Body('email') userEmail: string,
@@ -59,7 +59,7 @@ export class UsersController {
         @Body('profile_picture') userPicture: BinaryType,
     ) {
         try {
-            const user = this.usersService.updateUser(
+            const user = await this.usersService.updateUser(
                 userId,
                 userName,
                 userEmail,
