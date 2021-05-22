@@ -19,15 +19,15 @@ export class AppController {
   getProfile(@Request() req) {
     return req.user;
   }
-/* 
+
   @Get('google')
   @UseGuards(AuthGuard('google'))
-  
   async googleAuth(@Req() req) {}
 
   @Get('google/redirect')
   @UseGuards(AuthGuard('google'))
   googleAuthRedirect(@Req() request ) {
     return this.authService.googleLogin(request)
-  } */
+  }
+  
 }

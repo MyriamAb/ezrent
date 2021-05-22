@@ -10,6 +10,7 @@ import { ActivityModule } from './activity/activity.module';
 import { ReviewsModule } from './reviews/reviews.module';
 import { PicturesModule } from './pictures/pictures.module';
 import { AuthModule } from './auth/auth.module';
+import { GoogleStrategy } from './auth/google.strategy';
 
 @Module({
   imports: [
@@ -23,6 +24,6 @@ import { AuthModule } from './auth/auth.module';
     AuthModule
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, GoogleStrategy],
 })
 export class AppModule {}

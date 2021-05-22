@@ -23,7 +23,7 @@ return (
     </Modal.Content>
     <Modal.Actions>
       <ButtonType color='red' content="Cancel" size='large' onClick={() => setOpen(false)}/>
-      <ButtonType color='green' content="Send" size='large' onClick={() => setOpen(false)}/>
+      <ButtonType color='green' content="Submit" size='large' onClick={() => setOpen(false)}/>
     </Modal.Actions>
   </Modal>
   )

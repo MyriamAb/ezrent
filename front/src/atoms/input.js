@@ -6,11 +6,17 @@ const InputType =  (props) =>
     fluid icon={props.icon}
     name={props.name}
     value={props.value}
-  iconPosition={props.iconPosition} 
-  placeholder={props.placeholder}
-  type={props.type}
-  onChange={props.onChange}
-  style={props.style}  
+    iconPosition={props.iconPosition} 
+    placeholder={props.placeholder}
+    type={props.type}
+    onChange={props.onChange}
+    style={props.style} 
+    role={props.role} 
+    aria-autocomplete={props.autocomplete}
+    aria-controls={props.controls}
+    id={props.id}
+    className={props.className}
+
 />
 
 

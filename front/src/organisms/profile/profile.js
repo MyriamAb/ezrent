@@ -1,6 +1,8 @@
 import React from 'react'
 import { Tab } from 'semantic-ui-react'
 import PersonnalInfo from './personnalInfo'
+import Review from './../review'
+import AddAd from './../addAd'
 
 function Profile(){
   const panes = [
@@ -11,6 +13,8 @@ function Profile(){
   
   return (
   <div>
+    <Review/>
+       <AddAd/>
     <Tab menu={{ fluid: true, vertical: true, tabular: true }} panes={panes} />
   </div>)
 }

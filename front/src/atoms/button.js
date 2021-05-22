@@ -8,5 +8,7 @@ basic color={props.color}
 size={props.size}
 fluid={props.fluid}
 onClick={props.onClick}
+icon={props.icon}
+iconPosition={props.iconPosition} 
 />
 export default ButtonType
