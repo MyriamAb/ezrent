@@ -28,10 +28,7 @@ function ImageCarousel(props) {
     { id: 16, rental_id: 8, src: "http://placeimg.com/300/300/arch?t=1621511961424" },
    ]
   
-  const IdParam = () => {
-    const { id } = useParams()
-    console.log(id)
-   }
+  
   
   if (images === null) {
     slide=(<Slider></Slider>)
@@ -61,6 +58,7 @@ function ImageCarousel(props) {
     naturalSlideWidth={1}
     naturalSlideHeight={1}
     totalSlides={nbSlides}
+    styles={props.styles}
   >
       <Slider>
         {slide}

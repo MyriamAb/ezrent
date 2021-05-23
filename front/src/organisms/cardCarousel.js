@@ -8,7 +8,6 @@ function CardCarousel() {
   var cardItem= []  
   const rentalsContext = useRentals()
   var rentals = rentalsContext?.allRentals ?? null;
-  console.log(rentalsContext.allRentals)
  
 
   if (rentals === null) {
