@@ -6,12 +6,16 @@ export function RentalsProvider({ children }) {
 
   useEffect(()=> {
       fetch('http://localhost:5000/rentals', {
-          method: "get",
+        method: "get",
+         headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+                },
         })
           .then(response => response.json())
           .then(data => setAllRentals(data))
   }, []);
-  
+  console.log(allRentals)
   return (
     <RentalsContext.Provider value={{allRentals}}>
         {children}

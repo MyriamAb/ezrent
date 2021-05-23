@@ -8,25 +8,27 @@ import Home from "./organisms/home"
 import Login from './organisms/login'
 import Register from './organisms/register'
 import AdDetails from './organisms/adDetails'
+import { UserProvider } from './context/user'
+import { RentalsProvider } from './context/rentals';
 
-function IdParam () {
-    let { id } = useParams()
-    console.log(id)
-}
    
 function App() {
   return (
-    <Router>
-        <Header />
-        <Switch>
-          <Route exact path='/' component={Home} />
-          <Route path='/profile' component={Profile}/>
-          <Route path='/login' component={Login}/>
-          <Route path='/register' component={Register} />
-          <Route path='/addetails/:id' component={AdDetails}/>
+  <Router>
+        <UserProvider>
+          <RentalsProvider>
+          <Header />
+          <Switch>
+            <Route exact path='/' component={Home} />
+            <Route path='/profile' component={Profile}/>
+            <Route path='/login' component={Login}/>
+            <Route path='/register' component={Register}/>
+            <Route path='/addetails/:id' component={AdDetails}/>
         </Switch>
-      <Footer/>
-      </Router>
+        <Footer/>
+          </RentalsProvider>
+      </UserProvider>
+    </Router>
   )
 }
 

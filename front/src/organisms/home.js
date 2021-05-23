@@ -1,5 +1,6 @@
 import Search from '../molecules/search'
 import CardCarousel from './cardCarousel'
+import useRentals from '../context/rentals'
 
 function Home() {
   const styles = {
@@ -17,6 +18,10 @@ function Home() {
     }
   }
   
+  const rentalsContext = useRentals()
+
+  console.log(rentalsContext.allRentals)
+
   return (
     <div>
       <div style={styles.container}>
