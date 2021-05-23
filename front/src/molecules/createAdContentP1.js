@@ -1,5 +1,5 @@
 import React from 'react'
-import { Table, Grid } from 'semantic-ui-react'
+import { Table, Grid, Header } from 'semantic-ui-react'
 import TextAreaType from '../atoms/textArea'
 import SearchAddress from '../molecules/searchAddress'
 import Input from '../atoms/input'
@@ -27,11 +27,11 @@ const optionServiceSelect = [
 return (
   <div>
     <SearchAddress />
-    <Input icon="home" placeholder='Title of your ad...' />
+    <Input icon="home" placeholder='Title of your ad...' iconPosition='left'/>
     <TextAreaType placeholder='Write a description of your ad...' minWidth={ 800 } minHeight={ 100 } marginLeft='auto' marginRight='auto' marginTop={15}/>
     <Select placeholder="Logement's capacity" options={optionServiceSelect} style={{ marginTop: 15 }}/>
-    <Table>
-      <h3 style={{ marginTop:5 }}>Choose services for your ad:</h3>
+    <div style={{ border: '1px solid grey', marginTop:15 }}>
+      <Header as='h3' style={{ marginTop:5 }}>Choose services for your ad:</Header>
       <Grid columns={2} style={{ marginBottom: 2 }}>
         <Grid.Row>
           <Grid.Column>
@@ -60,7 +60,7 @@ return (
             </Grid.Column>
           </Grid.Row>
       </Grid>
-    </Table>
+    </div>
   </div>
   )
 }
