@@ -11,7 +11,7 @@ export function RentalsProvider({ children }) {
          headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
-                },
+        },
         })
           .then(response => response.json())
           .then(data => setAllRentals(data))
@@ -19,7 +19,7 @@ export function RentalsProvider({ children }) {
 
 
   async function getRental(id) {
-
+    console.log('entre context')
     fetch('http://localhost:5000/rentals/' +id, {
       method: "get",
       headers: {

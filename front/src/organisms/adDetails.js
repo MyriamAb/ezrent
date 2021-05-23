@@ -1,38 +1,37 @@
 import React from "react";
-import { Card, Icon, Item, Grid, Menu, Container, Header, Image } from "semantic-ui-react";
+import { Icon, Item, Grid, Container, Header, Image } from "semantic-ui-react";
 import Comments from '../molecules/comments'
-import ImageCarousel from '../molecules/imageCarousel'
-import ImageSlide from '../atoms/imageSlide'
+/* import ImageCarousel from '../molecules/imageCarousel'
+import ImageSlide from '../atoms/imageSlide' */
 import useRentals from "../context/rentals"
 import CalendarType from '../atoms/calendar'
 import { useParams } from "react-router"
 import RatingType from '../atoms/rate'
-import {  useEffect, useCallback, useState} from 'react'
+import {  useCallback, useEffect, useState} from 'react'
 import ButtonType from '../atoms/button'
 
 
-
 function AdDetails(props) {
-  const [open, setOpen] = React.useState(false)
   const rentalsContext = useRentals()
-  var rentals = rentalsContext ?? null;
-  const [rental, setRental] = useState({})
+  var rentals = rentalsContext.allRentals ?? null;
+  const [rental, setRental] = useState(null)
   const { id } = useParams()
-  console.log(rentals)
+  
   const [ price, setPrice] = useState('0')
   const [ valueCalendar, onChangeCalendar ] = useState(new Date())
   let changePrice = (newPrice) => {
     setPrice( newPrice )
   }
 
-  /*   useEffect(() => {
-       if (rentals == null)
-              return  
-       rentals?.getRentals(id)
-      }, [id, rentals])
-     */
-  /*   console.log(rental)
-   */
+  const adDetails = useCallback(() => {
+    console.log('id')
+    
+      const res = rentals?.find(element => element.id === id) 
+    setRental(res)
+  }, [id, rentals])
+/*   adDetails() */
+  console.log(rental)
+  
   const styles = {
     container: {
      
@@ -110,7 +109,7 @@ function AdDetails(props) {
                 2222 €
               </Grid.Row>
                <Grid.Row>
-                  <ButtonType color='green' content="Booked" size='large' onClick={() => setOpen(false)}/>
+                  <ButtonType color='green' content="Booked" size='large'  as='a' href='/paymentCheckout' />
               </Grid.Row>
             </Grid.Column>
           </Grid.Row>

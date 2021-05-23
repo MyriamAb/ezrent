@@ -3,7 +3,6 @@ import React from "react";
 import ImageSlide from '../atoms/imageSlide'
 import CustomDotGroup from "../atoms/cardDotGroup";
 import "pure-react-carousel/dist/react-carousel.es.css"
-import { useParams } from "react-router";
 
 function ImageCarousel(props) {
   var slide = null

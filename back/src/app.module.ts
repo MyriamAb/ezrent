@@ -11,6 +11,7 @@ import { ReviewsModule } from './reviews/reviews.module';
 import { PicturesModule } from './pictures/pictures.module';
 import { AuthModule } from './auth/auth.module';
 import { GoogleStrategy } from './auth/google.strategy';
+import { StripeModule } from 'nestjs-stripe'
 
 @Module({
   imports: [
@@ -21,7 +22,11 @@ import { GoogleStrategy } from './auth/google.strategy';
     ActivityModule,
     ReviewsModule,
     PicturesModule,
-    AuthModule
+    AuthModule,
+    StripeModule.forRoot({
+      apiKey: 'pk_test_51IsNySAQArDV5cBDQy5GSkkhHV2FX283JHxwG4L2XiUmWfnF4og6GSznds1vfnuho1svtriLC0uZMi93WnVL9sUq00vQPVDzMJ',
+      apiVersion: '2020-08-27',
+    }),
   ],
   controllers: [AppController],
   providers: [AppService, GoogleStrategy],
