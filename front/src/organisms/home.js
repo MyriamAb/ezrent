@@ -18,9 +18,7 @@ function Home() {
     }
   }
   
-  const rentalsContext = useRentals()
 
-  console.log(rentalsContext.allRentals)
 
   return (
     <div>
