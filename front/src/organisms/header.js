@@ -1,35 +1,14 @@
-import React from 'react'
-import {
-  Container,
-  Dropdown,
-  Image,
-  Menu,
-} from 'semantic-ui-react'
+import useUser              from '../../src/context/user.js'
+import IsLoggedIn 			from '../../src/molecules/header/isLoggedIn'
+import IsLoggedOut 			from '../../src/molecules/header/isLoggedOut'
 
-function Header() {
+export default function Navbar() {
+	const userContext = useUser()
 
-  return (
-      <Menu  inverted stackable style={{ margin: 0 }}>
-        <Container fluid>
-          <Menu.Item as='a' href='/' header>
-            <Image size='tiny' src='/logo_white2.png' circular />
-          </Menu.Item>
-          <Menu.Item as='a' href='/register' position='right'>Register</Menu.Item>
-          <Menu.Item as='a' href="/login">Login</Menu.Item>
-          <Dropdown item simple text='Profile'>
-            <Dropdown.Menu>
-              <Dropdown.Item as ="a" href="/profile">Profile</Dropdown.Item>
-              <Dropdown.Divider />
-              <Dropdown.Item>My ads</Dropdown.Item>
-              <Dropdown.Item>My booking</Dropdown.Item>
-              <Dropdown.Item>Log out</Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-        </Container>
-          </Menu>
-  
-  )
-}
-  
-
-    export default Header
+	if (userContext.token != null) {
+		return <IsLoggedIn/>
+	}
+	else{
+		return <IsLoggedOut/>
+	}
+}	

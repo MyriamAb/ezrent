@@ -139,8 +139,15 @@ export function UserProvider({children}) {
         }))
     }, [token, user]);
 
+    const logout = useCallback(() => {
+      setToken(null)
+      setUser(null)
+      setUserProfile(null)
+      history.push({pathname:'/login'})
+    }, []);
+
     return (
-        <UserContext.Provider value={{token, msg, userProfile, login, register, editProfile}}>
+        <UserContext.Provider value={{token, msg, userProfile, login, register, editProfile ,logout}}>
             {children}
         </UserContext.Provider>
     );
