@@ -9,27 +9,31 @@ import { useParams } from "react-router"
 import RatingType from '../atoms/rate'
 import {  useCallback, useEffect, useState} from 'react'
 import ButtonType from '../atoms/button'
-
+var detail = []
 
 function AdDetails(props) {
   const rentalsContext = useRentals()
-  var rentals = rentalsContext.allRentals ?? null;
-  const [rental, setRental] = useState(null)
+  var rentals = rentalsContext?.allRentals ?? null;
+  const [rental, setRental] = useState({})
   const { id } = useParams()
-  
+  console.log(id)
   const [ price, setPrice] = useState('0')
   const [ valueCalendar, onChangeCalendar ] = useState(new Date())
   let changePrice = (newPrice) => {
     setPrice( newPrice )
   }
 
-  const adDetails = useCallback(() => {
+  useEffect(() => {
     console.log('id')
-    
-      const res = rentals?.find(element => element.id === id) 
-    setRental(res)
-  }, [id, rentals])
-/*   adDetails() */
+    if (rentals == null)
+      return
+    const res = rentals?.find(element => element.id === id) 
+        
+        setRental(res)
+      }
+      
+    , [id, rentals])
+
   console.log(rental)
   
   const styles = {
@@ -45,6 +49,12 @@ function AdDetails(props) {
       height: 500,
     }
   }
+/*   if (rental == null) {
+    detail=<div></div>
+  }
+  else{
+    
+  } */
   return (
     <div style={styles.container1}>
       <Container style={styles.container}>
@@ -117,12 +127,6 @@ function AdDetails(props) {
         <Grid>
           <Comments/>
         </Grid>
-     {/*  {props.title}
-      {props.description}
-      {props.price}
-      {props.owner}
-      {props.rate}
-      {props.location} */}
     </Container>
     </div>
 

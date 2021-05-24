@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useState } from 'react'
 
 const RentalsContext = createContext();
+
 export function RentalsProvider({ children }) {
   const [allRentals, setAllRentals] = useState(null)
   const [rental, setRental]= useState(null)

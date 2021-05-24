@@ -6,7 +6,7 @@ import "pure-react-carousel/dist/react-carousel.es.css"
 function ImageSlide(props) {
   return (
   <Slide index={props.index} key={props.key} >
-    <Image src={props.src} as="a" href={props.href} />
+    <Image src={props.src} as="a" href={props.href} rentals={props.rentals} />
   </Slide>
   )
 }
