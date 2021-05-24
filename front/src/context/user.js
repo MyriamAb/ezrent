@@ -38,6 +38,8 @@ export function UserProvider({children}) {
         loginOK:"",
         loginNotOK:"",
       })
+    const [userReviews, setUserReviews] = useState(null)
+    const [allUsers, setAllUsers] = useState(null)
 
   function register(data){
       fetch('http://localhost:5000/users', {
@@ -139,6 +141,40 @@ export function UserProvider({children}) {
         }))
     }, [token, user]);
 
+    useEffect(()=> {
+      fetch('http://localhost:5000/reviews/' + user.id, {
+          method: "GET",
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token
+          },
+        })
+        .then(response => response.json())
+        .then(data => setUserReviews(data))
+    },[user, userProfile])
+
+
+    useEffect(()=> {
+      fetch('http://localhost:5000/users/', {
+          method: "GET",
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token
+          },
+        })
+        .then(response => response.json())
+        .then(data => setAllUsers(data))
+    },[])
+
+    function getUserbyId(id){
+      if(allUsers !== null){
+        const user = allUsers.find(el => el.id === id)
+        return user
+      }
+    }
+
     const logout = useCallback(() => {
       setToken(null)
       setUser(null)
@@ -147,7 +183,7 @@ export function UserProvider({children}) {
     }, []);
 
     return (
-        <UserContext.Provider value={{token, msg, userProfile, login, register, editProfile ,logout}}>
+        <UserContext.Provider value={{token, msg, userProfile, userReviews, login, register, editProfile ,logout, getUserbyId}}>
             {children}
         </UserContext.Provider>
     );
