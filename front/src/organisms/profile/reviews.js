@@ -11,7 +11,7 @@ export default function Reviews(){
 
     return(
         <Grid container columns={1} stackable>
-          {userContext.userReviews != null ? userContext.userReviews.map((rev, ind)=>(
+          {userContext.userReviews != null && userContext.allUsers != null ? userContext.userReviews.map((rev, ind)=>(
                 <Grid.Column>
                     <Segment key={ind}> 
                         {userContext.getUserbyId(rev.reviewer_id)["name"]} <br/>

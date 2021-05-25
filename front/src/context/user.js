@@ -183,7 +183,7 @@ export function UserProvider({children}) {
     }, []);
 
     return (
-        <UserContext.Provider value={{token, msg, userProfile, userReviews, login, register, editProfile ,logout, getUserbyId}}>
+        <UserContext.Provider value={{token, msg, userProfile, userReviews, allUsers, login, register, editProfile ,logout, getUserbyId}}>
             {children}
         </UserContext.Provider>
     );
