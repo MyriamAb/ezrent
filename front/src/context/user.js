@@ -106,7 +106,7 @@ export function UserProvider({children}) {
     }, [token]);
 
     useEffect(()=> {
-      if(!user)
+      if(!user || user === null)
         return
       fetch('http://localhost:5000/users/' + user.id, {
           method: "get",
@@ -142,6 +142,8 @@ export function UserProvider({children}) {
     }, [token, user]);
 
     useEffect(()=> {
+      if(!user || user === null)
+        return
       fetch('http://localhost:5000/reviews/' + user.id, {
           method: "GET",
           headers: {
@@ -183,7 +185,7 @@ export function UserProvider({children}) {
     }, []);
 
     return (
-        <UserContext.Provider value={{token, msg, userProfile, userReviews, allUsers, login, register, editProfile ,logout, getUserbyId}}>
+        <UserContext.Provider value={{token, msg, user, userProfile, userReviews, allUsers, login, register, editProfile ,logout, getUserbyId}}>
             {children}
         </UserContext.Provider>
     );

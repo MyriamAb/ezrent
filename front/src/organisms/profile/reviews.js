@@ -18,7 +18,7 @@ export default function Reviews(){
                         <Rating icon='star' defaultRating={rev.grade} maxRating={5} /> <br/>
                         Posted on {rev.created_at.slice(0, 10)}<br/><br/>
                         {rev.comment}
-                        </Segment>
+                    </Segment>
                 </Grid.Column>
           )) : <span></span> }
       </Grid> 
