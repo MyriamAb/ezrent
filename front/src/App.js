@@ -14,6 +14,7 @@ import PaymentCheckout from './organisms/preBuildCheckout/paymentCheckout'
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import CheckoutForm from "./organisms/customPayment/checkoutForm";
+import { GoogleApiProvider } from 'react-gapi';
 
 const promise = loadStripe("pk_test_51IsNySAQArDV5cBDQy5GSkkhHV2FX283JHxwG4L2XiUmWfnF4og6GSznds1vfnuho1svtriLC0uZMi93WnVL9sUq00vQPVDzMJ ");
 
@@ -21,6 +22,7 @@ const promise = loadStripe("pk_test_51IsNySAQArDV5cBDQy5GSkkhHV2FX283JHxwG4L2XiU
 function App() {
   return (
     <Router>
+      <GoogleApiProvider>
       <Elements stripe={promise}>    
         <UserProvider>
           <RentalsProvider>
@@ -38,6 +40,7 @@ function App() {
           </RentalsProvider>
         </UserProvider>
        </Elements>
+      </GoogleApiProvider>
     </Router>
   )
 }

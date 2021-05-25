@@ -12,6 +12,7 @@ import { PicturesModule } from './pictures/pictures.module';
 import { AuthModule } from './auth/auth.module';
 import { GoogleStrategy } from './auth/google.strategy';
 import { StripeModule } from 'nestjs-stripe'
+import { FacebookStrategy } from './auth/facebook.stategy';
 
 @Module({
   imports: [
@@ -29,6 +30,6 @@ import { StripeModule } from 'nestjs-stripe'
     }),
   ],
   controllers: [AppController],
-  providers: [AppService, GoogleStrategy],
+  providers: [AppService, GoogleStrategy, FacebookStrategy],
 })
 export class AppModule {}

@@ -1,5 +1,8 @@
 import { createContext, useContext, useState, useCallback, useEffect} from 'react';
-import  { useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom';
+import { useGoogleLogout } from 'react-google-login';
+import { useGoogleApi } from 'react-gapi'
+
 
 function useLocalStorage(key, initialValue) {
   const [storedValue, setStoredValue] = useState(() => {
@@ -28,7 +31,9 @@ function useLocalStorage(key, initialValue) {
 
 const UserContext = createContext();
 
-export function UserProvider({children}) {
+export function UserProvider({ children }) {
+    const gapi = useGoogleApi({ scopes: ['profile',], })
+    const clientId = '814535166282-uj0rs7jnubeqglcaie0lm4j0gg8625pi.apps.googleusercontent.com';
     const history = useHistory();
     const [token, setToken] = useLocalStorage('token')
     const [user, setUser] = useLocalStorage('user')
@@ -88,6 +93,60 @@ export function UserProvider({children}) {
       .catch(err => console.log("error"))
     }, []);
 
+  
+  const login_google = useCallback((email, name) => {
+    fetch('http://localhost:5000/auth/login/google', {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: name,
+        email: email
+      })
+    })
+      .then(response => response.json())
+      .then(data => {
+        if(data.access_token){
+          setToken(data.access_token)
+          setMsg({loginOK: "Login successfull"})
+          history.push({pathname: '/'})
+        }else if(data.status && data.status === 401)
+          setMsg({loginNotOK: "Please, confirm your registration in your email"}) 
+        else
+          setMsg({loginNotOK: "Wrong credentials. Please, try again."})
+      })
+      .catch(err => console.log("error"))
+  }, []);
+
+
+    const login_facebook = useCallback((email, name) => {
+    fetch('http://localhost:5000/auth/login/facebook', {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: name,
+        email: email
+      })
+    })
+      .then(response => response.json())
+      .then(data => {
+        if(data.access_token){
+          setToken(data.access_token)
+          setMsg({loginOK: "Login successfull"})
+          history.push({pathname: '/'})
+        }else if(data.status && data.status === 401)
+          setMsg({loginNotOK: "Please, confirm your registration in your email"}) 
+        else
+          setMsg({loginNotOK: "Wrong credentials. Please, try again."})
+      })
+      .catch(err => console.log("error"))
+  }, []);
+
     useEffect(()=> {
       if(!token)
         return
@@ -139,15 +198,20 @@ export function UserProvider({children}) {
         }))
     }, [token, user]);
 
-    const logout = useCallback(() => {
-      setToken(null)
-      setUser(null)
-      setUserProfile(null)
-      history.push({pathname:'/login'})
-    }, []);
+  const logout = useCallback(() => {
+    const auth = gapi.auth2.getAuthInstance();
+    if (auth) {
+      auth.signOut().then(
+         auth.disconnect())
+    };
+    setToken(null)
+    setUser(null)
+    setUserProfile(null)
+    history.push({pathname:'/login'})
+  }, []);
 
     return (
-        <UserContext.Provider value={{token, msg, userProfile, login, register, editProfile ,logout}}>
+      <UserContext.Provider value={{ token, msg, userProfile, login, login_google, login_facebook, register, editProfile, logout }}>
             {children}
         </UserContext.Provider>
     );

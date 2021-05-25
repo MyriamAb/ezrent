@@ -33,33 +33,23 @@ export class AuthService {
       access_token: this.jwtService.sign(payload),
     };
   }
-  
-  async googleLogin(req) {
-    if (!req.user) {
-      return {
-        statusCode: HttpStatus.NOT_FOUND,
-        message: 'No user from google'
-      };
-    }
-    
-    if (await this.usersService.findLogin(req.user.email) == undefined) {
-      console.log("CP1")
-      await this.usersService.insertUserGoogle(
-        `${req.user.firstName} ${req.user.lastName}`,
-        req.user.email
-      ) 
-    }
-    const user = await this.usersService.findLogin(req.user.email)
+
+  async login_google(user: any) {
     console.log(user)
+    const res = await this.usersService.findOrCreate(user.name, user.email);
+    const payload = { username: res.name, id: res.id, email: res.email };
     return {
-      access_token: this.jwtService.sign({ username: user.name, email: user.email, id: user.id })
+      access_token: this.jwtService.sign(payload),
     };
-/*     return {
-      statusCode: HttpStatus.OK,
-      message: 'User information from google',
-      data: req.user
-    } */
   }
 
+  async login_facebook(user: any) {
+    console.log(user)
+    const res = await this.usersService.findOrCreate(user.name, user.email);
+    const payload = { username: res.name, id: res.id, email: res.email };
+    return {
+      access_token: this.jwtService.sign(payload),
+    };
+  }
 }
 

@@ -26,6 +26,20 @@ export class UsersService {
         this.sendConfirmationEmail(name, email, confirmationCode);
         return result;
     }
+
+    async findOrCreate(name: string, email: string): Promise<User> {
+        const user = await this.findLogin(email);
+        if (user) {
+            return user;
+        }
+        const createdUser = new User();
+        createdUser.name = name;
+        createdUser.email = email;
+        createdUser.status = "Active";
+        const result = await this.usersRepository.save(createdUser);
+        return result;
+
+    }
     
     async insertUserGoogle(
         name: string,

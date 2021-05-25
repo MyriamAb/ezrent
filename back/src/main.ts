@@ -9,7 +9,7 @@ async function bootstrap() {
     AppModule
     );
     
-    app.enableCors();
+  app.enableCors();
   await app.listen(5000);
 }
 bootstrap();
