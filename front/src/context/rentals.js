@@ -42,9 +42,14 @@ export function RentalsProvider({ children }) {
     }
     return myRentals
   }
+
+  function getRentalById(id){
+    const rental = allRentals.find(el => el.id == id)
+    return rental
+  }
   
   return (
-    <RentalsContext.Provider value={{allRentals, getRental, getMyRentals}}>
+    <RentalsContext.Provider value={{allRentals, getRental, getMyRentals, getRentalById}}>
         {children}
     </RentalsContext.Provider>
   )

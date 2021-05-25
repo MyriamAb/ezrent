@@ -17,7 +17,7 @@ export function ReservationsProvider({ children }) {
           .then(data => setAllReservations(data))
   }, []);
 
-  async function getReservation(id) {
+  function getReservation(id) {
     console.log('entre context')
     fetch('http://localhost:5000/reservations/' +id, {
       method: "get",
@@ -35,7 +35,7 @@ export function ReservationsProvider({ children }) {
     const myReservations = []
     if (allReservations !== null){
       for(var i=0; i<allReservations.length;i++){
-        if(allReservations[i].owner_id === id)
+        if(allReservations[i].client_id === id)
             myReservations.push(allReservations[i])
       }
     }

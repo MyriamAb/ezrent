@@ -8,8 +8,6 @@ export default function MyAds(){
     const userContext = useUser()
     const today_date = new Date()
     const [myRentals, setMyRentals] = useState(rentalsContext.getMyRentals(userContext.user.id))
-    const pastRentals = []
-    const inProcessRentals = []
 
     function parseDate(str) {
         var datesplit = str.slice(0, 10);
