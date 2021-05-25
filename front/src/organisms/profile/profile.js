@@ -3,12 +3,14 @@ import { Tab } from 'semantic-ui-react'
 import PersonnalInfo from './personnalInfo'
 import Review from './../review'
 import AddAd from './../addAd'
+import MyReservations from './myReservations'
+import MyAds from './myAds'
 
 function Profile(){
   const panes = [
     { menuItem: 'Personnal information', render: () => <Tab.Pane><PersonnalInfo/></Tab.Pane> },
-    { menuItem: 'My reservations', render: () => <Tab.Pane>Tab 2 Content</Tab.Pane> },
-    { menuItem: 'My ads', render: () => <Tab.Pane>Tab 3 Content</Tab.Pane> },
+    { menuItem: 'My reservations', render: () => <Tab.Pane><MyReservations/></Tab.Pane> },
+    { menuItem: 'My ads', render: () => <Tab.Pane><MyAds/></Tab.Pane> },
   ]
   
   return (
