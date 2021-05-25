@@ -42,6 +42,17 @@ export function ReservationsProvider({ children }) {
     return myReservations
   }
 
+  function getMyReservations(id){
+    const myReservations = []
+    if (allReservations !== null){
+      for(var i=0; i<allReservations.length;i++){
+        if(allReservations[i].client_id === id)
+            myReservations.push(allReservations[i])
+      }
+    }
+    return myReservations
+  }
+
   function getReservationsByRental(rentalId){
     const reservations = []
     if (allReservations !== null){

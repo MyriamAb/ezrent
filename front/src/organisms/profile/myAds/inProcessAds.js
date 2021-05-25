@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react'
 import { Grid, Segment, Header, Button } from 'semantic-ui-react'
-import useRentals from '../../context/rentals'
-import useUser from '../../context/user'
-import useReservations from '../../context/reservation'
+import useRentals from '../../../context/rentals'
+import useUser from '../../../context/user'
+import useReservations from '../../../context/reservation'
+import ConfirmClient from './confirmClient'
 
-export default function MyAds(){
+export default function InProcessAds(){
     const reservationsContext = useReservations()
     const rentalsContext = useRentals()
     const userContext = useUser()
@@ -43,7 +44,7 @@ export default function MyAds(){
                                         </Segment>
                                         <Segment>
                                             <Button.Group>
-                                                <Button positive>Accept</Button>
+                                                <ConfirmClient clientName={userContext.getUserbyId(reservation.client_id)["name"]}/>
                                                 <Button.Or />
                                                 <Button negative>Refuse</Button>
                                             </Button.Group>
@@ -53,19 +54,6 @@ export default function MyAds(){
                             </Segment>
                     </Grid.Column> 
                     ))}
-            </Grid>
-            <Grid container columns={1} stackable>
-                <br/>
-                <Header as='h2'>PAST</Header>
-                {myRentals.map((rent, ind)=>(
-                    (parseDate(rent.end).getTime() <= today_date.getTime()) && 
-                    <Grid.Column> 
-                        <Segment key={ind}> 
-                            <Header as='h3'>{rent.title}</Header>
-                            {rent.address}
-                        </Segment> 
-                    </Grid.Column>
-                ))}
             </Grid>
         </div>
     )
