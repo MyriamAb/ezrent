@@ -1,38 +1,17 @@
 import React, { useState, useRef } from "react";
 import Button from './button'
 
-const ImageUpload = () => {
-  const [image, setImage] = useState("");
-  const inputFile = useRef(null);
-
-  const handleFileUpload = e => {
-    const { files } = e.target;
-    if (files && files.length) {
-      const filename = files[0].name;
-
-      var parts = filename.split(".");
-      const fileType = parts[parts.length - 1];
-      console.log("fileType", fileType); //ex: zip, rar, jpg, svg etc.
-
-      setImage(files[0]);
-    }
-  };
-
-  const onButtonClick = () => {
-    inputFile.current.click();
-  };
-
-  console.log(image);
+const ImageUpload = (props) => {
   return (
     <div>
       <input
         style={{ display: "none" }}
-        // accept=".zip,.rar"
-        ref={inputFile}
-        onChange={handleFileUpload}
+        ref={props.refImage}
+        onChange={props.onChangeImage}
         type="file"
+        id={props.id}
       />
-      <Button content="Add a photo" onClick={onButtonClick}/>
+      <Button content="Add a photo" onClick={props.onClick}/>
     </div>
   );
 };

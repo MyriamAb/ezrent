@@ -8,6 +8,8 @@ const calendarType = (props) =>
     returnValue={props.returnValue}
     selectRange= {true}
     tileDisabled={props.tileDisabled}
+    id={props.id}
+    // formatDate={(locale, date) => formatDate(date, 'YYYY-MMM-DD')}
   />
 
 

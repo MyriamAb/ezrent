@@ -1,5 +1,6 @@
 import Search from '../molecules/search'
 import CardCarousel from './cardCarousel'
+import useRentals from '../context/rentals'
 
 function Home() {
   const styles = {
@@ -16,6 +17,10 @@ function Home() {
       opacity: 0.8
     }
   }
+
+  const rentalsContext = useRentals()
+
+  console.log(rentalsContext.allRentals)
   
   return (
     <div>
