@@ -9,9 +9,9 @@ import { useParams } from "react-router"
 import RatingType from '../atoms/rate'
 import {  useCallback, useEffect, useState} from 'react'
 import ButtonType from '../atoms/button'
-var detail = []
 
 function AdDetails(props) {
+  var detail = []
   const rentalsContext = useRentals()
   var rentals = rentalsContext?.allRentals ?? null;
   const [rental, setRental] = useState({})
@@ -25,17 +25,19 @@ function AdDetails(props) {
 
   useEffect(() => {
     console.log('id')
-    if (rentals == null)
-      return
-    const res = rentals?.find(element => element.id === id) 
-        
-        setRental(res)
-      }
-      
-    , [id, rentals])
+    /* if (rentals == null) */
+    console.log(rentals)
+    const res = rentals?.find(element => element.id == id) 
+    console.log(res)
+      setRental(res)
+  }, [id, rentals])
 
   console.log(rental)
   
+  useEffect(() => {
+    
+  })
+
   const styles = {
     container: {
      
@@ -61,11 +63,11 @@ function AdDetails(props) {
         <Grid >
           <Grid.Row>
             <Grid.Column width={11}>
-              <Header as='h1' style={{ marginTop:5 }}>Title</Header>
+              <Header as='h1' style={{ marginTop:5 }}>{rental?.title}</Header>
             </Grid.Column>
             <Grid.Column width={5}>
               <Icon name='usermap marker alternate' />
-              Paris
+              {rental?.address}
             </Grid.Column>
           </Grid.Row>
           <Grid.Row>
@@ -77,10 +79,7 @@ function AdDetails(props) {
             <Grid.Column width={11}>
               <Item.Header as='h5'>Description</Item.Header>
               <p>
-              Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
-
-              The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.
- 
+              {rental?.description}
               </p>
             </Grid.Column>
             <Grid.Column width={5}>
@@ -95,7 +94,7 @@ function AdDetails(props) {
               </Grid.Row>
               <Grid.Row> 
               <Item.Header as='h5'>Price per day:</Item.Header>
-               1111 €
+               {rental?.price}
               </Grid.Row>
             </Grid.Column>
           </Grid.Row>
