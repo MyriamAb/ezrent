@@ -16,8 +16,8 @@ function Profile(){
   return (
   <div>
     <Review/>
-       <AddAd/>
-    <Tab menu={{ fluid: true, vertical: true, tabular: true }} panes={panes} />
+    <AddAd/>
+    <Tab menu={{ fluid: true, vertical: true, tabular: false }} panes={panes} />
   </div>)
 }
 

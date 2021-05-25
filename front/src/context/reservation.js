@@ -41,9 +41,20 @@ export function ReservationsProvider({ children }) {
     }
     return myReservations
   }
+
+  function getReservationsByRental(rentalId){
+    const reservations = []
+    if (allReservations !== null){
+      for(var i=0; i<allReservations.length;i++){
+        if(allReservations[i].rental_id === rentalId)
+            reservations.push(allReservations[i])
+      }
+    }
+    return reservations
+  }
   
   return (
-    <ReservationsContext.Provider value={{allReservations, getReservation, getMyReservations}}>
+    <ReservationsContext.Provider value={{allReservations, getReservation, getMyReservations, getReservationsByRental}}>
         {children}
     </ReservationsContext.Provider>
   )

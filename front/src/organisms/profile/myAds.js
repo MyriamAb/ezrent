@@ -1,9 +1,11 @@
 import React, {useEffect, useState} from 'react'
-import { Grid, Segment, Header } from 'semantic-ui-react'
+import { Grid, Segment, Header, Button } from 'semantic-ui-react'
 import useRentals from '../../context/rentals'
 import useUser from '../../context/user'
+import useReservations from '../../context/reservation'
 
 export default function MyAds(){
+    const reservationsContext = useReservations()
     const rentalsContext = useRentals()
     const userContext = useUser()
     const today_date = new Date()
@@ -19,25 +21,47 @@ export default function MyAds(){
         <div>
             <Grid container columns={1} stackable>
                 <br/>
-                <Header as='h3'>IN PROCESS</Header>
+                <Header as='h2'>IN PROCESS</Header>
                 {myRentals.map((rent, ind)=>(
                     (parseDate(rent.end).getTime() > today_date.getTime()) && 
                     <Grid.Column> 
-                        <Segment key={ind}> 
-                            <Header as='h4'>{rent.title}</Header>
-                            {rent.address}
-                        </Segment>
-                        </Grid.Column> 
+                            <Segment key={ind}> 
+                                <Header as='h3'>{rent.title}</Header>
+                                {rent.address}
+                                <Header as='h4'>REQUESTS ON THIS AD : </Header>
+                                {reservationsContext.getReservationsByRental(rent.id).map(reservation => 
+                                    <Segment.Group horizontal>
+                                        <Segment> 
+                                            {userContext.getUserbyId(reservation.client_id)["name"]} <br/>
+                                            {` From : ${reservation.start.slice(0, 10)}`} <br/>
+                                            {`To : ${reservation.end.slice(0, 10)} `}
+                                        
+                                        </Segment>
+                                        <Segment>
+                                            STATUS : <br/>
+                                            {reservation.status}
+                                        </Segment>
+                                        <Segment>
+                                            <Button.Group>
+                                                <Button positive>Accept</Button>
+                                                <Button.Or />
+                                                <Button negative>Refuse</Button>
+                                            </Button.Group>
+                                        </Segment>
+                                    </Segment.Group>
+                                    )}
+                            </Segment>
+                    </Grid.Column> 
                     ))}
             </Grid>
             <Grid container columns={1} stackable>
                 <br/>
-                <Header as='h3'>PAST</Header>
+                <Header as='h2'>PAST</Header>
                 {myRentals.map((rent, ind)=>(
                     (parseDate(rent.end).getTime() <= today_date.getTime()) && 
                     <Grid.Column> 
                         <Segment key={ind}> 
-                            <Header as='h4'>{rent.title}</Header>
+                            <Header as='h3'>{rent.title}</Header>
                             {rent.address}
                         </Segment> 
                     </Grid.Column>

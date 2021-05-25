@@ -27,8 +27,8 @@ export default function MyReservations(){
                     (parseDate(reserv.end).getTime() > today_date.getTime()) && rentalsContext.allRentals &&
                     <Grid.Column> 
                         <Segment key={ind}> 
-                            <Header as='h4'>{rentalsContext.getRentalById(reserv.id).title}</Header>
-                            {rentalsContext.getRentalById(reserv.id).address}
+                            <Header as='h4'>{rentalsContext.getRentalById(reserv.rental_id).title}</Header>
+                            {rentalsContext.getRentalById(reserv.rental_id).address}
                         </Segment>
                         </Grid.Column> 
                     ))}
@@ -41,8 +41,8 @@ export default function MyReservations(){
                     <Grid.Column>
                         <Segment.Group horizontal> 
                             <Segment key={ind}> 
-                                <Header as='h4'>{rentalsContext.getRentalById(reserv.id).title}</Header>
-                                {rentalsContext.getRentalById(reserv.id).address}
+                                <Header as='h4'>{rentalsContext.getRentalById(reserv.rental_id).title}</Header>
+                                {rentalsContext.getRentalById(reserv.rental_id).address}
                             </Segment> 
                             <Segment key={ind}>
                                 {
