@@ -1,15 +1,13 @@
-import React, {useEffect, useState} from 'react'
-import { Grid, Segment, Header, Button } from 'semantic-ui-react'
+import React, {useState} from 'react'
+import { Grid, Segment, Header } from 'semantic-ui-react'
 import useRentals from '../../../context/rentals'
 import useUser from '../../../context/user'
-import useReservations from '../../../context/reservation'
 
 export default function PastAds(){
-    const reservationsContext = useReservations()
     const rentalsContext = useRentals()
     const userContext = useUser()
     const today_date = new Date()
-    const [myRentals, setMyRentals] = useState(rentalsContext.getMyRentals(userContext.user.id))
+    const [myRentals] = useState(rentalsContext.getMyRentals(userContext.user.id))
 
     function parseDate(str) {
         var datesplit = str.slice(0, 10);
@@ -21,7 +19,7 @@ export default function PastAds(){
         <div>
             <Grid container columns={1} stackable>
                 <br/>
-                <Header as='h2'><i class="hourglass end icon"></i> PAST</Header>
+                <Header as='h2'>PAST</Header>
                 {myRentals.map((rent, ind)=>(
                     (parseDate(rent.end).getTime() <= today_date.getTime()) && 
                     <Grid.Column> 

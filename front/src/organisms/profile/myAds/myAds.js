@@ -1,5 +1,4 @@
-import React, {useEffect, useState} from 'react'
-import { Grid, Segment, Header, Button } from 'semantic-ui-react'
+import React from 'react'
 import InProcessAds from './inProcessAds'
 import PastAds from './pastAds'
 

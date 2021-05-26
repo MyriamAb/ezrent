@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, { useState} from 'react'
 import { Grid, Segment, Header } from 'semantic-ui-react'
 import useUser from '../../context/user'
 import useReservations from '../../context/reservation'
@@ -10,7 +10,7 @@ export default function MyReservations(){
     const rentalsContext = useRentals()
     const userContext = useUser()
     const today_date = new Date()
-    const [myReservations, setMyReservations] = useState(reservationsContext.getMyReservations(userContext.user.id))
+    const [myReservations] = useState(reservationsContext.getMyReservations(userContext.user.id))
 
     function parseDate(str) {
         var datesplit = str.slice(0, 10);
