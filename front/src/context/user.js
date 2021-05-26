@@ -212,8 +212,38 @@ export function UserProvider({ children }) {
     history.push({pathname:'/login'})
   }, []);
 
+  const sendResetEmail = useCallback((email) => {
+    fetch('http://localhost:5000/users/forgotpassword/', {
+      method: 'post',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email: email
+      })
+    })
+    .then(alert("Email has been sent ! Please, check your mailbox to reset your password"))
+  }, []);
+
+  const reset_password = useCallback((password, token_id) => {
+    fetch('http://localhost:5000/users/resetpassword/', {
+      method: 'post',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        password: password,
+        reset_token: token_id,
+      })
+    })
+      .then(response => response.json())
+      .then(data => data.statusCode == 200 ? alert("Password updated successfully") : alert("Failed to update password") )
+    }, []);
+
     return (
-      <UserContext.Provider value={{ token, msg, userProfile, login, login_google, login_facebook, register, editProfile, logout }}>
+      <UserContext.Provider value={{ token, msg, userProfile, login, login_google, login_facebook, register, editProfile, logout, sendResetEmail, reset_password}}>
             {children}
         </UserContext.Provider>
     );

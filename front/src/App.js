@@ -7,6 +7,8 @@ import Profile from "./organisms/profile/profile"
 import Home from "./organisms/home"
 import Login from './organisms/login'
 import Register from './organisms/register'
+import Password from './organisms/password/password'
+import PasswordEmail from './organisms/password/password_email'
 import { UserProvider } from './context/user'
 import AdDetails from './organisms/adDetails'
 import { RentalsProvider } from './context/rentals';
@@ -35,6 +37,8 @@ function App() {
             <Route path='/addetails/:id' component={AdDetails} />
             <Route path='/paymentCheckout' component={PaymentCheckout} />
             <Route path='/checkoutform' component={CheckoutForm} />
+            <Route path='/password/:id' component={Password} />
+            <Route path='/password' component={PasswordEmail} />
           </Switch>
           <Footer/>
           </RentalsProvider>
