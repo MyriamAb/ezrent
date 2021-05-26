@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from 'react'
-import { Grid, Form, Segment, Message, Icon, Image } from 'semantic-ui-react'
+import { Form, Image, Grid } from 'semantic-ui-react'
 import Button from '../../atoms/button'
 import InputFormType from '../../atoms/inputForm'
-import HeaderForm from '../../molecules/headerForm'
 import useUser from '../../context/user'
+import ButtonImage from '../../atoms/buttonImage'
+import Reviews from './reviews'
 
 export default function PersonnalInfo(){
     const userContext = useUser()
@@ -53,13 +54,14 @@ export default function PersonnalInfo(){
       }
 
     return(
-    <div style={{backgroundImage: `url("https://www.lodgify.com/blog/wp-content/uploads/2019/12/far-away.jpg.webp")`, backgroundSize:'cover'}}>
-        <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
-        <Grid.Column style={{ maxWidth: 450 }}>
-            <HeaderForm asHeader='h1' colorHeader='black' textAlignHeader='center' srcImage='/logo_grey2.png' contentHeader='My personnal information'/>
+      <div>
+        <Grid columns={1}>
+        <Grid.Column  width={2}></Grid.Column>
+          <Grid.Column  width={12}>
             <Form onSubmit={(e)=>submit(e)} size='large'>
-            <Segment stacked style={{ backgroundColor: 'rgba(117, 190, 218, 0.5)' }}>
                 <Image src={"/profileDefaultPic.jpeg"} size='tiny' centered circular/> <br/>
+                <ButtonImage // content='Add a picture' basic color={props.color} size={props.size} onClick={props.onClick} 
+                /><br/>
                 <InputFormType icon='user' placeholder='name'  type='text' id='name'  onChange={(e)=>handle(e)} value={data.name} />
                 <InputFormType icon='user' placeholder='email' type='text' id='email' onChange={(e)=>handle(e)} value={data.email} />
                 <InputFormType icon='user' placeholder='phone' type='text' id='phone' onChange={(e)=>handle(e)} value={data.phone} />
@@ -67,10 +69,12 @@ export default function PersonnalInfo(){
                 <InputFormType icon='lock' placeholder='Confirm your password' type='password' id='password_confirm' onChange={(e)=>handle(e)} onKeyUp={(e)=>checkpassword(e)}/>
                 <span id='message'></span>
                 <Button content='Edit' color='black' size='large' fluid='true'></Button>
-            </Segment>
             </Form>
-        </Grid.Column>
+          </Grid.Column>
+          <Grid.Column  width={2}></Grid.Column>
         </Grid>
-    </div>
+        <h2 class="ui center aligned icon header">REVIEWS</h2>
+        <Reviews/>
+      </div>
     )
 }

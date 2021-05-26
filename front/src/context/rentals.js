@@ -31,9 +31,25 @@ export function RentalsProvider({ children }) {
       .then(data => setRental(data))
       
   }
+
+  function getMyRentals(id){
+    const myRentals = []
+    if (allRentals !== null){
+      for(var i=0; i<allRentals.length;i++){
+        if(allRentals[i].owner_id === id)
+            myRentals.push(allRentals[i])
+      }
+    }
+    return myRentals
+  }
+
+  function getRentalById(id){
+    const rental = allRentals.find(el => el.id == id)
+    return rental
+  }
   
   return (
-    <RentalsContext.Provider value={{allRentals, getRental}}>
+    <RentalsContext.Provider value={{allRentals, getRental, getMyRentals, getRentalById}}>
         {children}
     </RentalsContext.Provider>
   )

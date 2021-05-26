@@ -44,6 +44,8 @@ export function UserProvider({ children }) {
         loginOK:"",
         loginNotOK:"",
       })
+    const [userReviews, setUserReviews] = useState(null)
+    const [allUsers, setAllUsers] = useState(null)
 
   function register(data){
       fetch('http://localhost:5000/users', {
@@ -164,7 +166,7 @@ export function UserProvider({ children }) {
     }, [token]);
 
     useEffect(()=> {
-      if(!user)
+      if(!user || user === null)
         return
       fetch('http://localhost:5000/users/' + user.id, {
           method: "get",
@@ -242,8 +244,43 @@ export function UserProvider({ children }) {
       .then(data => data.statusCode == 200 ? alert("Password updated successfully") : alert("Failed to update password") )
     }, []);
 
-    return (
-      <UserContext.Provider value={{ token, msg, userProfile, login, login_google, login_facebook, register, editProfile, logout, sendResetEmail, reset_password}}>
+    useEffect(()=> {
+      if(!user || user === null)
+        return
+      fetch('http://localhost:5000/reviews/' + user.id, {
+          method: "GET",
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token
+          },
+        })
+        .then(response => response.json())
+        .then(data => setUserReviews(data))
+    },[user, userProfile])
+
+    useEffect(()=> {
+      fetch('http://localhost:5000/users/', {
+          method: "GET",
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token
+          },
+        })
+        .then(response => response.json())
+        .then(data => setAllUsers(data))
+    },[])
+
+    function getUserbyId(id){
+      if(allUsers !== null){
+        const user = allUsers.find(el => el.id === id)
+        return user
+      }
+    }
+  
+      return (
+        <UserContext.Provider value={{ token, msg, user, userProfile, userReviews, allUsers, login, login_google, login_facebook, register, editProfile, logout, sendResetEmail, reset_password, getUserbyId}}>
             {children}
         </UserContext.Provider>
     );
