@@ -21,7 +21,7 @@ export default function PastAds(){
         <div>
             <Grid container columns={1} stackable>
                 <br/>
-                <Header as='h2'>PAST</Header>
+                <Header as='h2'><i class="hourglass end icon"></i> PAST</Header>
                 {myRentals.map((rent, ind)=>(
                     (parseDate(rent.end).getTime() <= today_date.getTime()) && 
                     <Grid.Column> 

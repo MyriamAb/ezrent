@@ -2,11 +2,11 @@ import React from 'react'
 import { Button, Header, Icon, Modal } from 'semantic-ui-react'
 import useReservations from '../../../context/reservation'
 
-export default function ConfirmClient(prop){
+export default function RefuseClient(prop){
     const [open, setOpen] = React.useState(false)
     const reservationsContext = useReservations()
 
-    function confirmReservation(id, status){
+    function refuseReservation(id, status){
       console.log("this is the ID : " + status)
       reservationsContext.editProfile(id, status)
       setOpen(false)
@@ -19,15 +19,15 @@ export default function ConfirmClient(prop){
           onOpen={() => setOpen(true)}
           open={open}
           size='small'
-          trigger={<Button positive>Confirm</Button>}
+          trigger={<Button negative>Refuse</Button>}
         >
           <Header icon>
             <Icon name='bullhorn' />
-            Your are about to confirm a reservation.
+            Your are about to refuse a reservation.
           </Header>
           <Modal.Content>
             <p>
-                Do you confirm the reservation of {prop.clientName} ?
+                Do you want to refuse the reservation of {prop.clientName} ?
                 
             </p>
           </Modal.Content>
@@ -35,7 +35,7 @@ export default function ConfirmClient(prop){
             <Button basic color='red' inverted onClick={() => setOpen(false)}>
               <Icon name='remove' /> No
             </Button>
-            <Button color='green' inverted onClick={() => confirmReservation(prop.reservationId, "WAITING FOR CLIENT'S PAIEMENT")}>
+            <Button color='green' inverted onClick={() => refuseReservation(prop.reservationId, "REFUSED")}>
               <Icon name='checkmark' /> Yes
             </Button>
           </Modal.Actions>

@@ -29,7 +29,7 @@ export class ReservationController {
     @Patch(':id')
     async update(@Param() params,
            @Body() reservation: Reservation) {
-        const updatedReservation = await this.service.updateRent(params.id, reservation);
+        const updatedReservation = await this.service.updateReservation(params.id, reservation);
         return {
             statusCode: HttpStatus.OK,
             message: 'Reservation updated successfully',
