@@ -17,9 +17,10 @@ export default function CheckoutForm() {
   useEffect(() => {
     // Create PaymentIntent as soon as the page loads
     window
-      .fetch("/create-payment-intent", {
+      .fetch("http://localhost:5000/create-payment-intent", {
         method: "POST",
         headers: {
+
           "Content-Type": "application/json"
         },
         body: JSON.stringify({items: [{ id: "xl-tshirt" }]})
@@ -28,10 +29,10 @@ export default function CheckoutForm() {
         return res.json();
       })
       .then(data => {
-        setClientSecret(data.clientSecret);
+        setClientSecret(data.client_secret);
       });
   }, []);
-
+  console.log(clientSecret);
   const cardStyle = {
     style: {
       base: {

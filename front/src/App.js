@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { BrowserRouter as Router, Switch, Route, useParams } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Header from './organisms/header'
 import Footer from './organisms/footer'
 import Profile from "./organisms/profile/profile"
@@ -12,7 +12,7 @@ import AdDetails from './organisms/adDetails'
 import { RentalsProvider } from './context/rentals';
 import PaymentCheckout from './organisms/preBuildCheckout/paymentCheckout'
 import { loadStripe } from "@stripe/stripe-js";
-import { Elements } from "@stripe/react-stripe-js";
+import { Elements,} from "@stripe/react-stripe-js";
 import CheckoutForm from "./organisms/customPayment/checkoutForm";
 
 const promise = loadStripe("pk_test_51IsNySAQArDV5cBDQy5GSkkhHV2FX283JHxwG4L2XiUmWfnF4og6GSznds1vfnuho1svtriLC0uZMi93WnVL9sUq00vQPVDzMJ ");

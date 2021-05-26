@@ -168,14 +168,14 @@ export function UserProvider({children}) {
         })
         .then(response => response.json())
         .then(data => setAllUsers(data))
-    },[])
+    },[token])
 
-    function getUserbyId(id){
+    const getUserbyId= useCallback((id) => {
       if(allUsers !== null){
         const user = allUsers.find(el => el.id === id)
         return user
       }
-    }
+    },[allUsers])
 
     const logout = useCallback(() => {
       setToken(null)

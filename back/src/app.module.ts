@@ -12,6 +12,10 @@ import { PicturesModule } from './pictures/pictures.module';
 import { AuthModule } from './auth/auth.module';
 import { GoogleStrategy } from './auth/google.strategy';
 import { StripeModule } from 'nestjs-stripe'
+import { config } from 'dotenv';
+import { PaymentModule } from './stripe/stripe.module';
+
+config();
 
 @Module({
   imports: [
@@ -24,9 +28,10 @@ import { StripeModule } from 'nestjs-stripe'
     PicturesModule,
     AuthModule,
     StripeModule.forRoot({
-      apiKey: 'pk_test_51IsNySAQArDV5cBDQy5GSkkhHV2FX283JHxwG4L2XiUmWfnF4og6GSznds1vfnuho1svtriLC0uZMi93WnVL9sUq00vQPVDzMJ',
+      apiKey: process.env.STRIPE_SECRETKEY,
       apiVersion: '2020-08-27',
     }),
+    PaymentModule
   ],
   controllers: [AppController],
   providers: [AppService, GoogleStrategy],

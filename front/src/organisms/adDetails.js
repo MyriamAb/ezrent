@@ -7,40 +7,52 @@ import useRentals from "../context/rentals"
 import CalendarType from '../atoms/calendar'
 import { useParams } from "react-router"
 import RatingType from '../atoms/rate'
-import {  useCallback, useEffect, useState} from 'react'
+import { useEffect, useState} from 'react'
 import ButtonType from '../atoms/button'
+import useUser from '../context/user'
+import PaymentCheckout from '../organisms/preBuildCheckout/server'
 
 function AdDetails(props) {
-  var detail = []
   const rentalsContext = useRentals()
   var rentals = rentalsContext?.allRentals ?? null;
   const [rental, setRental] = useState({})
   const { id } = useParams()
-  console.log(id)
+  var ownerId = ''
+  const userContext = useUser()
+  const [user, setUser] = useState({})
   const [ price, setPrice] = useState('0')
   const [ valueCalendar, onChangeCalendar ] = useState(new Date())
   let changePrice = (newPrice) => {
     setPrice( newPrice )
   }
 
-  useEffect(() => {
-    console.log('id')
-    /* if (rentals == null) */
-    console.log(rentals)
-    const res = rentals?.find(element => element.id == id) 
-    console.log(res)
-      setRental(res)
-  }, [id, rentals])
-
   console.log(rental)
   
   useEffect(() => {
+    const res = rentals?.find(element => element.id == id) 
+    setRental(res)
+
+    if (res === null || res === undefined)
+      return
+     ownerId = res.owner_id
+    console.log(ownerId)
+
     
-  })
+  }, [id, rentals, ownerId, userContext])
+  
+  useEffect(() => {
+    const userInfo = userContext?.getUserbyId(ownerId)
+
+    if (userInfo === null || userInfo === undefined)
+      return
+    console.log(userInfo)
+    setUser(userInfo)
+  }, [userContext.getUserbyId, userContext, ownerId])
+  
+  console.log(user)
 
   const styles = {
     container: {
-     
       backgroundColor: '#FFFFFF'
     },
     container1: {
@@ -51,12 +63,7 @@ function AdDetails(props) {
       height: 500,
     }
   }
-/*   if (rental == null) {
-    detail=<div></div>
-  }
-  else{
-    
-  } */
+
   return (
     <div style={styles.container1}>
       <Container style={styles.container}>
@@ -105,7 +112,14 @@ function AdDetails(props) {
                   <Image src="/profileDefaultPic.jpeg" style={{width: 50, height: 50}}/>
                 </Grid.Column>
                 <Grid.Column>
-                  Owner Name
+                  <Grid columns={2}>
+                    <Grid.Column>
+                      {user.name}
+                    </Grid.Column>
+                    <Grid.Column>
+                      {user.email}
+                    </Grid.Column>
+                  </Grid>
                 </Grid.Column>
                 <Grid.Column>   
                   <RatingType size='huge' float='right'/>
@@ -118,8 +132,8 @@ function AdDetails(props) {
                 2222 €
               </Grid.Row>
                <Grid.Row>
-                  <ButtonType color='green' content="Booked" size='large'  as='a' href='/paymentCheckout' />
-              </Grid.Row>
+{/*                   <PaymentCheckout/>
+ */}              </Grid.Row>
             </Grid.Column>
           </Grid.Row>
         </Grid>
