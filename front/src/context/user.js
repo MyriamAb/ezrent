@@ -2,6 +2,7 @@ import { createContext, useContext, useState, useCallback, useEffect} from 'reac
 import { useHistory } from 'react-router-dom';
 import { useGoogleLogout } from 'react-google-login';
 import { useGoogleApi } from 'react-gapi'
+import { FormButton } from 'semantic-ui-react';
 
 
 function useLocalStorage(key, initialValue) {
@@ -199,7 +200,8 @@ export function UserProvider({ children }) {
     }, [token, user]);
 
   const logout = useCallback(() => {
-    const auth = gapi.auth2.getAuthInstance();
+    const auth = gapi?.auth2.getAuthInstance();
+    console.log(auth)
     if (auth) {
       auth.signOut().then(
          auth.disconnect())

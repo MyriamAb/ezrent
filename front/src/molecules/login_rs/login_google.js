@@ -22,11 +22,12 @@ function Login() {
             <GoogleLogin
                 clientId={clientId}
                 buttonText="Login"
+                autoLoad={false}
                 onSuccess={onSuccess}
                 onFailure={onFailure}
                 cookiePolicy={'single_host_origin'}
                 style={{ maringTop: '100px' }}
-                isSignedIn={true}
+                isSignedIn={false}
             />
         </div>
     )
