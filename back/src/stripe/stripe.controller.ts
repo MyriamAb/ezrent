@@ -16,18 +16,4 @@ export class PaymentController {
     return this.paymentService.create(paymentCreateDto);
   }
 
- /*  @UsePipes(new ValidationPipe({whitelist: true}))
-  @Post('/validate-payment')
-  async creditValidation(
-  @Req() {rawBody}, 
-  @Body () body,
-  @Headers('stripe-signature') signature: string) {
-  return this.paymentService.validation(
-  {
-    stripeSignature
-    stripeResponse: rawBody,
-    type: body.type,  
-    stripeId: body.data.object.id,
-  });
-} */
 }

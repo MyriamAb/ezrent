@@ -2,10 +2,12 @@ import { Controller, Post, Body, Get, Patch, Delete, Param, HttpStatus } from '@
 import { UsersService } from './users.service';
 import * as bcrypt from 'bcrypt';
 import { User } from './user.entity';
+import { PaymentService } from '../stripe/stripe.service'
 
 @Controller('users')
 export class UsersController {
-    constructor(private usersService: UsersService) { }
+    constructor(private usersService: UsersService,
+        private paymentService: PaymentService) {}
 
     @Post()
     async post(
@@ -13,15 +15,19 @@ export class UsersController {
         @Body('email') userEmail: string,
         @Body('password') userPassword: string,
         @Body('phone') userPhone: string,
-    ) {
+    
+        ) {
+        console.log('postcontroller')
         try {
+            const stripeCustomerId = this.paymentService.createStripeCustomer();
             const confirmationCode = this.usersService.createEmailToken();
             const user = await this.usersService.insertUser(
                 userName,
                 userEmail,
                 await bcrypt.hash(userPassword, 10),
                 userPhone,
-                confirmationCode
+                confirmationCode,
+                stripeCustomerId
             );
             return {
                 statusCode: HttpStatus.OK,

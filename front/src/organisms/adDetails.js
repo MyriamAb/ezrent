@@ -10,8 +10,8 @@ import RatingType from '../atoms/rate'
 import { useEffect, useState} from 'react'
 import ButtonType from '../atoms/button'
 import useUser from '../context/user'
-import PaymentCheckout from '../organisms/preBuildCheckout/server'
-
+/* import PaymentMethod from '../organisms/customPayment/paymentMethod'
+ */
 function AdDetails(props) {
   const rentalsContext = useRentals()
   var rentals = rentalsContext?.allRentals ?? null;
@@ -132,8 +132,8 @@ function AdDetails(props) {
                 2222 €
               </Grid.Row>
                <Grid.Row>
-{/*                   <PaymentCheckout/>
- */}              </Grid.Row>
+{/*                    <PaymentMethod/>
+ */}               </Grid.Row>
             </Grid.Column>
           </Grid.Row>
         </Grid>

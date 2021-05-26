@@ -7,11 +7,20 @@ config();
 
 @Injectable()
 export class PaymentService {
-  public constructor(@InjectStripe() private readonly stripeClient: Stripe) { }
+  public constructor(@InjectStripe() private readonly stripeClient: Stripe) {}
 
+  async createStripeCustomer()
+  {
+    console.log('created customer')
+    const customer = await this.stripeClient.customers.create({
+      description: 'My First Test Customer (created for API docs)',
+    });
+    ({stripeCustomerId: customer.id})
+    console.log(customer)
+    return customer.id;
+  }
 
   async create(stripe) {
-    console.log('create in service')
     const paymentIntent = await this.stripeClient.paymentIntents.create({
       amount: 10000,
       currency: "usd",
@@ -24,28 +33,5 @@ export class PaymentService {
     console.log (paymentIntent)
     return paymentIntent
   }
-  /* validation(
-    paymentValidation: PaymentValidation,
-  ): void {
-    const {stripeId, type} = creditPaymentValidation;
-
-    const {_id: userId} = user;
-
-    try {
-      if (
-        type === "charge_succeeded" ||
-        type === "payment_failed"
-      ) {
-        this.paymentDal.creditValidation({
-          status:
-            type === "charge_succeeded"
-              ? "success"
-              : "error",
-          stripeId,
-        });
-      }
-    } catch (error) {
-      throw new Error(error);
-    }
-  }  */
+ 
 }

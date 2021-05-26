@@ -41,7 +41,8 @@ export function UserProvider({children}) {
     const [userReviews, setUserReviews] = useState(null)
     const [allUsers, setAllUsers] = useState(null)
 
-  function register(data){
+  function register(data) {
+    console.log('regiter')
       fetch('http://localhost:5000/users', {
           method: "POST",
           headers: {
@@ -52,6 +53,7 @@ export function UserProvider({children}) {
             "name": `${data.firstname} ${data.lastname}`,
             "email": data.email,
             "password": data.password,
+            
           })
         })
         .then(response => response.json())
@@ -60,6 +62,7 @@ export function UserProvider({children}) {
             if(data.statusCode && data.statusCode === 200)
               history.push({pathname:'/login'})
         })
+        
         .catch(err => console.log("error"))  
   }
 

@@ -32,6 +32,7 @@ export default function CheckoutForm() {
         setClientSecret(data.client_secret);
       });
   }, []);
+  
   console.log(clientSecret);
   const cardStyle = {
     style: {

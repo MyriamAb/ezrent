@@ -10,10 +10,9 @@ import Register from './organisms/register'
 import { UserProvider } from './context/user'
 import AdDetails from './organisms/adDetails'
 import { RentalsProvider } from './context/rentals';
-import PaymentCheckout from './organisms/preBuildCheckout/paymentCheckout'
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements,} from "@stripe/react-stripe-js";
-import CheckoutForm from "./organisms/customPayment/checkoutForm";
+import PaymentMethod from "./organisms/customPayment/paymentMethod";
 
 const promise = loadStripe("pk_test_51IsNySAQArDV5cBDQy5GSkkhHV2FX283JHxwG4L2XiUmWfnF4og6GSznds1vfnuho1svtriLC0uZMi93WnVL9sUq00vQPVDzMJ ");
 
@@ -31,8 +30,7 @@ function App() {
             <Route path='/login' component={Login}/>
             <Route path='/register' component={Register}/>
             <Route path='/addetails/:id' component={AdDetails} />
-            <Route path='/paymentCheckout' component={PaymentCheckout} />
-            <Route path='/checkoutform' component={CheckoutForm} />
+            <Route path='/paymentMethod' component={PaymentMethod} />
           </Switch>
           <Footer/>
           </RentalsProvider>

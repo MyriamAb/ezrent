@@ -3,11 +3,15 @@ import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
+import { InjectStripe } from 'nestjs-stripe';
+import Stripe from 'stripe';
+
 
 
 @Injectable()
 export class UsersService {
-    constructor(@InjectRepository(User) private usersRepository: Repository<User>) { }
+    constructor(@InjectRepository(User) private usersRepository: Repository<User>,
+    @InjectStripe() private readonly stripeClient: Stripe) { }
 
     async insertUser(
         name: string,
@@ -15,13 +19,15 @@ export class UsersService {
         password: string,
         phone: string,
         confirmationCode: string,
+        stripeCustomerId : any
     ) {
         const newUser = new User();
         newUser.name = name;
         newUser.email = email;
         newUser.password = password;
         newUser.phone = phone;
-        newUser.verif_email = confirmationCode
+        newUser.verif_email = confirmationCode;
+        newUser.stripeCustomerId = stripeCustomerId ;
         const result = await this.usersRepository.save(newUser);
         this.sendConfirmationEmail(name, email, confirmationCode);
         return result;
