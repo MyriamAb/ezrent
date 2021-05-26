@@ -3,7 +3,6 @@ import React from "react";
 import ImageSlide from '../atoms/imageSlide'
 import CustomDotGroup from "../atoms/cardDotGroup";
 import "pure-react-carousel/dist/react-carousel.es.css"
-import { useParams } from "react-router";
 
 function ImageCarousel(props) {
   var slide = null
@@ -28,10 +27,7 @@ function ImageCarousel(props) {
     { id: 16, rental_id: 8, src: "http://placeimg.com/300/300/arch?t=1621511961424" },
    ]
   
-  const IdParam = () => {
-    const { id } = useParams()
-    console.log(id)
-   }
+  
   
   if (images === null) {
     slide=(<Slider></Slider>)
@@ -44,7 +40,7 @@ function ImageCarousel(props) {
         
         for (let i = 0; i < rentalImages.length; i++){
           slide = (
-            <ImageSlide key={i} index={i} src={rentalImages[i]} href={"/addetails/" + el.rental_id}/>
+            <ImageSlide key={i} index={i} src={rentalImages[i]} href={"/addetails/" + el.rental_id} rentals={props.rentals}/>
             )
           }
         } 
@@ -61,6 +57,7 @@ function ImageCarousel(props) {
     naturalSlideWidth={1}
     naturalSlideHeight={1}
     totalSlides={nbSlides}
+    styles={props.styles}
   >
       <Slider>
         {slide}

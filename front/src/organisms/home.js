@@ -22,6 +22,8 @@ function Home() {
 
   console.log(rentalsContext.allRentals)
   
+
+
   return (
     <div>
       <div style={styles.container}>

@@ -9,6 +9,8 @@ size={props.size}
 fluid={props.fluid}
 onClick={props.onClick}
 icon={props.icon}
-iconPosition={props.iconPosition} 
+iconPosition={props.iconPosition}
+as={props.as}
+href={props.href}
 />
 export default ButtonType

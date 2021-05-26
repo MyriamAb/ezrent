@@ -28,4 +28,7 @@ export class User {
 
     @Column({ default: "Pending" })
     status: string;
+    
+    @Column({ nullable: true, select: false })
+    stripeCustomerId: string;
 }

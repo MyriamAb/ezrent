@@ -142,5 +142,33 @@ export class UsersService {
             </div>`,
         }).catch(err => console.log(err));
     }
-        
+    
+    /* async updateStripe(
+        userId: string,
+        stripeCustomerId
+    ) {
+        const userEntity = new User();
+
+        userEntity.stripeCustomerId = stripeCustomerId;
+
+        return await this.userRepository.update(userId, userEntity);
+    }
+
+    async updateRole(
+        userId: string,
+        role
+    ) {
+        const userEntity = new User();
+        userEntity.role = role;
+        return await this.userRepository.update(userId, userEntity);
+    }
+    
+    async getStripeId(userId): Promise {
+        return await this.userRepository
+            .createQueryBuilder("user")
+            .select(["user.stripeCustomerId"])
+            .where("user.id = :userId", { userId: userId })
+            .getOne();
+    }
+         */
 }

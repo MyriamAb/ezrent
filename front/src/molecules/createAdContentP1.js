@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Grid, Header } from 'semantic-ui-react'
 import TextAreaType from '../atoms/textArea'
 import SearchAddress from '../molecules/searchAddress'
