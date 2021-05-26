@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import { Grid, Segment, Header, Button } from 'semantic-ui-react'
+import { Grid, Segment, Header, Button, Icon } from 'semantic-ui-react'
 import useRentals from '../../../context/rentals'
 import useUser from '../../../context/user'
 import useReservations from '../../../context/reservation'
@@ -26,35 +26,44 @@ export default function InProcessAds(){
                 <Header as='h2'> <i class="hourglass half icon"></i> IN PROCESS</Header>
                 {myRentals.map((rent, ind)=>(
                     (parseDate(rent.end).getTime() > today_date.getTime()) && 
-                    <Grid.Column> 
-                            <Segment key={ind}> 
+                    <Grid.Column  key={ind}> 
                                 <Header as='h3' block attached='top'>{rent.title}</Header>
                                 <Segment attached> {rent.address}</Segment>
-                                <Header as='h4'>REQUESTS ON THIS AD : </Header>
-                                {reservationsContext.getReservationsByRental(rent.id).map(reservation => 
-                                     <Grid >
-                                        <Grid.Row>
-                                            <Grid.Column width={7}> 
-                                                {userContext.getUserbyId(reservation.client_id)["name"]} <br/>
-                                                {` From : ${reservation.start.slice(0, 10)}`} <br/>
-                                                {`To : ${reservation.end.slice(0, 10)} `}
-                                            
-                                            </Grid.Column>
-                                            <Grid.Column width={5}>
-                                                STATUS : <br/>
-                                                {reservation.status}
-                                            </Grid.Column>
-                                            <Grid.Column width={4}>
-                                                <Button.Group>
-                                                    <ConfirmClient reservationId={reservation.id} clientName={userContext.getUserbyId(reservation.client_id)["name"]}/>
-                                                    <Button.Or />
-                                                    <RefuseClient reservationId={reservation.id} clientName={userContext.getUserbyId(reservation.client_id)["name"]}/>
-                                                </Button.Group>
-                                            </Grid.Column>
-                                        </Grid.Row>
-                                    </Grid >
-                                    )}
-                            </Segment>
+                                <Segment attached>
+                                    <Header as='h4'>REQUESTS ON THIS AD : </Header>
+                                    {reservationsContext.getReservationsByRental(rent.id).length >0 ?
+                                    reservationsContext.getReservationsByRental(rent.id).map(reservation => 
+                                        <Grid >
+                                            <Grid.Row>
+                                                <Grid.Column width={7}> 
+                                                    {userContext.getUserbyId(reservation.client_id)["name"]} <br/>
+                                                    {` From : ${reservation.start.slice(0, 10)}`} <br/>
+                                                    {`To : ${reservation.end.slice(0, 10)} `}
+                                                
+                                                </Grid.Column>
+                                                <Grid.Column width={5}>
+                                                    STATUS : <br/>
+                                                    {reservation.status}
+                                                </Grid.Column>
+                                                <Grid.Column width={4}>
+                                                    {reservation.status === "WAITING FOR OWNER'S APPROVAL" &&
+                                                    <Button.Group>
+                                                        <ConfirmClient reservationId={reservation.id} clientName={userContext.getUserbyId(reservation.client_id)["name"]}/>
+                                                        <Button.Or />
+                                                        <RefuseClient reservationId={reservation.id} clientName={userContext.getUserbyId(reservation.client_id)["name"]}/>
+                                                    </Button.Group> ||
+                                                    reservation.status === "WAITING FOR CLIENT'S PAIEMENT" &&
+                                                    <Icon color='green' name='wait' size='big'/>||
+                                                    reservation.status === "REFUSED" &&
+                                                    <Icon color='red' name='close' size='big'/> ||
+                                                    <Icon color='green' name='check' size='big'/> 
+                                                    }
+                                                </Grid.Column>
+                                            </Grid.Row>
+                                        </Grid >) :
+                                        <p>No requests on this ad</p>
+                                    }
+                                </Segment>
                     </Grid.Column> 
                     ))}
             </Grid>

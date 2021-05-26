@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import { Form, Image } from 'semantic-ui-react'
+import { Form, Image, Grid } from 'semantic-ui-react'
 import Button from '../../atoms/button'
 import InputFormType from '../../atoms/inputForm'
 import useUser from '../../context/user'
@@ -55,18 +55,24 @@ export default function PersonnalInfo(){
 
     return(
       <div>
-        <Form onSubmit={(e)=>submit(e)} size='large'>
-            <Image src={"/profileDefaultPic.jpeg"} size='tiny' centered circular/> <br/>
-            <ButtonImage // content='Add a picture' basic color={props.color} size={props.size} onClick={props.onClick} 
-            />
-            <InputFormType icon='user' placeholder='name'  type='text' id='name'  onChange={(e)=>handle(e)} value={data.name} />
-            <InputFormType icon='user' placeholder='email' type='text' id='email' onChange={(e)=>handle(e)} value={data.email} />
-            <InputFormType icon='user' placeholder='phone' type='text' id='phone' onChange={(e)=>handle(e)} value={data.phone} />
-            <InputFormType icon='lock' placeholder='Password' type='password' id='password'  onChange={(e)=>handle(e)} />
-            <InputFormType icon='lock' placeholder='Confirm your password' type='password' id='password_confirm' onChange={(e)=>handle(e)} onKeyUp={(e)=>checkpassword(e)}/>
-            <span id='message'></span>
-            <Button content='Edit' color='black' size='large' fluid='true'></Button>
-        </Form>
+        <Grid columns={1}>
+        <Grid.Column  width={2}></Grid.Column>
+          <Grid.Column  width={12}>
+            <Form onSubmit={(e)=>submit(e)} size='large'>
+                <Image src={"/profileDefaultPic.jpeg"} size='tiny' centered circular/> <br/>
+                <ButtonImage // content='Add a picture' basic color={props.color} size={props.size} onClick={props.onClick} 
+                /><br/>
+                <InputFormType icon='user' placeholder='name'  type='text' id='name'  onChange={(e)=>handle(e)} value={data.name} />
+                <InputFormType icon='user' placeholder='email' type='text' id='email' onChange={(e)=>handle(e)} value={data.email} />
+                <InputFormType icon='user' placeholder='phone' type='text' id='phone' onChange={(e)=>handle(e)} value={data.phone} />
+                <InputFormType icon='lock' placeholder='Password' type='password' id='password'  onChange={(e)=>handle(e)} />
+                <InputFormType icon='lock' placeholder='Confirm your password' type='password' id='password_confirm' onChange={(e)=>handle(e)} onKeyUp={(e)=>checkpassword(e)}/>
+                <span id='message'></span>
+                <Button content='Edit' color='black' size='large' fluid='true'></Button>
+            </Form>
+          </Grid.Column>
+          <Grid.Column  width={2}></Grid.Column>
+        </Grid>
         <h2 class="ui center aligned icon header">REVIEWS</h2>
         <Reviews/>
       </div>

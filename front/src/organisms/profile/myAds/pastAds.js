@@ -8,6 +8,7 @@ export default function PastAds(){
     const userContext = useUser()
     const today_date = new Date()
     const [myRentals] = useState(rentalsContext.getMyRentals(userContext.user.id))
+    var noAds =""
 
     function parseDate(str) {
         var datesplit = str.slice(0, 10);
@@ -15,11 +16,16 @@ export default function PastAds(){
         return new Date(mdy[0], mdy[1]-1, mdy[2]); 
     }
 
+    if(!myRentals.find(rent => (parseDate(rent.end).getTime() <= today_date.getTime() )))
+        noAds = "No ads here"
+    else
+        noAds=""
+
     return(
         <div>
             <Grid container columns={1} stackable>
                 <br/>
-                <Header as='h2'>PAST</Header>
+                <Header as='h2'> <i class="hourglass end icon"></i> PAST</Header>
                 {myRentals.map((rent, ind)=>(
                     (parseDate(rent.end).getTime() <= today_date.getTime()) && 
                     <Grid.Column> 
@@ -29,6 +35,10 @@ export default function PastAds(){
                         </Segment> 
                     </Grid.Column>
                 ))}
+                 <Grid.Column> 
+                    {noAds}
+                    <br/>
+                </Grid.Column>
             </Grid>
         </div>
     )
