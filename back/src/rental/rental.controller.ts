@@ -1,6 +1,7 @@
-import { Controller, Post, Body, Get, Patch, Delete, Param, HttpStatus } from '@nestjs/common';
+import { Controller, Post, Body, Get, Patch, Delete, Param, HttpStatus, UseGuards } from '@nestjs/common';
 import { RentalService } from './rental.service';
 import { Rental } from './rental.entity';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('rentals')
 export class RentalController {
@@ -16,6 +17,7 @@ export class RentalController {
         return this.service.getRentals(rental);
     }
 
+    @UseGuards(JwtAuthGuard)
     @Post()
     async postRental(@Body() rental: Rental) {
         const postedRental= await this.service.postRental(rental);
@@ -23,7 +25,7 @@ export class RentalController {
             statusCode: HttpStatus.OK,
             message: 'Rental added successfully',
             data: postedRental,
-        };
+        }
     }
 
     @Patch(':id')

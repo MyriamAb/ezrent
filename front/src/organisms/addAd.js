@@ -6,7 +6,7 @@ import Button from '../atoms/button'
 import useRentals from '../context/rentals'
 import Moment from 'moment';
 
-export default function ModalMultiple() {
+export default function ModalMultiple(props) {
   const rentalsContext = useRentals()
   const [firstOpen, setFirstOpen] = useState(false)
   const [secondOpen, setSecondOpen] = useState(false)
@@ -24,8 +24,6 @@ export default function ModalMultiple() {
     start:'',
     end:'',
     picture:{},
-    latitude:'',
-    longitude:''
   })
   function handle(e, dataselect){
     const newdata={...data}
@@ -55,8 +53,6 @@ export default function ModalMultiple() {
         newdata['services'].push(e.target.innerText)
       }
       if(e.target === undefined && e[0] === undefined) {
-        console.log(e.target)
-        console.log(e[0])
         let number = parseInt(e.price, 10);
         newdata['price'] = number
       }
@@ -74,7 +70,6 @@ export default function ModalMultiple() {
     inputFile.current.click();
   }
 
-  console.log(data)
   return (
     <>
       <Button onClick={() => setFirstOpen(true)} content="Add an ad"></Button>
@@ -86,7 +81,7 @@ export default function ModalMultiple() {
           Do you want rent a place? Good place for that
         </Modal.Header>
         <Modal.Content>
-          <AdPartie1 onChange={e=>handle(e)} onChangeCapacity={handle} onInputChange={handle}/>
+          <AdPartie1 onChange={e=>handle(e)} onChangeCapacity={handle} onInputChange={handle} />
         </Modal.Content>
         <Modal.Actions>
           <Button 

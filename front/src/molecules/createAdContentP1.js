@@ -26,7 +26,7 @@ const optionServiceSelect = [
 
 return (
   <div>  
-    <SearchAddress onChange={props.onChange} onInputChange={props.onInputChange}/>
+    <SearchAddress onChange={props.onChange} onInputChange={props.onInputChange} />
     <Input icon="home" placeholder='Title of your ad...' iconPosition='left' id='title' onChange={props.onChange}/>
     <TextAreaType id='description' placeholder='Write a description of your ad...' minWidth={ 800 } minHeight={ 100 } marginLeft='auto' marginRight='auto' marginTop={15} onChange={props.onChange}/>
     <Dropdown  id='capacity' placeholder="Logement's capacity" options={optionServiceSelect} style={{ marginTop: 15 }} onChange={props.onChangeCapacity}  selection/>
