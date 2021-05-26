@@ -41,21 +41,6 @@ export class UsersService {
 
     }
     
-    async insertUserGoogle(
-        name: string,
-        email: string,
-    ) {
-        const newUser = new User();
-        newUser.name = name;
-        newUser.email = email;
-        newUser.status = "Active";
-        console.log("CP2");
-        const result = await this.usersRepository.save(newUser);
-        console.log("CP3");
-        return result;
-    }
-
-
     async getUsers(user: User): Promise<User[]> {
         return await this.usersRepository.find();    
     }

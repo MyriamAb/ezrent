@@ -10,9 +10,7 @@ import { ActivityModule } from './activity/activity.module';
 import { ReviewsModule } from './reviews/reviews.module';
 import { PicturesModule } from './pictures/pictures.module';
 import { AuthModule } from './auth/auth.module';
-import { GoogleStrategy } from './auth/google.strategy';
 import { StripeModule } from 'nestjs-stripe'
-import { FacebookStrategy } from './auth/facebook.stategy';
 
 @Module({
   imports: [
@@ -30,6 +28,6 @@ import { FacebookStrategy } from './auth/facebook.stategy';
     }),
   ],
   controllers: [AppController],
-  providers: [AppService, GoogleStrategy, FacebookStrategy],
+  providers: [AppService],
 })
 export class AppModule {}
