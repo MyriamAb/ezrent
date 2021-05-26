@@ -6,8 +6,7 @@ import ButtonImage from '../atoms/buttonImage'
 
 export default function AdPartie2 (props) {
   const [ price, setPrice] = useState({price:'0'})
-  // const [ valueCalendar, onChangeCalendar ] = useState(new Date())
-  // console.log(valueCalendar)
+
 return (
   <div>
   <Menu>

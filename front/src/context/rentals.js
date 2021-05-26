@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useEffect, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 
 const RentalsContext = createContext();
 export function RentalsProvider({ children }) {
@@ -13,8 +13,6 @@ export function RentalsProvider({ children }) {
   }, []);
 
   function postAd(data){
-    console.log('cla')
-    console.log(data)
     fetch('http://localhost:5000/rentals', {
       method: "POST",
       headers: {

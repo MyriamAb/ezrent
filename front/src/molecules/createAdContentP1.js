@@ -23,37 +23,9 @@ const optionServiceSelect = [
   { key: 13, value: 13, text: '13 persons' },
   { key: 14, value: 14, text: '14 persons' }
 ]
-const [data, setData]= useState({
-  address: '',
-  title:"",
-  description:"",
-  capacity:'',
-  services:[]
-})
-function handle(e, dataselect){
-  console.log(e)
-  const newdata={...data}
-    if(dataselect?.id == 'capacity'){
-      newdata[dataselect.id] = dataselect.value
-    }
-    if(e.target){
-      newdata[e.target.id] = e.target.value
-    }
-    if(e.type == 'click' && e.target.className != 'text' && e.target.className != 'item' && e.target.localName != "label")
-    {
-      newdata['address'] = e.target.innerText
-    }
-    if(e.type == 'click' && e.target.localName == "label")
-    {
-      console.log(newdata['services'])
-      newdata['services'].push(e.target.innerText)
-    }
-    setData(newdata)
-}
-
 
 return (
-  <div data={data}>  
+  <div>  
     <SearchAddress onChange={props.onChange} onInputChange={props.onInputChange}/>
     <Input icon="home" placeholder='Title of your ad...' iconPosition='left' id='title' onChange={props.onChange}/>
     <TextAreaType id='description' placeholder='Write a description of your ad...' minWidth={ 800 } minHeight={ 100 } marginLeft='auto' marginRight='auto' marginTop={15} onChange={props.onChange}/>

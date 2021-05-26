@@ -29,10 +29,10 @@ export default function ModalMultiple() {
   })
   function handle(e, dataselect){
     const newdata={...data}
-      if(dataselect?.id == 'capacity'){
+      if(String(dataselect?.id) === 'capacity'){
         newdata[dataselect.id] = dataselect.value
       }
-      if(e.target?.id == 'picture'){
+      if(String(e.target?.id) === 'picture'){
         const { files } = e.target;
         if (files && files.length) {
           const filename = files[0].name;
@@ -46,15 +46,17 @@ export default function ModalMultiple() {
       if(e.target?.id ){
         newdata[e.target.id] = e.target.value
       }
-      if(e.type == 'click' && e.target.className != 'text' && e.target.className != 'item' && e.target.localName != "label")
+      if(String(e.type) === 'click' && String(e.target.className) !== 'text' && String(e.target.className) !== 'item' && String(e.target.localName) !== "label")
       {
         newdata['address'] = e.target.innerText
       }
-      if(e.type == 'click' && e.target.localName == "label")
+      if(String(e.type) === 'click' && String(e.target.localName) === "label")
       {
         newdata['services'].push(e.target.innerText)
       }
-      if(e.target == null && e[0]==null) {
+      if(e.target === undefined && e[0] === undefined) {
+        console.log(e.target)
+        console.log(e[0])
         let number = parseInt(e.price, 10);
         newdata['price'] = number
       }

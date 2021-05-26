@@ -56,7 +56,6 @@ export default function SearchAddress(props) {
             }
             fetchData()
       },[inputValue])
-console.log(result)
   return (
 <Autocomplete
       id="address"
