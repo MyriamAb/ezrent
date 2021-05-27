@@ -20,25 +20,29 @@ export default function PersonnalInfo(){
     const [message, setMessage] = useState({editProfileOK:""})
 
     useEffect(()=>{
-      if(!userContext.userProfile[0])
+      if(!userContext.userProfile)
         return
       setData({
-        email : userContext.userProfile[0].email,
-        name: userContext.userProfile[0].name,
-        phone : userContext.userProfile[0].phone,
-        profile_picture: userContext.userProfile[0].profile_picture!= null ? new Buffer.from(userContext.userProfile[0].profile_picture.data,'base64').toString() :"/profileDefaultPic.jpeg",
+        email : userContext.userProfile.email,
+        name: userContext.userProfile.name,
+        phone : userContext.userProfile.phone,
+        profile_picture: userContext.userProfile.profile_picture === null ? 
+                        "/profileDefaultPic.jpeg":
+                        typeof(userContext.userProfile.profile_picture) == 'string' ?
+                        userContext.userProfile.profile_picture :
+                        new Buffer.from(userContext.userProfile.profile_picture.data,'base64').toString(),
         password:"",
         password_confirm: "",
       })
     }, [userContext.userProfile])
 
-     
+/*     console.log("data")  ; console.log( userContext.userProfile) */
   useEffect(() => {
     if(userContext.msg.editProfileOK !== ""){
       setMessage({editProfileOK: <div class="ui success message"><div class="header">{userContext.msg.editProfileOK}</div></div>})
       setTimeout(() => {
         setMessage("")
-      }, 20000);
+      }, 10000);
     }
   },[userContext.msg])
 
@@ -61,11 +65,12 @@ export default function PersonnalInfo(){
   
     function submit(e){
       e.preventDefault()
-      if(data.password === data.password_confirm )
+      if(data.password === data.password_confirm ){
         userContext.editProfile(data, profilePic)
         if(profilePic != "")
           setData({profile_picture:profilePic})
-        setProfilePic("")           
+        setProfilePic("")
+      }           
     }
   
     function fileUploadInputChange(e) {
