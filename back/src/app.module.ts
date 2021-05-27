@@ -28,7 +28,7 @@ config();
     PicturesModule,
     AuthModule,
     StripeModule.forRoot({
-      apiKey: process.env.STRIPE_SECRETKEY,
+      apiKey: process.env.STRIPE_SECRET_KEY,
       apiVersion: '2020-08-27',
     }),
     PaymentModule
