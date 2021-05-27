@@ -4,12 +4,8 @@ import SelectNumber from '../atoms/numberInput'
 import CalendarType from '../atoms/calendar'
 import ButtonImage from '../atoms/buttonImage'
 
-export default function AdPartie2 () {
-  const [ price, setPrice] = useState('0')
-  const [ valueCalendar, onChangeCalendar ] = useState(new Date())
-  let changePrice = (newPrice) => {
-    setPrice( newPrice )
-  }
+export default function AdPartie2 (props) {
+  const [ price, setPrice] = useState({price:'0'})
 
 return (
   <div>
@@ -17,23 +13,28 @@ return (
     <Menu.Item as='a'>
       <Icon name='eur' /> Choose your price:
     </Menu.Item>
-    <SelectNumber value={price} onChange={changePrice} priceType='integer' size='small'/>
+    <SelectNumber value={price.price} onChange={(newPrice) => {
+        setPrice({price: newPrice})
+        if (props.onChangePrice){
+          props.onChangePrice({price: newPrice})
+        }
+      }} priceType='integer' size='small'/>
   </Menu>
     <Grid columns={2}>
       <Grid.Column>
         <CalendarType
-        onChange={onChangeCalendar}
-        value={valueCalendar}
+        id='calendar'
+        onChange={props.onChange}
+        tileDisabled={props.tileDisabled}
         returnValue='range'
-        tileDisabled={({activeStartDate, date, view }) => date === 0}
         />
       </Grid.Column>
       <Grid.Column>
         <ButtonImage
-        // content='Add a picture' 
-        // basic color={props.color}
-        // size={props.size}
-        // onClick={props.onClick} 
+        onChangeImage={props.onChangeImage}
+        refImage={props.refImage}
+        onClick={props.onClick}
+        id={props.id}
         />
       </Grid.Column>
   </Grid>

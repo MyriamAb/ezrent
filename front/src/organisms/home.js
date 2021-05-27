@@ -17,6 +17,10 @@ function Home() {
       opacity: 0.8
     }
   }
+
+  const rentalsContext = useRentals()
+
+  console.log(rentalsContext.allRentals)
   
 
 

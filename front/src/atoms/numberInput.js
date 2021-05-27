@@ -10,5 +10,6 @@ icon={props.icon}
 className={props.className}
 valueType= {props.valueType}
 size={props.size}
+id={props.id}
 />
 export default ButtonType

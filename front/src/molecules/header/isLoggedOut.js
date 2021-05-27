@@ -1,5 +1,5 @@
 import React from 'react'
-import {Container, Dropdown, Image, Menu} from 'semantic-ui-react'
+import {Container, Image, Menu} from 'semantic-ui-react'
 
 export default function IsLoggedOut() {
 

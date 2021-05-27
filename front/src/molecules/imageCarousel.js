@@ -40,7 +40,7 @@ function ImageCarousel(props) {
         
         for (let i = 0; i < rentalImages.length; i++){
           slide = (
-            <ImageSlide key={i} index={i} src={rentalImages[i]} href={"/addetails/" + el.rental_id}/>
+            <ImageSlide key={i} index={i} src={rentalImages[i]} href={"/addetails/" + el.rental_id} rentals={props.rentals}/>
             )
           }
         } 

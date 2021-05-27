@@ -1,6 +1,7 @@
-import { createContext, useCallback, useContext, useEffect, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 
 const RentalsContext = createContext();
+
 export function RentalsProvider({ children }) {
   const [allRentals, setAllRentals] = useState(null)
   const [rental, setRental]= useState(null)
@@ -17,7 +18,30 @@ export function RentalsProvider({ children }) {
           .then(data => setAllRentals(data))
   }, []);
 
-
+  function postAd(data){
+    fetch('http://localhost:5000/rentals', {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        title: data.title,
+        description: data.description,
+        address: data.address,
+        capacity: data.capacity,
+        price: data.price,
+        start: data.start,
+        end: data.end,
+        longitude: 45.00,
+        latitude: 4.000,
+        owner_id:3
+      })
+    })
+    .then(response=>response.json())
+    .then(res=>console.log(res))
+  }
+  
   async function getRental(id) {
     console.log('entre context')
     fetch('http://localhost:5000/rentals/' +id, {
@@ -49,7 +73,7 @@ export function RentalsProvider({ children }) {
   }
   
   return (
-    <RentalsContext.Provider value={{allRentals, getRental, getMyRentals, getRentalById}}>
+    <RentalsContext.Provider value={{allRentals, getRental, getMyRentals, getRentalById, postAd}}>
         {children}
     </RentalsContext.Provider>
   )
