@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { BrowserRouter as Router, Switch, Route, useParams } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Header from './organisms/header'
 import Footer from './organisms/footer'
 import Profile from "./organisms/profile/profile"

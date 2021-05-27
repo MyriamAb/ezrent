@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React from "react";
 import Button from './button'
 
 const ImageUpload = (prop) => {
@@ -18,6 +18,7 @@ const ImageUpload = (prop) => {
         ref={inputFile}
         onChange={prop.onChange}
         type="file"
+        id={props.id}
       />
 {      <Button content="Add a photo" onClick={e => onButtonClick(e)}/>
 }    </div>
