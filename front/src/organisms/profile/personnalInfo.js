@@ -26,7 +26,7 @@ export default function PersonnalInfo(){
         email : userContext.userProfile[0].email,
         name: userContext.userProfile[0].name,
         phone : userContext.userProfile[0].phone,
-        profile_picture: new Buffer.from(userContext.userProfile[0].profile_picture.data,'base64').toString(),
+        profile_picture: userContext.userProfile[0].profile_picture!= null ? new Buffer.from(userContext.userProfile[0].profile_picture.data,'base64').toString() :"/profileDefaultPic.jpeg",
         password:"",
         password_confirm: "",
       })
@@ -85,7 +85,7 @@ export default function PersonnalInfo(){
           <Grid.Column  width={12}>
             <Form onSubmit={(e)=>submit(e)} size='large'>
                 <Image src={data.profile_picture} size='small' centered circular/> <br/>
-                <ButtonImage onChange={e => fileUploadInputChange(e)} /> 
+                <ButtonImage onChange={e => fileUploadInputChange(e)} /> <br/>
                 <Image src={profilePic} size='tiny'/> <br/>
                 <InputFormType icon='user' placeholder='name'  type='text' id='name'  onChange={(e)=>handle(e)} value={data.name} />
                 <InputFormType icon='user' placeholder='email' type='text' id='email' onChange={(e)=>handle(e)} value={data.email} />
