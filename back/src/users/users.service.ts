@@ -45,13 +45,14 @@ export class UsersService {
     async getUsers(user: User): Promise<User[]> {
         return await this.usersRepository.find();    
     }
-
+    
     async getUser(_id: number): Promise<User[]> {
         return await this.usersRepository.find({
             select: [
                 "name",
                 "email",
                 "phone",
+                "profile_picture"
             ],
             where: [{ "id": _id}]
         });
@@ -63,7 +64,7 @@ export class UsersService {
         email: string,
         password: string,
         phone: string,
-        profile_picture: BinaryType,
+        profile_picture: string,
     ) {
         const updatedUser = await this.usersRepository.findOne(id)
         if (name)

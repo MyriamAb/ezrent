@@ -120,10 +120,11 @@ export function UserProvider({children}) {
         .then(data => setUserProfile(data))
     }, [user]);
 
-    const editProfile = useCallback(( data) => {
+    function editProfile(data, profile_picture){
+      console.log(profile_picture)
       const body_update = data.password == undefined ?
-              { name: data.name, email: data.email, phone:data.phone} :
-              { name: data.name, email: data.email, phone:data.phone, password: data.password }
+              { name: data.name, email: data.email, phone:data.phone, profile_picture:profile_picture} :
+              { name: data.name, email: data.email, phone:data.phone, password: data.password, profile_picture:profile_picture }
       fetch('http://localhost:5000/users/' + user.id, {
           method: "PATCH",
           headers: {
@@ -137,9 +138,10 @@ export function UserProvider({children}) {
         .then(data => setUserProfile({
           name: data.data.username,
           email: data.data.email,
-          phone: data.data.phone
+          phone: data.data.phone, 
+          profile_picture: profile_picture
         }))
-    }, [token, user]);
+    }
 
     useEffect(()=> {
       if(!user || user === null)
