@@ -22,13 +22,14 @@ export default function PersonnalInfo(){
     useEffect(()=>{
       if(!userContext.userProfile)
         return
+      console.log(userContext.userProfile.profile_picture)
       setData({
         email : userContext.userProfile.email,
         name: userContext.userProfile.name,
         phone : userContext.userProfile.phone,
-        profile_picture: userContext.userProfile.profile_picture === null ? 
+        profile_picture: userContext.userProfile.profile_picture === null ||  userContext.userProfile.profile_picture === undefined ? 
                         "/profileDefaultPic.jpeg":
-                        typeof(userContext.userProfile.profile_picture) == 'string' ?
+                        typeof(userContext.userProfile.profile_picture) === 'string' ?
                         userContext.userProfile.profile_picture :
                         new Buffer.from(userContext.userProfile.profile_picture.data,'base64').toString(),
         password:"",
