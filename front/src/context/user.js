@@ -37,6 +37,7 @@ export function UserProvider({children}) {
         registerOk:"",
         loginOK:"",
         loginNotOK:"",
+        editProfileOK:""
       })
     const [userReviews, setUserReviews] = useState(null)
     const [allUsers, setAllUsers] = useState(null)
@@ -141,6 +142,7 @@ export function UserProvider({children}) {
           phone: data.data.phone, 
           profile_picture: profile_picture
         }))
+        .then(setMsg({editProfileOK : "Profile updated successfully"}))
     }
 
     useEffect(()=> {
