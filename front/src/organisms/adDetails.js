@@ -9,12 +9,12 @@ import { useEffect, useState} from 'react'
 import ButtonType from '../atoms/button'
 
 function AdDetails(props) {
+  var disabledDates = []
   var detail = []
   const rentalsContext = useRentals()
   var rentals = rentalsContext?.allRentals ?? null;
   const [rental, setRental] = useState({})
   const { id } = useParams()
-  console.log(id)
   const [ price, setPrice] = useState('0')
   const [ valueCalendar, onChangeCalendar ] = useState(new Date())
   let changePrice = (newPrice) => {
@@ -22,19 +22,9 @@ function AdDetails(props) {
   }
 
   useEffect(() => {
-    console.log('id')
-    /* if (rentals == null) */
-    console.log(rentals)
     const res = rentals?.find(element => element.id == id) 
-    console.log(res)
       setRental(res)
   }, [id, rentals])
-
-  console.log(rental)
-  
-  useEffect(() => {
-    
-  })
 
   const styles = {
     container: {
@@ -49,12 +39,25 @@ function AdDetails(props) {
       height: 500,
     }
   }
-/*   if (rental == null) {
-    detail=<div></div>
-  }
-  else{
-    
-  } */
+    //Make a range with 2 dates
+    function getDates(startDate, endDate) {
+      var currentDate = startDate
+      var addDays = function(days) {
+        var date = new Date(this.valueOf());
+        date.setDate(date.getDate() + days);
+        return date;
+      };
+      while (currentDate <= endDate) {
+        disabledDates.push(currentDate);
+        currentDate = addDays.call(currentDate, 1);
+      }
+      return disabledDates;
+    }
+  var EndDate = new Date(rental?.end)
+  var realEndDate = EndDate?.setDate(EndDate?.getDate()+1)
+  var disabledDates = getDates(new Date(), new Date(rental?.start), getDates(new Date(realEndDate), new Date(2025, 0, 1)))                                                                                                          
+
+
   return (
     <div style={styles.container1}>
       <Container style={styles.container}>
@@ -85,9 +88,14 @@ function AdDetails(props) {
                 Choose a date:
                 <CalendarType
                   onChange={onChangeCalendar}
-                  value={valueCalendar}
                   returnValue='range'
-                  tileDisabled={({activeStartDate, date, view }) => date === 0}
+                  tileDisabled={({date, view}) =>
+                  (view === 'month') && // Block day tiles only
+                   disabledDates.some(disabledDate =>
+                    date.getFullYear() === disabledDate.getFullYear() &&
+                    date.getMonth() === disabledDate.getMonth() &&
+                    date.getDate() === disabledDate.getDate()
+                    )}
                 />
               </Grid.Row>
               <Grid.Row> 

@@ -67,7 +67,7 @@ export function RentalsProvider({ children }) {
           return vacation = true
         }
         if (String(element) === 'Photo Shooting') {
-          return photo_shooting == true
+          return photo_shooting = true
         }
         if (String(element) === 'Party') {
           return party = true

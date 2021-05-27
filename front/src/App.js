@@ -31,7 +31,6 @@ function App() {
             <Route path='/login' component={Login}/>
             <Route path='/register' component={Register}/>
             <Route path='/addetails/:id' component={AdDetails}/>
-            <Route path='/addetails/:id' component={AdDetails} />
             <Route path='/paymentCheckout' component={PaymentCheckout} />
             <Route path='/checkoutform' component={CheckoutForm} />
           </Switch>

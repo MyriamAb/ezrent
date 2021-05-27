@@ -29,7 +29,6 @@ function Home() {
       <div style={styles.container}>
         <Search style={styles.search}/> 
       </div>
-     
       <CardCarousel/>  
       
     </div>
