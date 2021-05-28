@@ -58,7 +58,7 @@ export default function InProcessReservations(){
                                         </Grid.Column>
                                         <Grid.Column width={2}>
                                         {
-                                        reserv.status !== "WAITING FOR OWNER'S APPROVAL" &&
+                                        reserv.status !== "REFUSED" &&
                                          reserv.status !== "RESERVATION COMPLETED" && 
                                          reserv.status !== "CANCELLED" ?
                                         <Button onClick={() => cancelReservation(reserv.id, "CANCELLED")} negative> Cancel the reservation </Button>:
