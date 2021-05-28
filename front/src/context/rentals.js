@@ -5,6 +5,7 @@ const RentalsContext = createContext();
 export function RentalsProvider({ children }) {
   const [allRentals, setAllRentals] = useState(null)
   const [rental, setRental]= useState(null)
+  const [resultSearch, setResultSearch] = useState(null)
 
   useEffect(()=> {
       fetch('http://localhost:5000/rentals', {
@@ -71,9 +72,17 @@ export function RentalsProvider({ children }) {
     const rental = allRentals.find(el => el.id == id)
     return rental
   }
+
+  useEffect(()=>{
+    setResultSearch(allRentals)
+  },[allRentals])
+
+  function search(result){
+    setResultSearch(result)
+  }
   
   return (
-    <RentalsContext.Provider value={{allRentals, getRental, getMyRentals, postAd, getRentalById}}>
+    <RentalsContext.Provider value={{allRentals, resultSearch, getRental, getMyRentals, postAd, getRentalById, search}}>
         {children}
     </RentalsContext.Provider>
   )
