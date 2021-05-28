@@ -124,7 +124,7 @@ export function UserProvider({children}) {
           phone: data[0].phone, 
           profile_picture: data[0].profile_picture
         }))
-    }, [user]);
+    }, [token, user]);
 
     function editProfile(data, profile_picture){
       const body_update = data.password == undefined ?
@@ -162,7 +162,7 @@ export function UserProvider({children}) {
         })
         .then(response => response.json())
         .then(data => setUserReviews(data))
-    },[user, userProfile])
+    },[token, user, userProfile])
 
 
     useEffect(()=> {
@@ -176,7 +176,7 @@ export function UserProvider({children}) {
         })
         .then(response => response.json())
         .then(data => setAllUsers(data))
-    },[])
+    },[token])
 
     function getUserbyId(id){
       if(allUsers !== null){

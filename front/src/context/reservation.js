@@ -31,7 +31,7 @@ export function ReservationsProvider({ children }) {
       .then(data => setReservation(data)) 
   }
 
-  const editProfile = useCallback((id, data) => {
+  const editRes = useCallback((id, data) => {
     const body_update = {status : data}
     fetch('http://localhost:5000/reservations/' + id, {
         method: "PATCH",
@@ -72,7 +72,7 @@ export function ReservationsProvider({ children }) {
   }
   
   return (
-    <ReservationsContext.Provider value={{allReservations, getReservation, getMyReservations, getReservationsByRental, editProfile}}>
+    <ReservationsContext.Provider value={{allReservations, getReservation, getMyReservations, getReservationsByRental, editRes}}>
         {children}
     </ReservationsContext.Provider>
   )

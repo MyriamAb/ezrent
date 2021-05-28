@@ -7,7 +7,7 @@ export default function PastAds(){
     const rentalsContext = useRentals()
     const userContext = useUser()
     const today_date = new Date()
-    const [myRentals] = useState(rentalsContext.getMyRentals(userContext.user.id))
+    const myRentals = rentalsContext.getMyRentals(userContext.user.id)
     var noAds =""
 
     function parseDate(str) {
@@ -27,7 +27,7 @@ export default function PastAds(){
                 <br/>
                 <Header as='h2'> <i class="hourglass end icon"></i> PAST</Header>
                 {myRentals.map((rent, ind)=>(
-                    (parseDate(rent.end).getTime() <= today_date.getTime()) && 
+                    (parseDate(rent.end).getTime() < today_date.getTime()) && 
                     <Grid.Column> 
                         <Segment key={ind}> 
                             <Header as='h3'>{rent.title}</Header>

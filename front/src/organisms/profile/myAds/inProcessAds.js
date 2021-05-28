@@ -11,7 +11,7 @@ export default function InProcessAds(){
     const rentalsContext = useRentals()
     const userContext = useUser()
     const today_date = new Date()
-    const [myRentals, setMyRentals] = useState(rentalsContext.getMyRentals(userContext.user.id))
+    const myRentals = rentalsContext.getMyRentals(userContext.user.id)
 
     function parseDate(str) {
         var datesplit = str.slice(0, 10);
@@ -25,18 +25,19 @@ export default function InProcessAds(){
                 <br/>
                 <Header as='h2'> <i class="hourglass half icon"></i> IN PROCESS</Header>
                 {myRentals.map((rent, ind)=>(
-                    (parseDate(rent.end).getTime() > today_date.getTime()) && 
+                    (parseDate(rent.end).getTime() >= today_date.getTime()) && 
                     <Grid.Column  key={ind}> 
                                 <Header as='h3' block attached='top'>{rent.title}</Header>
                                 <Segment attached> {rent.address}</Segment>
                                 <Segment attached>
                                     <Header as='h4'>REQUESTS ON THIS AD : </Header>
                                     {reservationsContext.getReservationsByRental(rent.id).length >0 ?
-                                    reservationsContext.getReservationsByRental(rent.id).map(reservation => 
+                                    reservationsContext.getReservationsByRental(rent.id).map(reservation =>
                                         <Grid >
                                             <Grid.Row>
                                                 <Grid.Column width={7}> 
-                                                    {userContext.getUserbyId(reservation.client_id)["name"]} <br/>
+                                                    {userContext.getUserbyId(reservation.client_id) &&
+                                                    userContext.getUserbyId(reservation.client_id)["name"]} <br/>
                                                     {` From : ${reservation.start.slice(0, 10)}`} <br/>
                                                     {`To : ${reservation.end.slice(0, 10)} `}
                                                 
@@ -46,20 +47,21 @@ export default function InProcessAds(){
                                                     {reservation.status}
                                                 </Grid.Column>
                                                 <Grid.Column width={4}>
-                                                    {reservation.status === "WAITING FOR OWNER'S APPROVAL" &&
+                                                    {reservation.status === "WAITING FOR OWNER'S APPROVAL" ?
                                                     <Button.Group>
                                                         <ConfirmClient reservationId={reservation.id} clientName={userContext.getUserbyId(reservation.client_id)["name"]}/>
                                                         <Button.Or />
                                                         <RefuseClient reservationId={reservation.id} clientName={userContext.getUserbyId(reservation.client_id)["name"]}/>
-                                                    </Button.Group> ||
-                                                    reservation.status === "WAITING FOR CLIENT'S PAIEMENT" &&
-                                                    <Icon color='green' name='wait' size='big'/>||
-                                                    reservation.status === "REFUSED" &&
-                                                    <Icon color='red' name='close' size='big'/> ||
+                                                    </Button.Group> :
+                                                    reservation.status === "WAITING FOR CLIENT'S PAIEMENT" ?
+                                                    <Icon color='green' name='wait' size='big'/>:
+                                                    reservation.status === "REFUSED" || reservation.status === "CANCELLED" ?
+                                                    <Icon color='red' name='close' size='big'/> :
                                                     <Icon color='green' name='check' size='big'/> 
                                                     }
                                                 </Grid.Column>
                                             </Grid.Row>
+
                                         </Grid >) :
                                         <p>No requests on this ad</p>
                                     }
