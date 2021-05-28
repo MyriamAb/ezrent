@@ -142,8 +142,13 @@ export function RentalsProvider({ children }) {
       .then(res => setAddress(res));   
     }
   }
+  function getRentalById(id){
+    const rental = allRentals.find(el => el.id == id)
+    return rental
+  }
+  
   return (
-    <RentalsContext.Provider value={{allRentals, getRental, getMyRentals, postAd, searchAddress, address}}>
+    <RentalsContext.Provider value={{allRentals, getRental, getMyRentals, postAd, getRentalById, searchAddress, address}}>
         {children}
     </RentalsContext.Provider>
   )
