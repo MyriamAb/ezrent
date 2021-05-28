@@ -5,12 +5,12 @@ import useReservations from '../../context/reservation'
 import useRentals from '../../context/rentals'
 import Review from './../review'
 
-export default function MyReservations(){
+export default function MyReservations() {
     const reservationsContext = useReservations()
     const rentalsContext = useRentals()
     const userContext = useUser()
     const today_date = new Date()
-    const [myReservations] = useState(reservationsContext.getMyReservations(userContext.user.id))
+    const myReservations = reservationsContext.getMyReservations(userContext.user.id)
     var noAds =""
 
     function parseDate(str) {
