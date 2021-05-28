@@ -12,7 +12,10 @@ function PasswordResetForm(){
     const [data, setData]= useState({
     password:"",
     password_confirm: "",
-     })
+    })
+    const [visible, setVisible] = useState(false);
+  var message = null;
+  var res = ""
 
   function handle(e){
     const newdata={...data}
@@ -33,9 +36,23 @@ function PasswordResetForm(){
 
     function submit(e){
         e.preventDefault()
-        console.log(id)
+        setVisible(true);
         if (data.password === data.password_confirm)
-            userContext.reset_password(data.password, id);
+            res = userContext.reset_password(data.password, id);
+    }
+
+  function handleDismiss() {
+      setVisible(false);
+    }
+    
+    if (visible == true) {
+        message = <Message
+                    positive
+                    attached
+                    onDismiss={handleDismiss}
+                    header='Your password has been reset'
+                    content='You can now login to your account !'
+                />
     }
 
   return(
@@ -43,7 +60,8 @@ function PasswordResetForm(){
       <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
         <Grid.Column style={{ maxWidth: 450 }}>
           <HeaderForm asHeader='h1' colorHeader='black' textAlignHeader='center' srcImage='/logo_grey2.png' contentHeader='Reset your password'/>
-          <Form onSubmit={(e)=>submit(e)} size='large'>
+          {message}
+          <Form onSubmit={(e) => submit(e)} size='large'>
             <Segment stacked style={{ backgroundColor: 'rgba(117, 190, 218, 0.5)' }}>
               <InputFormType icon='lock' placeholder='Password'              type='password' id='password'  onChange={(e)=>handle(e)} />
               <InputFormType icon='lock' placeholder='Confirm your password' type='password' id='password_confirm' onChange={(e)=>handle(e)} onKeyUp={(e)=>checkpassword(e)}/>

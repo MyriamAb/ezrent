@@ -96,8 +96,25 @@ export function ReservationsProvider({ children }) {
     return reservations
   }
   
+  const updateReservationReview = useCallback((id, isClient) => {
+    const body = isClient ? {client_review: true} : {owner_review: true}
+    fetch('http://localhost:5000/reservations/' + id, {
+      method: "PATCH",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body)
+    })
+    .then(Refreshfct())
+  })
+
   return (
-    <ReservationsContext.Provider value={{allReservations, getReservation, getMyReservations, getReservationsByRental, editProfile, addReservation}}>
+    <ReservationsContext.Provider value={{
+      allReservations, getReservation, getMyReservations,
+      getReservationsByRental, editProfile, addReservation,
+      updateReservationReview
+    }}>
         {children}
     </ReservationsContext.Provider>
   )

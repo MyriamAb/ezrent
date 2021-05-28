@@ -7,7 +7,7 @@ export default function PastAds(){
     const rentalsContext = useRentals()
     const userContext = useUser()
     const today_date = new Date()
-    const [myRentals] = useState(rentalsContext.getMyRentals(userContext.user.id))
+    const myRentals = rentalsContext.getMyRentals(userContext.user.id)
     var noAds =""
 
     function parseDate(str) {
