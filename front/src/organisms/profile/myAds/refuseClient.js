@@ -8,7 +8,7 @@ export default function RefuseClient(prop){
 
     function refuseReservation(id, status){
       console.log("this is the ID : " + status)
-      reservationsContext.editProfile(id, status)
+      reservationsContext.editRes(id, status)
       setOpen(false)
     }
 

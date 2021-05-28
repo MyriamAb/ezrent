@@ -3,7 +3,7 @@ import { Tab } from 'semantic-ui-react'
 import PersonnalInfo from './personnalInfo'
 import Review from './../review'
 import AddAd from './../addAd'
-import MyReservations from './myReservations'
+import MyReservations from './myReservations/myReservations'
 import MyAds from './myAds/myAds'
 
 function Profile(){

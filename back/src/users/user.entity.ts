@@ -23,8 +23,8 @@ export class User {
     @Column({nullable: true})
     verif_email: string;
 
-    @Column({ nullable: true })
-    profile_picture: BinaryType;
+    @Column({ nullable: true, type:"longblob" })
+    profile_picture: string;
 
     @Column({ default: "Pending" })
     status: string;

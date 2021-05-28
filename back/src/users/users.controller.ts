@@ -56,7 +56,7 @@ export class UsersController {
         @Body('email') userEmail: string,
         @Body('password') userPassword: string,
         @Body('phone') userPhone: string,
-        @Body('profile_picture') userPicture: BinaryType,
+        @Body('profile_picture') userPicture: string,
     ) {
         try {
             const user = await this.usersService.updateUser(

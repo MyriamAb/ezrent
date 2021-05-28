@@ -42,6 +42,7 @@ export function UserProvider({ children }) {
         registerOk:"",
         loginOK:"",
         loginNotOK:"",
+        editProfileOK:""
       })
     const [statusCode, setStatusCode] = useState("");
     const [userReviews, setUserReviews] = useState(null)
@@ -178,13 +179,18 @@ export function UserProvider({ children }) {
           },
         })
         .then(response => response.json())
-        .then(data => setUserProfile(data))
-    }, [user]);
+        .then(data => setUserProfile({
+          name: data[0].name,
+          email: data[0].email,
+          phone: data[0].phone, 
+          profile_picture: data[0].profile_picture
+        }))
+    }, [token, user]);
 
-    const editProfile = useCallback(( data) => {
+    function editProfile(data, profile_picture){
       const body_update = data.password == undefined ?
-              { name: data.name, email: data.email, phone:data.phone} :
-              { name: data.name, email: data.email, phone:data.phone, password: data.password }
+              { name: data.name, email: data.email, phone:data.phone, profile_picture:profile_picture} :
+              { name: data.name, email: data.email, phone:data.phone, password: data.password, profile_picture:profile_picture }
       fetch('http://localhost:5000/users/' + user.id, {
           method: "PATCH",
           headers: {
@@ -196,11 +202,13 @@ export function UserProvider({ children }) {
         })
         .then(response => response.json())
         .then(data => setUserProfile({
-          name: data.data.username,
+          name: data.data.name,
           email: data.data.email,
-          phone: data.data.phone
+          phone: data.data.phone, 
+          profile_picture: data.data.profile_picture
         }))
-    }, [token, user]);
+        .then(setMsg({editProfileOK : "Profile updated successfully"}))
+    }
 
   const logout = useCallback(() => {
     const auth = gapi?.auth2.getAuthInstance();
@@ -260,7 +268,7 @@ export function UserProvider({ children }) {
         })
         .then(response => response.json())
         .then(data => setUserReviews(data))
-    },[user, userProfile, refresh])
+    },[token, user, userProfile, refresh])
 
     useEffect(()=> {
       fetch('http://localhost:5000/users/', {
@@ -273,7 +281,7 @@ export function UserProvider({ children }) {
         })
         .then(response => response.json())
         .then(data => setAllUsers(data))
-    },[])
+    },[token])
 
     function getUserbyId(id){
       if(allUsers !== null){

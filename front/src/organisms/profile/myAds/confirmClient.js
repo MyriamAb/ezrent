@@ -8,7 +8,7 @@ export default function ConfirmClient(prop){
 
     function confirmReservation(id, status){
       console.log("this is the ID : " + status)
-      reservationsContext.editProfile(id, status)
+      reservationsContext.editRes(id, status)
       setOpen(false)
     }
 
