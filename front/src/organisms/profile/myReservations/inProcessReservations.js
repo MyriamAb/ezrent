@@ -26,9 +26,8 @@ export default function InProcessReservations(){
     return(
         <div>
             <Grid container columns={1} stackable>
-                <br/>
-                <Header as='h2'> <i class="hourglass half icon"></i> IN PROCESS</Header>
-                {myReservations.map((reserv, ind)=>(
+                {myRentals.find(el => parseDate(el.end).getTime() >= today_date.getTime()) ?
+                myReservations.map((reserv, ind)=>(
                     (parseDate(reserv.end).getTime() >= today_date.getTime() && reserv.status !=="CANCELLED") 
                     && rentalsContext.allRentals &&
                     <Grid.Column  key={ind}> 
@@ -69,7 +68,10 @@ export default function InProcessReservations(){
                                 </Grid >
                         </Segment>
                     </Grid.Column> 
-                    ))}
+                    )):
+                    <Grid.Column>
+                        <Header as='h1' centered> No reservations in process</Header>
+                    </Grid.Column>}
             </Grid>
         </div>
     )
