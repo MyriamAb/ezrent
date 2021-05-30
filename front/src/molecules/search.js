@@ -56,11 +56,7 @@ function Search(props) {
       globalFilter.push("(parseDate(item.end).getTime() >= parseDate(data.dateTo).getTime())")
     }
 
-/*     console.log(globalFilter)
-    reducer = (accumulator, currentValue) => accumulator + currentValue;
-    console.log(array1.reduce(reducer)); */
-
-    /* if(globalFilter.length==0)
+    if(globalFilter.length==0)
         rentalsContext.search(rentalsContext.allRentals)
     if(globalFilter.length==1)
         rentalsContext.search(filteredtab.filter(item => eval(globalFilter[0]) ))
@@ -69,7 +65,13 @@ function Search(props) {
     if(globalFilter.length==3)
         rentalsContext.search(filteredtab.filter(item => eval(globalFilter[0]) && eval(globalFilter[1]) && eval(globalFilter[2]) ))
     if(globalFilter.length==4)
-        rentalsContext.search(filteredtab.filter(item => eval(globalFilter[0]) && eval(globalFilter[1]) && eval(globalFilter[2]) && eval(globalFilter[3]))) */
+        rentalsContext.search(filteredtab.filter(item => eval(globalFilter[0]) && eval(globalFilter[1]) && eval(globalFilter[2]) && eval(globalFilter[3])))
+    if(globalFilter.length==5)
+      rentalsContext.search(filteredtab.filter(item => eval(globalFilter[0]) && eval(globalFilter[1]) 
+      && eval(globalFilter[2]) && eval(globalFilter[3]) && eval(globalFilter[4]) ))
+    if(globalFilter.length==6)
+      rentalsContext.search(filteredtab.filter(item => eval(globalFilter[0]) && eval(globalFilter[1]) 
+      && eval(globalFilter[2]) && eval(globalFilter[3] && eval(globalFilter[4]) && eval(globalFilter[5]) )))
   },[data])
 
   return (

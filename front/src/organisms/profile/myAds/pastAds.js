@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import { Grid, Segment, Header } from 'semantic-ui-react'
 import useRentals from '../../../context/rentals'
 import useUser from '../../../context/user'
+import Review from '../../review'
 
 export default function PastAds(){
     const rentalsContext = useRentals()
@@ -29,10 +30,30 @@ export default function PastAds(){
                 {myRentals.map((rent, ind)=>(
                     (parseDate(rent.end).getTime() < today_date.getTime()) && 
                     <Grid.Column> 
-                        <Segment key={ind}> 
-                            <Header as='h3'>{rent.title}</Header>
-                            {rent.address}
-                        </Segment> 
+                        <Segment key={ind}>
+                            <Grid >
+                                <Grid.Row >
+                                    <Grid.Column width={5}> 
+                                        <Header as='h3'>{rent.title}</Header>
+                                        {rent.address}
+                                    </Grid.Column>
+                                    <Grid.Column width={8}>
+                                    </Grid.Column>
+                                    <Grid.Column width={3} >
+                                    {
+                                        rent.owner_review === false ?
+                                        <Header floated='right'><Review/> </Header> : 
+                                        <Header floated='right'>  </Header>
+                                    }
+                                    </Grid.Column>
+                                </Grid.Row>
+                            </Grid>
+                        </Segment>
+
+
+
+
+
                     </Grid.Column>
                 ))}
                  <Grid.Column> 
