@@ -1,7 +1,9 @@
 import { createContext, useCallback, useContext, useEffect, useState } from 'react'
+import useUser from './user'
 
 const ReservationsContext = createContext();
 export function ReservationsProvider({ children }) {
+  const userContext = useUser();
   const [allReservations, setAllReservations] = useState(null)
   const [Reservation, setReservation]= useState(null)
   const [refresh, setRefresh] = useState(false);
@@ -20,7 +22,7 @@ export function ReservationsProvider({ children }) {
 
   function getReservation(id) {
     console.log('entre context')
-    fetch('http://localhost:5000/reservations/' +id, {
+    fetch('http://localhost:5000/reservations/' + id, {
       method: "get",
       headers: {
         'Accept': 'application/json',
@@ -29,6 +31,29 @@ export function ReservationsProvider({ children }) {
     })
       .then(response => response.json())
       .then(data => setReservation(data)) 
+  }
+
+  function addReservation(data) {
+    fetch('http://localhost:5000/reservations/', {
+      method: "post",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        "start": data.start,
+        "end": data.end,
+        "owner_id": data.owner_id,
+        "owner_review": false,
+        "client_id": userContext.user.id,
+        "client_review": false,
+        "price": data.price,
+        "status": "Pending",
+        "rental_id": data.id
+      })
+    })
+    .then(response => response.json())
+    .then(Refreshfct())
   }
 
   const editRes = useCallback((id, data) => {
@@ -71,8 +96,25 @@ export function ReservationsProvider({ children }) {
     return reservations
   }
   
+  const updateReservationReview = useCallback((id, isClient) => {
+    const body = isClient ? {client_review: true} : {owner_review: true}
+    fetch('http://localhost:5000/reservations/' + id, {
+      method: "PATCH",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body)
+    })
+    .then(Refreshfct())
+  })
+
   return (
-    <ReservationsContext.Provider value={{allReservations, getReservation, getMyReservations, getReservationsByRental, editRes}}>
+    <ReservationsContext.Provider value={{
+      allReservations, getReservation, getMyReservations,
+      getReservationsByRental, editRes, addReservation,
+      updateReservationReview
+    }}>
         {children}
     </ReservationsContext.Provider>
   )
