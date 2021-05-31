@@ -1,7 +1,7 @@
 import AdPartie1 from '../molecules/createAdContentP1'
 import AdPartie2 from '../molecules/createAdContentP2'
-import React, { useRef, useState } from 'react'
-import { Modal } from 'semantic-ui-react'
+import React, { useState } from 'react'
+import { Modal, Image } from 'semantic-ui-react'
 import Button from '../atoms/button'
 import useRentals from '../context/rentals'
 import Moment from 'moment';
@@ -10,7 +10,8 @@ export default function ModalMultiple(props) {
   const rentalsContext = useRentals()
   const [firstOpen, setFirstOpen] = useState(false)
   const [secondOpen, setSecondOpen] = useState(false)
-  
+  const [adPics, setAdPics] = useState([])
+  var tabImage = []
   function submit(data){
     rentalsContext.postAd(data)
   }
@@ -29,17 +30,6 @@ export default function ModalMultiple(props) {
     const newdata={...data}
       if(String(dataselect?.id) === 'capacity'){
         newdata[dataselect.id] = dataselect.value
-      }
-      if(String(e.target?.id) === 'picture'){
-        const { files } = e.target;
-        if (files && files.length) {
-          const filename = files[0].name;
-          var parts = filename.split(".");
-          const fileType = parts[parts.length - 1];
-          console.log(fileType); //ex: zip, rar, jpg, svg etc.
-          console.log(files[0])
-          newdata[e.target.id] = files[0]
-        }
       }
       if(e.target?.id ){
         newdata[e.target.id] = e.target.value
@@ -65,10 +55,40 @@ export default function ModalMultiple(props) {
       setData(newdata)
   }
   
-  const inputFile = useRef(null);
-  const onButtonClick = () => {
-    inputFile.current.click();
+  function fileUploadInputChange(e) {
+    e.preventDefault()
+    let reader = new FileReader();
+    reader.onload = function(e) {
+      adPics.push(e.target.result)
+    };
+    reader.readAsDataURL(e.target.files[0])
+    // console.log(adPics)
+    displayPicture()
   }
+
+  function displayPicture(){
+    // console.log('function')
+    if (adPics === null) {
+      // console.log('null')
+      tabImage=(<Image/>)
+      // console.log('null')
+    }
+    else {
+      // console.log(adPics)
+      // console.log(adPics.length)
+      for (let i = 0; i < adPics.length; i++) {
+        // console.log('for')
+        // console.log(i)
+        tabImage.push(
+          <Image src={adPics[i]} />
+        )
+        // console.log(tabImage)
+      }
+    }
+    return tabImage
+  }
+
+  //  console.log(tabImage)
 
   return (
     <>
@@ -111,9 +131,8 @@ export default function ModalMultiple(props) {
             <AdPartie2 
             onChangePrice={(e) => handle(e)} 
             onChange={(e) => handle(e)} 
-            onClick={onButtonClick} 
-            refImage={inputFile} 
-            onChangeImage={handle}
+            tabImage={tabImage}
+            onChangeImage={e => fileUploadInputChange(e)}
             id='picture'
           />
           </Modal.Content>

@@ -10,7 +10,6 @@ import ButtonType from '../atoms/button'
 
 function AdDetails(props) {
   var disabledDates = []
-  var detail = []
   const rentalsContext = useRentals()
   var rentals = rentalsContext?.allRentals ?? null;
   const [rental, setRental] = useState({})
@@ -55,7 +54,7 @@ function AdDetails(props) {
     }
   var EndDate = new Date(rental?.end)
   var realEndDate = EndDate?.setDate(EndDate?.getDate()+1)
-  var disabledDates = getDates(new Date(), new Date(rental?.start), getDates(new Date(realEndDate), new Date(2025, 0, 1)))                                                                                                          
+   disabledDates = getDates(new Date(), new Date(rental?.start), getDates(new Date(realEndDate), new Date(2025, 0, 1)))                                                                                                          
 
 
   return (

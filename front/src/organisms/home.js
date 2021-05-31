@@ -18,9 +18,9 @@ function Home() {
     }
   }
 
-  const rentalsContext = useRentals()
+  // const rentalsContext = useRentals()
 
-  console.log(rentalsContext.allRentals)
+  // console.log(rentalsContext.allRentals)
   
 
 

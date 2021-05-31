@@ -93,7 +93,7 @@ export function RentalsProvider({ children }) {
           'Authorization': 'Bearer ' + token
         },
         body: JSON.stringify({
-          rental_id: ad.data.id,
+          rental_id: ad?.data?.id,
           vacation: vacation,
           party: party,
           photo_shooting: photo_shooting,

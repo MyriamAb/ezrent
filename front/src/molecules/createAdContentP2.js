@@ -6,7 +6,7 @@ import ButtonImage from '../atoms/buttonImage'
 
 export default function AdPartie2 (props) {
   const [ price, setPrice] = useState({price:'0'})
-
+  
 return (
   <div>
   <Menu>
@@ -31,11 +31,10 @@ return (
       </Grid.Column>
       <Grid.Column>
         <ButtonImage
-        onChangeImage={props.onChangeImage}
-        refImage={props.refImage}
-        onClick={props.onClick}
+        onChange={props.onChangeImage}
         id={props.id}
         />
+        {props.tabImage}
       </Grid.Column>
   </Grid>
   </div>
