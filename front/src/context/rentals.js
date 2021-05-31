@@ -14,6 +14,8 @@ export function RentalsProvider({ children }) {
   const [dataAd, setDataAd] = useState(null)
   const [resultSearch, setResultSearch] = useState(null)
   const [activities, setActivities] = useState(null)
+  const [refresh, setRefresh] = useState(false);
+  const [msg, setMsg]= useState({editAdOK:""})
 
   useEffect(()=> {
       fetch('http://localhost:5000/rentals', {
@@ -25,7 +27,7 @@ export function RentalsProvider({ children }) {
         })
           .then(response => response.json())
           .then(data => setAllRentals(data))
-  }, []);
+  }, [refresh]);
 
   useEffect(()=> {
     fetch('http://localhost:5000/activity', {
@@ -37,7 +39,7 @@ export function RentalsProvider({ children }) {
       })
         .then(response => response.json())
         .then(data => setActivities(data))
-  }, [allRentals]);
+  }, [allRentals, refresh]);
 
   function postAd (data) {
     setDataAd(data)
@@ -145,6 +147,23 @@ export function RentalsProvider({ children }) {
     return myRentals
   }
 
+  function editRentals(id, data){
+    const body_update = { title: data.title, description: data.description}
+    fetch('http://localhost:5000/rentals/' + id, {
+        method: "PATCH",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify(body_update)
+      })
+      .then(response => response.json())
+      .then(data => console.log(data))
+      .then(refreshFct())
+      .then(setMsg({editAdOK : "Your ad is successfully updated"}))
+  }
+
   async function searchAddress(inputValue) {
     if (inputValue){
       await fetch('https://api-adresse.data.gouv.fr/search/?q=' + inputValue,
@@ -170,9 +189,13 @@ export function RentalsProvider({ children }) {
   function search(result){
     setResultSearch(result)
   }
+
+  function refreshFct(){
+    setRefresh(prev => (!prev))
+  }
   
   return (
-    <RentalsContext.Provider value={{allRentals, activities, resultSearch, getRental, getMyRentals, getRentalById, postAd, search, searchAddress, address }}>
+    <RentalsContext.Provider value={{allRentals, activities, resultSearch, getRental, getMyRentals, getRentalById, postAd, search, searchAddress, editRentals, address }}>
         {children}
     </RentalsContext.Provider>
   )

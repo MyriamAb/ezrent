@@ -27,7 +27,18 @@ export default function InProcessAds(){
                     (parseDate(rent.end).getTime() >= today_date.getTime()) && 
                     <Grid.Column  key={ind}> 
                         <Header as='h3' block attached='top'>{rent.title}</Header>
-                        <Segment attached> <i class="map marker icon"></i>{rent.address}</Segment>
+                        <Segment attached>
+                            <Grid>
+                                <Grid.Row >
+                                    <Grid.Column width={9}>
+                                        <i class="map marker icon"></i>{rent.address}
+                                    </Grid.Column>
+                                    <Grid.Column width={7}>
+                                        <a href={"/myads/" + rent.id}>Details</a>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            </Grid>
+                        </Segment>
                         <Segment attached>
                             <Header as='h4'>REQUESTS ON THIS AD : </Header>
                             {reservationsContext.getReservationsByRental(rent.id).length >0 ?
