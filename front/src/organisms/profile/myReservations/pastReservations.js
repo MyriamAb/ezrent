@@ -48,7 +48,7 @@ export default function PastReservations(){
                                         "" :
                                         reserv.client_review === false && reserv.status !=="CANCELLED"?
                                         <Header floated='right'><Review id={reserv.id} isClient={true} reviewer_id={reserv.client_id} reviewed_id={reserv.owner_id}/> </Header> : 
-                                        <Header floated='right'> {reserv.client_review} </Header>
+                                        <Header floated='right'> Reviewed </Header>
                                     }
                                     </Grid.Column>
                                 </Grid.Row>

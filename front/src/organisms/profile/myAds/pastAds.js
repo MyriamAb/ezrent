@@ -55,8 +55,8 @@ export default function PastAds(){
                                                 </Grid.Column>
                                                 <Grid.Column width={4}>
                                                     {reservation.owner_review === false ?
-                                                    <Review/> :
-                                                   console.log(reservation.owner_review)
+                                                    <Review id={reservation.id} isClient={false} reviewer_id={reservation.owner_id} reviewed_id={reservation.client_id}/> :
+                                                   "Reviewed"
                                                     }
                                                 </Grid.Column>
                                             </Grid.Row>
