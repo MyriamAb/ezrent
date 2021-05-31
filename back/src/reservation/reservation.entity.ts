@@ -15,13 +15,13 @@ export class Reservation {
     owner_id: number;
 
     @Column({nullable: true})
-    owner_review: string;
+    owner_review: boolean;
 
     @Column()
     client_id: number;
 
     @Column({nullable: true})
-    client_review: string;
+    client_review: boolean;
 
     @Column("decimal" ,{ precision: 10, scale: 3 })
     price: number;

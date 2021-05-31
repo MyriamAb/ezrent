@@ -1,5 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UseGuards } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { Repository } from 'typeorm';
 import { Rental } from './rental.entity';
 
@@ -29,10 +30,10 @@ export class RentalService {
             where: [{ "id": _id}]
         });
     }
-
+    @UseGuards(JwtAuthGuard)
     async postRental(rental: Rental) {
-        this.rentalsRepository.save(rental)
-        return rental
+        const postRental= this.rentalsRepository.save(rental)
+        return postRental
     }
 
     async updateRent(id, rental: Rental){

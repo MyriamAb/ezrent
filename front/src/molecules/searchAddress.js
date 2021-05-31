@@ -4,7 +4,9 @@ import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
+import Typography from '@material-ui/core/Typography'
+import useRentals from '../context/rentals'
+
 
 
 export default function SearchAddress(props) {
@@ -12,6 +14,8 @@ export default function SearchAddress(props) {
   const [result, setResult] = useState(null)
   const [inputValue, setInputValue] = useState('');
   const [options, setOptions] = useState([]);
+  const rentalsContext = useRentals()
+
 
     useEffect(() => {
       let active = true
@@ -41,20 +45,9 @@ export default function SearchAddress(props) {
         fetchInput()
       }, [value, inputValue, fetch]);
 
-          useEffect(() => {
-            async function fetchData() {
-              if (inputValue) {
-      
-                  await fetch('https://api-adresse.data.gouv.fr/search/?q=' + inputValue,
-                  {
-                      method: "GET",
-                      headers: { "Content-type": "application/json" },
-                  })
-                  .then(response => response.json())
-                  .then(res => setResult(res));   
-              }
-            }
-            fetchData()
+      useEffect(() => {
+            rentalsContext.searchAddress(inputValue)
+            .then(setResult(rentalsContext.address))
       },[inputValue])
   return (
 <Autocomplete
@@ -74,10 +67,11 @@ export default function SearchAddress(props) {
         setOptions(newValue ? [newValue, ...options] : options);
         setValue(newValue)
       }}
-      onInputChange={(e, newInputValue) => {
+      onInputChange={(e, newInputValue, result) => {
         setInputValue(newInputValue)
+        setResult(result)
         if (props.onInputChange){
-          props.onInputChange(e, newInputValue)
+          props.onInputChange(e, newInputValue, result)
         }
       }}
       renderInput={(params) => (
@@ -102,15 +96,18 @@ export default function SearchAddress(props) {
                     style={{
                       fontWeight: part.highlight ? 700 : 400,
                     }}
-                    
                       >
                     {part.properties.label}
+                    {/* {part.geometry.coordinates[0]}
+                    {part.geometry.coordinates[1]} */}
                   </span>
                 ))}
 
                 <Typography variant="body2"
                  >
                   {props?.properties?.label}
+                  {/* {props?.geometry.coordinates[0]}
+                  {props?.geometry.coordinates[1]} */}
                 </Typography>
               </Grid>
             </Grid>
