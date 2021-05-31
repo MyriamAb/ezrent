@@ -49,7 +49,8 @@ export function UserProvider({ children }) {
     const [allUsers, setAllUsers] = useState(null)
     const [refresh, setRefresh] = useState(false)
 
-  function register(data){
+  function register(data) {
+    console.log('regiter')
       fetch('http://localhost:5000/users', {
           method: "POST",
           headers: {
@@ -60,6 +61,7 @@ export function UserProvider({ children }) {
             "name": `${data.firstname} ${data.lastname}`,
             "email": data.email,
             "password": data.password,
+            
           })
         })
         .then(response => response.json())
@@ -68,6 +70,7 @@ export function UserProvider({ children }) {
             if(data.statusCode && data.statusCode === 200)
               history.push({pathname:'/login'})
         })
+        
         .catch(err => console.log("error"))  
   }
 
@@ -285,12 +288,12 @@ export function UserProvider({ children }) {
         .then(data => setAllUsers(data))
     },[token])
 
-    function getUserbyId(id){
+    const getUserbyId= useCallback((id) => {
       if(allUsers !== null){
         const user = allUsers.find(el => el.id === id)
         return user
       }
-    }
+    },[allUsers])
 
   const postReviewFromClient = useCallback((review, reviewer, reviewed) => {
     fetch('http://localhost:5000/reviews', {

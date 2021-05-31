@@ -8,7 +8,9 @@ import { useParams } from "react-router"
 import RatingType from '../atoms/rate'
 import { useEffect, useState} from 'react'
 import ButtonType from '../atoms/button'
-
+import useUser from '../context/user'
+/* import PaymentMethod from '../organisms/customPayment/paymentMethod'
+ */
 function AdDetails(props) {
   var disabledDates = []
   const rentalsContext = useRentals()
@@ -16,19 +18,37 @@ function AdDetails(props) {
   var rentals = rentalsContext?.allRentals ?? null;
   const [rental, setRental] = useState({})
   const { id } = useParams()
+  var ownerId = ''
+  const userContext = useUser()
+  const [user, setUser] = useState({})
   const [ price, setPrice] = useState('0')
   const [ valueCalendar, onChangeCalendar ] = useState(new Date())
   let changePrice = (newPrice) => {
     setPrice( newPrice )
   }
 
+
+  
   useEffect(() => {
     const res = rentals?.find(element => element.id == id) 
-      setRental(res)
-  }, [id, rentals])
+    setRental(res)
+    
+      if (res === null || res === undefined)
+        return
+       ownerId = res.owner_id
 
-  console.log(rental)
+  }, [id, rentals, ownerId, userContext])
   
+  useEffect(() => {
+    const userInfo = userContext?.getUserbyId(ownerId)
+
+    if (userInfo === null || userInfo === undefined)
+      return
+   
+    setUser(userInfo)
+  }, [userContext.getUserbyId, userContext, ownerId])
+  
+
   function book() {
     console.log(rental);
     reservationContext.addReservation(rental);
@@ -37,7 +57,6 @@ function AdDetails(props) {
 
   const styles = {
     container: {
-     
       backgroundColor: '#FFFFFF'
     },
     container1: {
@@ -120,7 +139,14 @@ function AdDetails(props) {
                   <Image src="/profileDefaultPic.jpeg" style={{width: 50, height: 50}}/>
                 </Grid.Column>
                 <Grid.Column>
-                  Owner Name
+                  <Grid columns={2}>
+                    <Grid.Column>
+                      {user.name}
+                    </Grid.Column>
+                    <Grid.Column>
+                      {user.email}
+                    </Grid.Column>
+                  </Grid>
                 </Grid.Column>
                 <Grid.Column>   
                   <RatingType size='huge' float='right'/>

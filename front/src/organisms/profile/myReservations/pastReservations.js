@@ -27,8 +27,6 @@ export default function PastReservations(){
     return(
         <div>
             <Grid container columns={1} stackable>
-                <br/>
-                <Header as='h3'><i class="hourglass end icon"></i> PAST</Header>
                 {myReservations.map((reserv, ind)=>(
                     (parseDate(reserv.end).getTime() < today_date.getTime() || reserv.status ==="CANCELLED"
                     && rentalsContext.allRentals ) &&
@@ -46,11 +44,11 @@ export default function PastReservations(){
                                     </Grid.Column>
                                     <Grid.Column width={3} >
                                     {
-                                        reserv.client_review === null && reserv.status ==="CANCELLED"?
+                                        reserv.client_review === false && reserv.status ==="CANCELLED"?
                                         "" :
-                                        reserv.client_review === null && reserv.status !=="CANCELLED"?
+                                        reserv.client_review === false && reserv.status !=="CANCELLED"?
                                         <Header floated='right'><Review id={reserv.id} isClient={true} reviewer_id={reserv.client_id} reviewed_id={reserv.owner_id}/> </Header> : 
-                                        <Header floated='right'> {reserv.client_review} </Header>
+                                        <Header floated='right'> Reviewed </Header>
                                     }
                                     </Grid.Column>
                                 </Grid.Row>
