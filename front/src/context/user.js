@@ -1,5 +1,8 @@
 import { createContext, useContext, useState, useCallback, useEffect} from 'react';
-import  { useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom';
+import { useGoogleApi } from 'react-gapi';
+import { FormButton } from 'semantic-ui-react';
+
 
 function useLocalStorage(key, initialValue) {
   const [storedValue, setStoredValue] = useState(() => {
@@ -28,7 +31,9 @@ function useLocalStorage(key, initialValue) {
 
 const UserContext = createContext();
 
-export function UserProvider({children}) {
+export function UserProvider({ children }) {
+    const clientId = '814535166282-uj0rs7jnubeqglcaie0lm4j0gg8625pi.apps.googleusercontent.com';
+    const gapi = useGoogleApi({ scopes: ['profile'], clientId: clientId })
     const history = useHistory();
     const [token, setToken] = useLocalStorage('token')
     const [user, setUser] = useLocalStorage('user')
@@ -39,8 +44,10 @@ export function UserProvider({children}) {
         loginNotOK:"",
         editProfileOK:""
       })
+    const [statusCode, setStatusCode] = useState("");
     const [userReviews, setUserReviews] = useState(null)
     const [allUsers, setAllUsers] = useState(null)
+    const [refresh, setRefresh] = useState(false)
 
   function register(data){
       fetch('http://localhost:5000/users', {
@@ -91,6 +98,60 @@ export function UserProvider({children}) {
       .catch(err => console.log("error"))
     }, []);
 
+  
+  const login_google = useCallback((email, name) => {
+    fetch('http://localhost:5000/auth/login/google', {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: name,
+        email: email
+      })
+    })
+      .then(response => response.json())
+      .then(data => {
+        if(data.access_token){
+          setToken(data.access_token)
+          setMsg({loginOK: "Login successfull"})
+          history.push({pathname: '/'})
+        }else if(data.status && data.status === 401)
+          setMsg({loginNotOK: "Please, confirm your registration in your email"}) 
+        else
+          setMsg({loginNotOK: "Wrong credentials. Please, try again."})
+      })
+      .catch(err => console.log("error"))
+  }, []);
+
+
+    const login_facebook = useCallback((email, name) => {
+    fetch('http://localhost:5000/auth/login/facebook', {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: name,
+        email: email
+      })
+    })
+      .then(response => response.json())
+      .then(data => {
+        if(data.access_token){
+          setToken(data.access_token)
+          setMsg({loginOK: "Login successfull"})
+          history.push({pathname: '/'})
+        }else if(data.status && data.status === 401)
+          setMsg({loginNotOK: "Please, confirm your registration in your email"}) 
+        else
+          setMsg({loginNotOK: "Wrong credentials. Please, try again."})
+      })
+      .catch(err => console.log("error"))
+  }, []);
+
     useEffect(()=> {
       if(!token)
         return
@@ -125,7 +186,7 @@ export function UserProvider({children}) {
           phone: data[0].phone, 
           profile_picture: data[0].profile_picture
         }))
-    }, [user]);
+    }, [token, user]);
 
     function editProfile(data, profile_picture){
       const body_update = data.password == undefined ?
@@ -150,6 +211,51 @@ export function UserProvider({children}) {
         .then(setMsg({editProfileOK : "Profile updated successfully"}))
     }
 
+  const logout = useCallback(() => {
+    const auth = gapi?.auth2.getAuthInstance();
+    console.log(auth)
+    if (auth) {
+      auth.signOut().then(
+         auth.disconnect())
+    };
+    setToken(null)
+    setUser(null)
+    setUserProfile(null)
+    history.push({pathname:'/login'})
+  }, []);
+
+  const sendResetEmail = useCallback((email) => {
+    fetch('http://localhost:5000/users/forgotpassword/', {
+      method: 'post',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email: email
+      })
+    })
+    /* .then(alert("Email has been sent ! Please, check your mailbox to reset your password")) */
+  }, []);
+
+  const reset_password = useCallback((password, token_id) => {
+    fetch('http://localhost:5000/users/resetpassword/', {
+      method: 'post',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        password: password,
+        reset_token: token_id,
+      })
+    })
+      .then(response => response.json())
+      .then(data => setStatusCode(data.statusCode))
+    console.log(statusCode)
+    return (statusCode);
+    }, []);
+
     useEffect(()=> {
       if(!user || user === null)
         return
@@ -163,8 +269,7 @@ export function UserProvider({children}) {
         })
         .then(response => response.json())
         .then(data => setUserReviews(data))
-    },[user, userProfile])
-
+    },[token, user, userProfile, refresh])
 
     useEffect(()=> {
       fetch('http://localhost:5000/users/', {
@@ -177,7 +282,7 @@ export function UserProvider({children}) {
         })
         .then(response => response.json())
         .then(data => setAllUsers(data))
-    },[])
+    },[token])
 
     function getUserbyId(id){
       if(allUsers !== null){
@@ -186,15 +291,35 @@ export function UserProvider({children}) {
       }
     }
 
-    const logout = useCallback(() => {
-      setToken(null)
-      setUser(null)
-      setUserProfile(null)
-      history.push({pathname:'/login'})
-    }, []);
+  const postReviewFromClient = useCallback((review, reviewer, reviewed) => {
+    fetch('http://localhost:5000/reviews', {
+      method: "post",
+      headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
+      },
+      body: JSON.stringify({
+        grade: review.grade,
+        comment: review.comment,
+        reviewed_id: reviewed,
+        reviewer_id: reviewer,
+      })
+    })
+    .then(refreshFct)
+    }, [])
 
-    return (
-        <UserContext.Provider value={{token, msg, user, userProfile, userReviews, allUsers, login, register, editProfile ,logout, getUserbyId}}>
+
+  function refreshFct(){
+    setRefresh(prev => (!prev))
+  }
+  
+      return (
+        <UserContext.Provider value={{
+          token, msg, user, userProfile, userReviews, allUsers,
+          login, login_google, login_facebook, register, editProfile,
+          logout, sendResetEmail, reset_password, getUserbyId, postReviewFromClient
+        }}>
             {children}
         </UserContext.Provider>
     );

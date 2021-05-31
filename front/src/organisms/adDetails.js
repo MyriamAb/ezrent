@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { Icon, Item, Grid, Container, Header, Image } from "semantic-ui-react";
 import Comments from '../molecules/comments'
 import useRentals from "../context/rentals"
+import useReservations from '../context/reservation'
 import CalendarType from '../atoms/calendar'
 import { useParams } from "react-router"
 import RatingType from '../atoms/rate'
@@ -11,6 +12,7 @@ import ButtonType from '../atoms/button'
 function AdDetails(props) {
   var disabledDates = []
   const rentalsContext = useRentals()
+  const reservationContext = useReservations()
   var rentals = rentalsContext?.allRentals ?? null;
   const [rental, setRental] = useState({})
   const { id } = useParams()
@@ -24,6 +26,14 @@ function AdDetails(props) {
     const res = rentals?.find(element => element.id == id) 
       setRental(res)
   }, [id, rentals])
+
+  console.log(rental)
+  
+  function book() {
+    console.log(rental);
+    reservationContext.addReservation(rental);
+    alert("You have booked this location, you'll be notified when the owner check your reservation")
+  }
 
   const styles = {
     container: {
@@ -123,7 +133,7 @@ function AdDetails(props) {
                 2222 €
               </Grid.Row>
                <Grid.Row>
-                  <ButtonType color='green' content="Booked" size='large'  as='a' href='/paymentCheckout' />
+                  <ButtonType color='green' content="Booked" size='large' onClick={e => book()} />
               </Grid.Row>
             </Grid.Column>
           </Grid.Row>

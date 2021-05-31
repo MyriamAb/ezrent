@@ -68,7 +68,7 @@ export default function PersonnalInfo(){
       e.preventDefault()
       if(data.password === data.password_confirm ){
         userContext.editProfile(data, profilePic)
-        if(profilePic != "")
+        if(profilePic !== "")
           setData({profile_picture:profilePic})
         setProfilePic("")
       }           
