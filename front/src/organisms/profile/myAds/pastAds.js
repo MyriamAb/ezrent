@@ -38,7 +38,7 @@ export default function PastAds(){
                                     <Header as='h4'>REQUESTS ON THIS AD : </Header>
                                     {reservationsContext.getReservationsByRental(rent.id).length >0 ?
                                     reservationsContext.getReservationsByRental(rent.id).map(reservation =>
-                                        reservation.status === "RESERVATION CONFIRMED" ?
+                                        reservation.status === "RESERVATION COMPLETED" ?
                                         
                                         <Grid >
                                             <Grid.Row>

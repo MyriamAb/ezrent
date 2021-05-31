@@ -6,7 +6,8 @@ import useRentals from '../context/rentals'
 
 function Search(props) {
   const rentalsContext = useRentals()
-  const [data, setData]= useState({search:"", location:"", minPrice:"", maxPrice:"", dateFrom:"", dateTo:""})
+  const [data, setData]= useState({search:"", location:"", minPrice:"", maxPrice:"", 
+                                  dateFrom:"", dateTo:"", activities:""})
   const [globalFilter, setGlobalFilter] = useState(() => [])
   let filteredtab = rentalsContext.allRentals;
 
@@ -82,7 +83,7 @@ function Search(props) {
       <InputType onChange={(e)=>handle(e)} icon="euro sign" iconPlaceholder="right" type="text" name="maxPrice" placeholder="Max Price" style={{ width: 100 }} />
       <InputType  onChange={(e)=>handle(e)} type="date" name="dateFrom" placeholder="From" style={{width:100}}/>
       <InputType  onChange={(e)=>handle(e)} type="date" name="dateTo" placeholder="To" style={{width:100}}/>
-      <SelectType placeholder="Select an activity" options={optionService} style={{width:200}}/>
+      <SelectType onChange={(e)=>handle(e)} name="activities" placeholder="Select an activity" options={optionService} style={{width:200}}/>
     </div>
     
   )

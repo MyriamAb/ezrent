@@ -6,6 +6,7 @@ export function RentalsProvider({ children }) {
   const [allRentals, setAllRentals] = useState(null)
   const [rental, setRental]= useState(null)
   const [resultSearch, setResultSearch] = useState(null)
+  const [activities, setActivities] = useState(null)
 
   useEffect(()=> {
       fetch('http://localhost:5000/rentals', {
@@ -18,6 +19,18 @@ export function RentalsProvider({ children }) {
           .then(response => response.json())
           .then(data => setAllRentals(data))
   }, []);
+
+  useEffect(()=> {
+    fetch('http://localhost:5000/activity', {
+      method: "get",
+       headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      })
+        .then(response => response.json())
+        .then(data => setActivities(data))
+  }, [allRentals]);
 
   function postAd(data){
     fetch('http://localhost:5000/rentals', {
@@ -82,7 +95,7 @@ export function RentalsProvider({ children }) {
   }
   
   return (
-    <RentalsContext.Provider value={{allRentals, resultSearch, getRental, getMyRentals, getRentalById, postAd, search}}>
+    <RentalsContext.Provider value={{allRentals, activities, resultSearch, getRental, getMyRentals, getRentalById, postAd, search}}>
         {children}
     </RentalsContext.Provider>
   )
