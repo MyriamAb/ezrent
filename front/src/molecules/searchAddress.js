@@ -7,11 +7,11 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
 
-export default function FreeSoloCreateOptionDialog() {
+export default function SearchAddress(props) {
   const [value, setValue] = useState(null);
   const [result, setResult] = useState(null)
-  const [inputValue, setInputValue] = React.useState('');
-  const [options, setOptions] = React.useState([]);
+  const [inputValue, setInputValue] = useState('');
+  const [options, setOptions] = useState([]);
 
     useEffect(() => {
       let active = true
@@ -40,7 +40,6 @@ export default function FreeSoloCreateOptionDialog() {
         }};
         fetchInput()
       }, [value, inputValue, fetch]);
-    
 
           useEffect(() => {
             async function fetchData() {
@@ -57,11 +56,9 @@ export default function FreeSoloCreateOptionDialog() {
             }
             fetchData()
       },[inputValue])
-
-
   return (
 <Autocomplete
-      id="google-map-demo"
+      id="address"
       sx={{ width: 300 }}
       getOptionLabel={(option) =>
         typeof option === 'string' ? option : option.properties.label
@@ -75,38 +72,44 @@ export default function FreeSoloCreateOptionDialog() {
       value={value}
       onChange={(event, newValue) => {
         setOptions(newValue ? [newValue, ...options] : options);
-        setValue(newValue);
+        setValue(newValue)
       }}
-      onInputChange={(event, newInputValue) => {
-        setInputValue(newInputValue);
+      onInputChange={(e, newInputValue) => {
+        setInputValue(newInputValue)
+        if (props.onInputChange){
+          props.onInputChange(e, newInputValue)
+        }
       }}
       renderInput={(params) => (
-        <TextField {...params} label="Add an address..." variant='outlined' fullWidth style={{marginBottom:15}}/>
+        <TextField {...params} label="Add an address..." variant='outlined' fullWidth style={{marginBottom:15}} id={props.id} onChange={props.onChange}
+        />
       )}
       renderOption={(props, option) => {
         const parts = option?.result?.features ?? []
         return (
-          <div {...props}>
+          <div {...props} 
+          >
             <Grid container alignItems="center">
               <Grid item>
                 <Box
                   component={LocationOnIcon}
-                  // sx={{ color: 'text.secondary', mr: 2 }}
                 />
               </Grid>
-              <Grid item xs>
+              <Grid item xs >
                 {parts.map((part, index) => (
                   <span
                     key={index}
                     style={{
                       fontWeight: part.highlight ? 700 : 400,
                     }}
-                  >
+                    
+                      >
                     {part.properties.label}
                   </span>
                 ))}
 
-                <Typography variant="body2" >
+                <Typography variant="body2"
+                 >
                   {props?.properties?.label}
                 </Typography>
               </Grid>

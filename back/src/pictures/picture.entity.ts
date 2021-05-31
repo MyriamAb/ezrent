@@ -8,8 +8,8 @@ export class Picture {
     @Column()
     image_name: string;
 
-    @Column()
-    image_blob: BinaryType;
+    @Column({type:"longblob"})
+    image_blob: string;
 
     @Column()
     rental_id: number;

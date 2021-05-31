@@ -1,8 +1,6 @@
 import React from "react";
 import { Icon, Item, Grid, Container, Header, Image } from "semantic-ui-react";
 import Comments from '../molecules/comments'
-/* import ImageCarousel from '../molecules/imageCarousel'
-import ImageSlide from '../atoms/imageSlide' */
 import useRentals from "../context/rentals"
 import CalendarType from '../atoms/calendar'
 import { useParams } from "react-router"

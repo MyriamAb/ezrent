@@ -37,6 +37,7 @@ export function UserProvider({children}) {
         registerOk:"",
         loginOK:"",
         loginNotOK:"",
+        editProfileOK:""
       })
     const [userReviews, setUserReviews] = useState(null)
     const [allUsers, setAllUsers] = useState(null)
@@ -120,13 +121,18 @@ export function UserProvider({children}) {
           },
         })
         .then(response => response.json())
-        .then(data => setUserProfile(data))
+        .then(data => setUserProfile({
+          name: data[0].name,
+          email: data[0].email,
+          phone: data[0].phone, 
+          profile_picture: data[0].profile_picture
+        }))
     }, [user]);
 
-    const editProfile = useCallback(( data) => {
+    function editProfile(data, profile_picture){
       const body_update = data.password == undefined ?
-              { name: data.name, email: data.email, phone:data.phone} :
-              { name: data.name, email: data.email, phone:data.phone, password: data.password }
+              { name: data.name, email: data.email, phone:data.phone, profile_picture:profile_picture} :
+              { name: data.name, email: data.email, phone:data.phone, password: data.password, profile_picture:profile_picture }
       fetch('http://localhost:5000/users/' + user.id, {
           method: "PATCH",
           headers: {
@@ -138,11 +144,13 @@ export function UserProvider({children}) {
         })
         .then(response => response.json())
         .then(data => setUserProfile({
-          name: data.data.username,
+          name: data.data.name,
           email: data.data.email,
-          phone: data.data.phone
+          phone: data.data.phone, 
+          profile_picture: data.data.profile_picture
         }))
-    }, [token, user]);
+        .then(setMsg({editProfileOK : "Profile updated successfully"}))
+    }
 
     useEffect(()=> {
       if(!user || user === null)

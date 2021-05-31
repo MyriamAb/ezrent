@@ -4,7 +4,7 @@ import PersonnalInfo from './personnalInfo'
 import Review from './../review'
 import AddAd from './../addAd'
 import MyReservations from './myReservations'
-import MyAds from './myAds'
+import MyAds from './myAds/myAds'
 
 function Profile(){
   const panes = [
@@ -16,8 +16,8 @@ function Profile(){
   return (
   <div>
     <Review/>
-       <AddAd/>
-    <Tab menu={{ fluid: true, vertical: true, tabular: true }} panes={panes} />
+    <AddAd/>
+    <Tab menu={{ fluid: true, vertical: true, tabular: false }} panes={panes} />
   </div>)
 }
 

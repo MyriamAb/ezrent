@@ -6,7 +6,10 @@ const SelectType =  (props) =>
   onChange={props.onChange}
   placeholder={props.placeholder}
   options={props.options}
-  style={props.style}  
+  style={props.style}
+  name={props.name}
+  value={props.value}
+  id={props.id}
 />
 
 

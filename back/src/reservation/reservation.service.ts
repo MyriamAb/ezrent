@@ -35,22 +35,22 @@ export class ReservationService {
         return reservation
     }
 
-    async updateRent(id, reservation: Reservation){
-        const updatedUser = await this.findOne(id);
+    async updateReservation(id, reservation: Reservation){
+        const updatedRes = await this.findOne(id);
         if (reservation.start)
-            updatedUser.start = reservation.start;
+            updatedRes.start = reservation.start;
         if (reservation.end)
-            updatedUser.end = reservation.end;
+            updatedRes.end = reservation.end;
         if (reservation.owner_review)
-            updatedUser.owner_review = reservation.owner_review;
+            updatedRes.owner_review = reservation.owner_review;
         if (reservation.client_review)
-            updatedUser.client_review = reservation.client_review;
+            updatedRes.client_review = reservation.client_review;
         if (reservation.status)
-            updatedUser.status = reservation.status;
+            updatedRes.status = reservation.status;
         if (reservation.price)
-            updatedUser.price = reservation.price;
-        this.reservationsRepository.save(updatedUser);
-        return updatedUser;
+            updatedRes.price = reservation.price;
+        this.reservationsRepository.save(updatedRes);
+        return updatedRes;
     }
 
     async deleteReservation(reservation: Reservation) {
