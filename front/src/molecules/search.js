@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import InputType from '../atoms/input'
-import SelectType from '../atoms/select'
+import Select from 'react-select'
 import Checkbox from '../atoms/checkbox'
 import useRentals from '../context/rentals'
 
@@ -10,18 +10,23 @@ function Search(props) {
                                   dateFrom:"", dateTo:"", activities:""})
   const [globalFilter, setGlobalFilter] = useState(() => [])
   let filteredtab = rentalsContext.allRentals;
+  const [checked, setChecked] = useState({va:true, pa:true, ph:true, 
+                                          mo:true, ce:false, se:false, bu:false})
 
   const optionService = [
-    { key: 'di', value: 'di', text: 'Select an activity' },
-    { key: 'va', value: 'va', text: <Checkbox label="Vacation" value="vacation" /> },
-    { key: 'pa', value: 'pa', text: <Checkbox label="Party" value="party" />},
-    { key: 'ph', value: 'ph', text: <Checkbox label="Photo Shooting" value="photo_shooting" />},
-    { key: 'mo', value: 'mo', text: <Checkbox label="Movie Shooting" value="movie_shooting" />},
-    { key: 'ce', value: 'ce', text: <Checkbox label="Celebration" value="celebration" /> },
-    { key: 'se', value: 'se', text: <Checkbox label="Seminaries" value="seminaries" /> },
-    { key: 'bu', value: 'bu', text: <Checkbox label="Business trip" value="business_trip" /> }  
+    { name: 'va', label:"Vacation", value:"vacation"  },
+    { name: 'pa', label:"Party", value:"party" },
+    { name: 'ph', label:"Photo Shooting", value:"photo_shooting" },
+    { name: 'mo', label:"Movie Shooting", value:"movie_shooting" },
+    { name: 'ce', label:"Celebration", value:"celebration"  },
+    { name: 'se', label:"Seminaries", value:"seminaries"  },
+    { name: 'bu', label:"Business trip", value:"business_trip" }  
   ]
 
+  function handleCheckBox(e){
+    e.preventDefault()
+    console.log(" e handle checkbox : ") ; console.log(e.target)
+  }
   function handle(e){
     e.preventDefault()
     const newdata = {...data}
@@ -83,8 +88,9 @@ function Search(props) {
       <InputType onChange={(e)=>handle(e)} icon="euro sign" iconPlaceholder="right" type="text" name="maxPrice" placeholder="Max Price" style={{ width: 100 }} />
       <InputType  onChange={(e)=>handle(e)} type="date" name="dateFrom" placeholder="From" style={{width:100}}/>
       <InputType  onChange={(e)=>handle(e)} type="date" name="dateTo" placeholder="To" style={{width:100}}/>
-      <SelectType onChange={(e)=>handle(e)} name="activities" placeholder="Select an activity" options={optionService} style={{width:200}}/>
-    </div>
+      <Select closeMenuOnSelect={false} isMulti options={optionService} hideSelectedOptions={false} backspaceRemovesValue={false} onChange={e => console.log(e) } style={{ width: 100 }} />
+
+ </div>
     
   )
 }
