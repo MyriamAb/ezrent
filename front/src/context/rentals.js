@@ -157,8 +157,10 @@ export function RentalsProvider({ children }) {
     }
   }
   function getRentalById(id){
-    const rental = allRentals.find(el => el.id == id)
-    return rental
+    if(allRentals !== null){
+      const rental = allRentals.find(el => el.id == id)
+      return rental
+    }
   }
 
   useEffect(()=>{

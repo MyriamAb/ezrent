@@ -19,9 +19,11 @@ export default function PastReservations(){
         return new Date(mdy[0], mdy[1]-1, mdy[2]); 
     }
 
-    if(!myReservations.find(reserv => parseDate(reserv.end).getTime() <= today_date.getTime()))
-        noAds = "No ads here"
-    else
+    if(!myReservations.find(reserv => parseDate(reserv.end).getTime() <= today_date.getTime())){
+        noAds = <Grid.Column>
+                    <Header as='h1' centered> You have no past reservations </Header>
+                </Grid.Column>
+    }else
         noAds=""
 
     return(

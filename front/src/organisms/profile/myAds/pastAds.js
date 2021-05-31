@@ -19,9 +19,11 @@ export default function PastAds(){
         return new Date(mdy[0], mdy[1]-1, mdy[2]); 
     }
 
-    if(!myRentals.find(rent => (parseDate(rent.end).getTime() <= today_date.getTime() )))
-        noAds = "No ads here"
-    else
+    if(!myRentals.find(rent => (parseDate(rent.end).getTime() <= today_date.getTime() ))){
+    noAds = <Grid.Column>
+                <Header as='h1' centered> You have no past ads</Header>
+            </Grid.Column>
+    }else
         noAds=""
 
     return(

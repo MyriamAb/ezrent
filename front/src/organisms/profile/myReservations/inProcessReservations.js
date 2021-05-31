@@ -26,7 +26,7 @@ export default function InProcessReservations(){
     return(
         <div>
             <Grid container columns={1} stackable>
-                {myRentals.find(el => parseDate(el.end).getTime() >= today_date.getTime()) ?
+                {myReservations.find(el => parseDate(el.end).getTime() >= today_date.getTime()) ?
                 myReservations.map((reserv, ind)=>(
                     (parseDate(reserv.end).getTime() >= today_date.getTime() && reserv.status !=="CANCELLED") 
                     && rentalsContext.allRentals &&
