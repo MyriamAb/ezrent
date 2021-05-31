@@ -170,11 +170,7 @@ export function RentalsProvider({ children }) {
   }
   
   return (
-<<<<<<< HEAD
-    <RentalsContext.Provider value={{allRentals, activities, resultSearch, getRental, getMyRentals, getRentalById, postAd, search}}>
-=======
-    <RentalsContext.Provider value={{allRentals, resultSearch, getRental, getMyRentals, getRentalById, postAd, search, searchAddress, address }}>
->>>>>>> dev
+    <RentalsContext.Provider value={{allRentals, activities, resultSearch, getRental, getMyRentals, getRentalById, postAd, search, searchAddress, address }}>
         {children}
     </RentalsContext.Provider>
   )
