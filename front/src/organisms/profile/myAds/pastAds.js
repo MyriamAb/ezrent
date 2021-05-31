@@ -32,7 +32,7 @@ export default function PastAds(){
                         <Segment key={ind}> 
                             <Header as='h3'>{rent.title}</Header>
                             {rent.address}
-                        </Segment> 
+                        </Segment>
                     </Grid.Column>
                 ))}
                  <Grid.Column> 
