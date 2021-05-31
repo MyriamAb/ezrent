@@ -286,7 +286,21 @@ export function UserProvider({ children }) {
         })
         .then(response => response.json())
         .then(data => setAllUsers(data))
-    },[token])
+    }, [token, refresh])
+/*   
+  const getAllUsers = useCallback(() => {
+      fetch('http://localhost:5000/users/', {
+          method: "GET",
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token
+          },
+        })
+        .then(response => response.json())
+        .then(data => setAllUsers(data))
+      return allUsers
+  }, []) */
 
     const getUserbyId= useCallback((id) => {
       if(allUsers !== null){

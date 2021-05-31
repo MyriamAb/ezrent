@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Patch, Delete, Param, HttpStatus } from '@nestjs/common';
+import { Controller, Post, Body, Get, Patch, Delete, Param, HttpStatus, Redirect } from '@nestjs/common';
 import { UsersService } from './users.service';
 import * as bcrypt from 'bcrypt';
 import { User } from './user.entity';
@@ -102,6 +102,7 @@ export class UsersController {
     }
 
     @Get('confirm/:confirmationCode')
+    @Redirect('http://localhost:3000/login')
     changeStatus(@Param('confirmationCode') confirmationCode: string) {
         const user = this.usersService.verifyUser(confirmationCode);
         return {

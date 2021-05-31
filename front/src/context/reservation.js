@@ -48,7 +48,7 @@ export function ReservationsProvider({ children }) {
         "client_id": userContext.user.id,
         "client_review": false,
         "price": data.price,
-        "status": "Pending",
+        "status": "WAITING FOR OWNER'S APPROVAL",
         "rental_id": data.id
       })
     })
