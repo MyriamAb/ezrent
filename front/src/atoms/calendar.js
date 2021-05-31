@@ -9,7 +9,8 @@ const calendarType = (props) =>
     selectRange= {true}
     tileDisabled={props.tileDisabled}
     id={props.id}
-    // formatDate={(locale, date) => formatDate(date, 'YYYY-MMM-DD')}
+    minDate= {new Date()}
+    activeStartDate = {props.activeStartDate}
   />
 
 

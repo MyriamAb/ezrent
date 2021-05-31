@@ -46,9 +46,9 @@ function ImageCarousel(props) {
         } 
     })
   }
-  /* console.log(rentalImages)
-  console.log(nbSlides)
-  console.log(slide) */
+  // console.log(rentalImages)
+  // console.log(nbSlides)
+  // console.log(slide) 
   
   
   return (
@@ -62,8 +62,6 @@ function ImageCarousel(props) {
       <Slider>
         {slide}
       </Slider>
-
-   
     <CustomDotGroup slides={nbSlides} />
   </CarouselProvider>
   )

@@ -1,10 +1,17 @@
 import { createContext, useContext, useEffect, useState } from 'react'
+import useUser from './user'
 
 const RentalsContext = createContext();
 
 export function RentalsProvider({ children }) {
   const [allRentals, setAllRentals] = useState(null)
   const [rental, setRental]= useState(null)
+  const UserContext = useUser()
+  const user = UserContext?.user
+  const token= UserContext?.token
+  const [ad, setAd] = useState(null)
+  const [address, setAddress]= useState(null)
+  const [dataAd, setDataAd] = useState(null)
   const [resultSearch, setResultSearch] = useState(null)
   const [activities, setActivities] = useState(null)
 
@@ -13,7 +20,7 @@ export function RentalsProvider({ children }) {
         method: "get",
          headers: {
           'Accept': 'application/json',
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
         })
           .then(response => response.json())
@@ -32,12 +39,14 @@ export function RentalsProvider({ children }) {
         .then(data => setActivities(data))
   }, [allRentals]);
 
-  function postAd(data){
+  function postAd (data) {
+    setDataAd(data)
     fetch('http://localhost:5000/rentals', {
       method: "POST",
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
       },
       body: JSON.stringify({
         title: data.title,
@@ -47,17 +56,73 @@ export function RentalsProvider({ children }) {
         price: data.price,
         start: data.start,
         end: data.end,
-        longitude: 45.00,
-        latitude: 4.000,
-        owner_id:3
+        longitude: address.features[0].geometry.coordinates[0],
+        latitude: address.features[0].geometry.coordinates[1],
+        owner_id:user.id
       })
     })
     .then(response=>response.json())
-    .then(res=>console.log(res))
+    .then(res=>setAd(res))
   }
-  
+
+  // Add services to db activities
+  useEffect(()=>{
+    if (ad && dataAd) {
+      var vacation = false
+      var party = false
+      var photo_shooting = false
+      var movie_shooting = false
+      var seminaries = false
+      var business_trip = false
+      var other = false
+
+      dataAd.services?.forEach(element => {
+        if (String(element) === 'Vacation') {
+          return vacation = true
+        }
+        if (String(element) === 'Photo Shooting') {
+          return photo_shooting = true
+        }
+        if (String(element) === 'Party') {
+          return party = true
+        }
+        if (String(element) === 'Movie Shooting') {
+          return movie_shooting = true
+        }
+        if (String(element) === 'Seminaries') {
+          return seminaries = true
+        }
+        if (String(element) === 'Business trip') {
+          return business_trip = true
+        }
+        if (String(element) === 'Other') {
+          return other = true
+        }
+      })
+      fetch('http://localhost:5000/activity', {
+        method: "POST",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify({
+          rental_id: ad?.data?.id,
+          vacation: vacation,
+          party: party,
+          photo_shooting: photo_shooting,
+          movie_shooting: movie_shooting,
+          seminaries: seminaries,
+          business_trip: business_trip,
+          other: other
+        })
+      })
+      .then(response => response.json())
+      .then(data => setAllRentals(data))
+    }
+  }, [dataAd, ad])
+
   async function getRental(id) {
-    console.log('entre context')
     fetch('http://localhost:5000/rentals/' +id, {
       method: "get",
       headers: {
@@ -67,7 +132,6 @@ export function RentalsProvider({ children }) {
     })
       .then(response => response.json())
       .then(data => setRental(data))
-      
   }
 
   function getMyRentals(id){
@@ -81,6 +145,17 @@ export function RentalsProvider({ children }) {
     return myRentals
   }
 
+  async function searchAddress(inputValue) {
+    if (inputValue){
+      await fetch('https://api-adresse.data.gouv.fr/search/?q=' + inputValue,
+      {
+        method: "GET",
+        headers: { "Content-type": "application/json" },
+      })
+      .then(response => response.json())
+      .then(res => setAddress(res));   
+    }
+  }
   function getRentalById(id){
     const rental = allRentals.find(el => el.id == id)
     return rental
@@ -95,7 +170,11 @@ export function RentalsProvider({ children }) {
   }
   
   return (
+<<<<<<< HEAD
     <RentalsContext.Provider value={{allRentals, activities, resultSearch, getRental, getMyRentals, getRentalById, postAd, search}}>
+=======
+    <RentalsContext.Provider value={{allRentals, resultSearch, getRental, getMyRentals, getRentalById, postAd, search, searchAddress, address }}>
+>>>>>>> dev
         {children}
     </RentalsContext.Provider>
   )

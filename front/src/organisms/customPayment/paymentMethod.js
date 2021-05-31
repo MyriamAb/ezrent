@@ -5,22 +5,23 @@ import {
   useElements
 } from "@stripe/react-stripe-js";
 
-export default function CheckoutForm() {
+export default function PaymentMethod() {
+  const stripe = require("stripe")("pk_test_51IsNySAQArDV5cBDQy5GSkkhHV2FX283JHxwG4L2XiUmWfnF4og6GSznds1vfnuho1svtriLC0uZMi93WnVL9sUq00vQPVDzMJ");
   const [succeeded, setSucceeded] = useState(false);
   const [error, setError] = useState(null);
   const [processing, setProcessing] = useState('');
   const [disabled, setDisabled] = useState(true);
   const [clientSecret, setClientSecret] = useState('');
-  const stripe = useStripe();
   const elements = useElements();
 
-  useEffect(() => {
-    // Create PaymentIntent as soon as the page loads
-    window
-      .fetch("http://localhost:5000/create-payment-intent", {
+
+
+
+
+  async function paymentInfo() {
+    fetch("http://localhost:5000/payment-method", {
         method: "POST",
         headers: {
-
           "Content-Type": "application/json"
         },
         body: JSON.stringify({items: [{ id: "xl-tshirt" }]})
@@ -31,10 +32,9 @@ export default function CheckoutForm() {
       .then(data => {
         setClientSecret(data.client_secret);
       });
-  }, []);
-  
-  console.log(clientSecret);
-  const cardStyle = {
+    
+  }
+   const cardStyle = {
     style: {
       base: {
         color: "#32325d",
@@ -51,14 +51,13 @@ export default function CheckoutForm() {
       }
     }
   };
-
   const handleChange = async (event) => {
     // Listen for changes in the CardElement
     // and display any errors as the customer types their card details
     setDisabled(event.empty);
     setError(event.error ? event.error.message : "");
   };
-
+  
   const handleSubmit = async ev => {
     ev.preventDefault();
     setProcessing(true);
@@ -68,7 +67,7 @@ export default function CheckoutForm() {
         card: elements.getElement(CardElement)
       }
     });
-    console.log(payload);
+
     if (payload.error) {
       setError(`Payment failed ${payload.error.message}`);
       setProcessing(false);
@@ -78,32 +77,28 @@ export default function CheckoutForm() {
       setSucceeded(true);
     }
   };
-
   return (
-    <form id="payment-form" onSubmit={handleSubmit}>
-      <CardElement id="card-element" options={cardStyle} onChange={handleChange} />
-      <button
-        disabled={processing || disabled || succeeded}
-        id="submit"
-      >
-        <span id="button-text">
-          {processing ? (
-            <div className="spinner" id="spinner"></div>
-          ) : (
-            "Pay now"
-          )}
-        </span>
-      </button>
-      {/* Show any error that happens when processing the payment */}
-      {error && (
-        <div className="card-error" role="alert">
-          {error}
-        </div>
-      )}
-      {/* Show a success message upon completion */}
-      <p className={succeeded ? "result-message" : "result-message hidden"}>
-        Payment succeeded
-      </p>
+    < form id="payment-form" onSubmit={handleSubmit}>
+      <CardElement id="c  ard-element" options={cardStyle} onChange={handleChange}>
+        <button
+          disabled={processing || disabled || succeeded}
+          id="submit"
+        >
+          <span id="button-text">
+            {processing ? (
+              <div className="spinner" id="spinner"></div>
+            ) : (
+              "Pay now"
+            )}
+          </span>
+        </button>
+        {/* Show any error that happens when processing the payment */}
+        {error && (
+          <div className="card-error" role="alert">
+            {error}
+          </div>
+        )}
+      </CardElement>
     </form>
-  );
+  )
 }
