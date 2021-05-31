@@ -18,9 +18,9 @@ function Home() {
     }
   }
 
-  const rentalsContext = useRentals()
+  // const rentalsContext = useRentals()
 
-  console.log(rentalsContext.allRentals)
+  // console.log(rentalsContext.allRentals)
   
 
 
@@ -29,7 +29,6 @@ function Home() {
       <div style={styles.container}>
         <Search style={styles.search}/> 
       </div>
-     
       <CardCarousel/>  
       
     </div>

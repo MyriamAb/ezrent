@@ -10,7 +10,6 @@ import { ActivityModule } from './activity/activity.module';
 import { ReviewsModule } from './reviews/reviews.module';
 import { PicturesModule } from './pictures/pictures.module';
 import { AuthModule } from './auth/auth.module';
-import { GoogleStrategy } from './auth/google.strategy';
 import { StripeModule } from 'nestjs-stripe'
 import { config } from 'dotenv';
 import { PaymentModule } from './stripe/stripe.module';
@@ -34,6 +33,6 @@ config();
     PaymentModule
   ],
   controllers: [AppController],
-  providers: [AppService, GoogleStrategy],
+  providers: [AppService],
 })
 export class AppModule {}

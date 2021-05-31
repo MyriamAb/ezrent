@@ -7,7 +7,7 @@ import useRentals from '../context/rentals'
 function CardCarousel() {
   var cardItem= []  
   const rentalsContext = useRentals()
-  var rentals = rentalsContext?.allRentals ?? null;
+  var rentals = rentalsContext?.resultSearch ?? null;
  
 
   if (rentals === null) {

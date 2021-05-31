@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { Icon, Item, Grid, Container, Header, Image } from "semantic-ui-react";
 import Comments from '../molecules/comments'
 import useRentals from "../context/rentals"
+import useReservations from '../context/reservation'
 import CalendarType from '../atoms/calendar'
 import { useParams } from "react-router"
 import RatingType from '../atoms/rate'
@@ -11,7 +12,9 @@ import useUser from '../context/user'
 /* import PaymentMethod from '../organisms/customPayment/paymentMethod'
  */
 function AdDetails(props) {
+  var disabledDates = []
   const rentalsContext = useRentals()
+  const reservationContext = useReservations()
   var rentals = rentalsContext?.allRentals ?? null;
   const [rental, setRental] = useState({})
   const { id } = useParams()
@@ -24,18 +27,16 @@ function AdDetails(props) {
     setPrice( newPrice )
   }
 
-  console.log(rental)
+
   
   useEffect(() => {
     const res = rentals?.find(element => element.id == id) 
     setRental(res)
-
-    if (res === null || res === undefined)
-      return
-     ownerId = res.owner_id
-    console.log(ownerId)
-
     
+      if (res === null || res === undefined)
+        return
+       ownerId = res.owner_id
+
   }, [id, rentals, ownerId, userContext])
   
   useEffect(() => {
@@ -43,11 +44,16 @@ function AdDetails(props) {
 
     if (userInfo === null || userInfo === undefined)
       return
-    console.log(userInfo)
+   
     setUser(userInfo)
   }, [userContext.getUserbyId, userContext, ownerId])
   
-  console.log(user)
+
+  function book() {
+    console.log(rental);
+    reservationContext.addReservation(rental);
+    alert("You have booked this location, you'll be notified when the owner check your reservation")
+  }
 
   const styles = {
     container: {
@@ -61,6 +67,24 @@ function AdDetails(props) {
       height: 500,
     }
   }
+    //Make a range with 2 dates
+    function getDates(startDate, endDate) {
+      var currentDate = startDate
+      var addDays = function(days) {
+        var date = new Date(this.valueOf());
+        date.setDate(date.getDate() + days);
+        return date;
+      };
+      while (currentDate <= endDate) {
+        disabledDates.push(currentDate);
+        currentDate = addDays.call(currentDate, 1);
+      }
+      return disabledDates;
+    }
+  var EndDate = new Date(rental?.end)
+  var realEndDate = EndDate?.setDate(EndDate?.getDate()+1)
+   disabledDates = getDates(new Date(), new Date(rental?.start), getDates(new Date(realEndDate), new Date(2025, 0, 1)))                                                                                                          
+
 
   return (
     <div style={styles.container1}>
@@ -92,9 +116,14 @@ function AdDetails(props) {
                 Choose a date:
                 <CalendarType
                   onChange={onChangeCalendar}
-                  value={valueCalendar}
                   returnValue='range'
-                  tileDisabled={({activeStartDate, date, view }) => date === 0}
+                  tileDisabled={({date, view}) =>
+                  (view === 'month') && // Block day tiles only
+                   disabledDates.some(disabledDate =>
+                    date.getFullYear() === disabledDate.getFullYear() &&
+                    date.getMonth() === disabledDate.getMonth() &&
+                    date.getDate() === disabledDate.getDate()
+                    )}
                 />
               </Grid.Row>
               <Grid.Row> 
@@ -130,8 +159,8 @@ function AdDetails(props) {
                 2222 €
               </Grid.Row>
                <Grid.Row>
-{/*                    <PaymentMethod/>
- */}               </Grid.Row>
+                  <ButtonType color='green' content="Booked" size='large' onClick={e => book()} />
+              </Grid.Row>
             </Grid.Column>
           </Grid.Row>
         </Grid>

@@ -5,12 +5,12 @@ import useReservations from '../../context/reservation'
 import useRentals from '../../context/rentals'
 import Review from './../review'
 
-export default function MyReservations(){
+export default function MyReservations() {
     const reservationsContext = useReservations()
     const rentalsContext = useRentals()
     const userContext = useUser()
     const today_date = new Date()
-    const [myReservations] = useState(reservationsContext.getMyReservations(userContext.user.id))
+    const myReservations = reservationsContext.getMyReservations(userContext.user.id)
     var noAds =""
 
     function parseDate(str) {
@@ -53,7 +53,7 @@ export default function MyReservations(){
                             <Segment key={ind}>
                                 {
                                     reserv.client_review === null ?
-                                    <Header floated='right'><Review/> </Header> : 
+                                        <Header floated='right'><Review id={reserv.id} isClient={true} reviewer_id={reserv.client_id} reviewed_id={reserv.owner_id}/> </Header> :
                                     <Header floated='right'> {reserv.client_review} </Header>
                                 }
                             </Segment>

@@ -33,7 +33,7 @@ export class ReservationController {
         return {
             statusCode: HttpStatus.OK,
             message: 'Reservation updated successfully',
-            user: updatedReservation,
+            data: updatedReservation,
         };
     }
 

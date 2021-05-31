@@ -22,7 +22,7 @@ export default function PersonnalInfo(){
     useEffect(()=>{
       if(!userContext.userProfile)
         return
-      console.log(userContext.userProfile.profile_picture)
+      // console.log(userContext.userProfile.profile_picture)
       setData({
         email : userContext.userProfile.email,
         name: userContext.userProfile.name,
@@ -36,7 +36,7 @@ export default function PersonnalInfo(){
         password_confirm: "",
       })
     }, [userContext.userProfile])
-
+// console.log(data)
 /*     console.log("data")  ; console.log( userContext.userProfile) */
   useEffect(() => {
     if(userContext.msg.editProfileOK !== ""){
@@ -68,7 +68,7 @@ export default function PersonnalInfo(){
       e.preventDefault()
       if(data.password === data.password_confirm ){
         userContext.editProfile(data, profilePic)
-        if(profilePic != "")
+        if(profilePic !== "")
           setData({profile_picture:profilePic})
         setProfilePic("")
       }           

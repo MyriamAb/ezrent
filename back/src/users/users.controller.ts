@@ -110,4 +110,37 @@ export class UsersController {
             data: user,
         };
     }
+
+    @Post('forgotpassword/')
+    async sendForgotPw(@Body('email') userEmail: string) {
+        const user = await this.usersService.findLogin(userEmail);
+        this.usersService.sendForgotPw(user.email, user.name, user.id);
+        return {
+            statusCode: HttpStatus.OK,
+            message: 'Reset password email send successfully',
+        }
+    }
+
+    @Post('resetpassword/')
+    async resetPassword(
+        @Body('password') newPassword: string,
+        @Body('reset_token') resetToken: string
+    ) {
+        const user = await this.usersService.resetPassword(
+            await bcrypt.hash(newPassword, 10),
+            resetToken
+        );
+        if (user) {
+            return {
+                statusCode: HttpStatus.OK,
+                message: 'Password updated successfully',
+                data: user
+            }
+        }
+        return {
+            statusCode: HttpStatus.NOT_FOUND,
+            message: 'User not found'
+        }
+    }
+
 }

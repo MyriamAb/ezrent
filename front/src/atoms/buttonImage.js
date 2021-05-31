@@ -1,14 +1,14 @@
 import React, {useRef} from "react";
 import Button from './button'
 
-const ImageUpload = (prop) => {
+const ImageUpload = (props) => {
   const inputFile = useRef(null);
 
   const onButtonClick = (e) => {
     e.preventDefault()
     if(inputFile.current != null)
       inputFile.current.click();
-  };
+  }
 
   return (
     <div>
@@ -16,9 +16,9 @@ const ImageUpload = (prop) => {
         style={{ display: "none" }}
         // accept=".zip,.rar"
         ref={inputFile}
-        onChange={prop.onChange}
+        onChange={props.onChange}
         type="file"
-        id={prop.id}
+        id={props.id}
       />
 {      <Button content="Add a photo" onClick={e => onButtonClick(e)}/>
 }    </div>

@@ -4,6 +4,8 @@ import Button from '../atoms/button'
 import InputFormType from '../atoms/inputForm'
 import HeaderForm from '../molecules/headerForm'
 import useUser from '../context/user'
+import LoginGoogle from '../molecules/login_rs/login_google'
+import LoginFacebook from '../molecules/login_rs/login_facebook'
 
 function LoginForm() {
   const userContext = useUser()
@@ -61,6 +63,8 @@ return(
             <Button content='Login' color='black' size='large' fluid='true'></Button>
           </Segment>
         </Form>
+        <LoginGoogle />
+        <LoginFacebook/>
         <Message attached='bottom' floating compact>
         <Icon name='help' />
         New to us? <a href='/register'> Register You</a>
