@@ -20,6 +20,19 @@ export class PaymentService {
     return customer.id;
   }
 
+   /* async paymentInfo({}) {
+    const paymentMethod = await this.stripeClient.confimCardPayment(clientSecret,{
+      type: 'card',
+      card: {
+        number: '4242424242424242',
+        exp_month: 5,
+        exp_year: 2022,
+        cvc: '314',
+      }
+    })
+     return paymentMethod
+  } */
+     
   async create(stripe) {
     const paymentIntent = await this.stripeClient.paymentIntents.create({
       amount: 10000,
@@ -33,5 +46,6 @@ export class PaymentService {
     console.log (paymentIntent)
     return paymentIntent
   }
+
  
 }

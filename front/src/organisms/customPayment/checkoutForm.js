@@ -68,7 +68,7 @@ export default function CheckoutForm() {
         card: elements.getElement(CardElement)
       }
     });
-
+    console.log(payload);
     if (payload.error) {
       setError(`Payment failed ${payload.error.message}`);
       setProcessing(false);
@@ -102,13 +102,7 @@ export default function CheckoutForm() {
       )}
       {/* Show a success message upon completion */}
       <p className={succeeded ? "result-message" : "result-message hidden"}>
-        Payment succeeded, see the result in your
-        <a
-          href={`https://dashboard.stripe.com/test/payments`}
-        >
-          {" "}
-          Stripe dashboard.
-        </a> Refresh the page to pay again.
+        Payment succeeded
       </p>
     </form>
   );

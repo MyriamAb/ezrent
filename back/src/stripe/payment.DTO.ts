@@ -12,9 +12,9 @@ export class PaymentCreateDto {
   @IsString()
   currency: string;
   
- /*  @IsNotEmpty()
+  @IsNotEmpty()
   @IsString()
-  payment_method_types: []; */
+  type: '';
 
 }
 

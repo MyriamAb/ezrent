@@ -5,22 +5,34 @@ import {
   useElements
 } from "@stripe/react-stripe-js";
 
-export default function PaymentMethed() {
+export default function PaymentMethod() {
   const stripe = require("stripe")("pk_test_51IsNySAQArDV5cBDQy5GSkkhHV2FX283JHxwG4L2XiUmWfnF4og6GSznds1vfnuho1svtriLC0uZMi93WnVL9sUq00vQPVDzMJ");
+  const [succeeded, setSucceeded] = useState(false);
   const [error, setError] = useState(null);
+  const [processing, setProcessing] = useState('');
   const [disabled, setDisabled] = useState(true);
+  const [clientSecret, setClientSecret] = useState('');
+  const elements = useElements();
+
+
+
 
 
   async function paymentInfo() {
-    const paymentMethod = await stripe.paymentMethods.create({
-      type: 'card',
-      card: {
-        number: '4242424242424242',
-        exp_month: 5,
-        exp_year: 2022,
-        cvc: '314',
-      },
-    })
+    fetch("http://localhost:5000/payment-method", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({items: [{ id: "xl-tshirt" }]})
+      })
+      .then(res => {
+        return res.json();
+      })
+      .then(data => {
+        setClientSecret(data.client_secret);
+      });
+    
   }
    const cardStyle = {
     style: {
@@ -45,10 +57,48 @@ export default function PaymentMethed() {
     setDisabled(event.empty);
     setError(event.error ? event.error.message : "");
   };
+  
+  const handleSubmit = async ev => {
+    ev.preventDefault();
+    setProcessing(true);
 
+    const payload = await stripe.confirmCardPayment(clientSecret, {
+      payment_method: {
+        card: elements.getElement(CardElement)
+      }
+    });
+
+    if (payload.error) {
+      setError(`Payment failed ${payload.error.message}`);
+      setProcessing(false);
+    } else {
+      setError(null);
+      setProcessing(false);
+      setSucceeded(true);
+    }
+  };
   return (
-    <CardElement id="card-element" options={cardStyle} onChange={handleChange}>
-      
-    </CardElement>
+    < form id="payment-form" onSubmit={handleSubmit}>
+      <CardElement id="c  ard-element" options={cardStyle} onChange={handleChange}>
+        <button
+          disabled={processing || disabled || succeeded}
+          id="submit"
+        >
+          <span id="button-text">
+            {processing ? (
+              <div className="spinner" id="spinner"></div>
+            ) : (
+              "Pay now"
+            )}
+          </span>
+        </button>
+        {/* Show any error that happens when processing the payment */}
+        {error && (
+          <div className="card-error" role="alert">
+            {error}
+          </div>
+        )}
+      </CardElement>
+    </form>
   )
 }
