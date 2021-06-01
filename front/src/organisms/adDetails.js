@@ -22,13 +22,9 @@ function AdDetails(props) {
   var ownerId = ''
   const userContext = useUser()
   const [user, setUser] = useState({})
-  const [ price, setPrice] = useState('0')
-  const [ valueCalendar, onChangeCalendar ] = useState(new Date())
-  let changePrice = (newPrice) => {
-    setPrice( newPrice )
-  }
-
-
+  const [ price, setPrice] = useState(0)
+  const [valueCalendar, onChangeCalendar] = useState(new Date())
+  const [duration, setDuration] = useState(null)
   
   useEffect(() => {
     const res = rentals?.find(element => element.id == id) 
@@ -50,10 +46,23 @@ function AdDetails(props) {
   }, [userContext.getUserbyId, userContext, ownerId])
   
 
+  useEffect(() => {
+    setDuration(datediff(valueCalendar[0], valueCalendar[1]))
+  }, [valueCalendar])
+
+  useEffect(() => {
+    if (duration)
+      setPrice(duration * rental.price)
+  }, [duration])
+
   function book() {
     console.log(rental);
     reservationContext.addReservation(rental);
     alert("You have booked this location, you'll be notified when the owner check your reservation")
+  }
+
+  function datediff(first, second) {
+    return Math.round((second-first)/(1000*60*60*24));
   }
 
   const styles = {
@@ -85,7 +94,6 @@ function AdDetails(props) {
   var EndDate = new Date(rental?.end)
   var realEndDate = EndDate?.setDate(EndDate?.getDate()+1)
    disabledDates = getDates(new Date(), new Date(rental?.start), getDates(new Date(realEndDate), new Date(2025, 0, 1)))                                                                                                          
-
 
   return (
     <div style={styles.container1}>
@@ -128,7 +136,7 @@ function AdDetails(props) {
                 />
               </Grid.Row>
               <Grid.Row> 
-              <Item.Header as='h5'>Price per day:</Item.Header>
+              <Item.Header as='h5'>Price per day :</Item.Header>
                {rental?.price}
               </Grid.Row>
             </Grid.Column>
@@ -142,7 +150,9 @@ function AdDetails(props) {
                 <Grid.Column>
                   <Grid columns={2}>
                     <Grid.Column>
-                      {user.name}
+                      <a href={"http://localhost:3000/user/" + user.id}>
+                            {user.name}
+                        </a> <br/>
                     </Grid.Column>
                     <Grid.Column>
                       {user.email}
@@ -156,11 +166,10 @@ function AdDetails(props) {
             </Grid.Column>
             <Grid.Column width={5}>
               <Grid.Row>
-                Total price:
-                2222 €
+                {"Total price : " + price + " €"}
               </Grid.Row>
                <Grid.Row>
-                  <ButtonType color='green' content="Booked" size='large' onClick={e => book()} />
+                  <ButtonType color='green' content="Book" size='large' onClick={e => book()} />
               </Grid.Row>
             </Grid.Column>
           </Grid.Row>

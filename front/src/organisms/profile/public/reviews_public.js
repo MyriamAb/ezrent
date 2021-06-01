@@ -5,8 +5,7 @@ import useUser from '../../../context/user'
 export default function Reviews_Public(props){
     const userContext = useUser()
 
-    console.log(userContext.allReviews)
-    return(
+    return (
         <Grid container columns={1} stackable>
           {userContext.allReviews != null && userContext.allUsers != null && userContext.allReviews.find(el => el.reviewed_id == props.id ) ? userContext.allReviews.map((rev, ind)=>(
                 (rev.reviewed_id == props.id) &&
