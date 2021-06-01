@@ -16,12 +16,6 @@ export class PaymentController {
     return this.paymentService.create(paymentCreateDto);
   }
 
- /*  @Post('/payment-method')
-  post(
-    @Body() paymentCreateDto: PaymentCreateDto)
-    {
-       return this.paymentService.paymentInfo(paymentCreateDto)
-     } */
    
 
 }

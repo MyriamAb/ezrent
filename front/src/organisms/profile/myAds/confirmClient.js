@@ -35,7 +35,7 @@ export default function ConfirmClient(prop){
             <Button basic color='red' inverted onClick={() => setOpen(false)}>
               <Icon name='remove' /> No
             </Button>
-            <Button color='green' inverted onClick={() => confirmReservation(prop.reservationId, "WAITING FOR CLIENT'S PAIEMENT")}>
+            <Button color='green' inverted onClick={() => confirmReservation(prop.reservationId, "WAITING FOR CLIENT'S PAYMENT")}>
               <Icon name='checkmark' /> Yes
             </Button>
           </Modal.Actions>
