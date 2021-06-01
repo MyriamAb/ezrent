@@ -31,10 +31,13 @@ export default function CheckoutForm() {
 
   const dayNumber = useCallback(() => {
     function datediff(start, end) {
+      if (start === null || end === null || start === undefined || end === undefined)
+          return
         return Math.round((end-start)/(1000 * 60 * 60 * 24));
     }
     function parseDate(str) {
-    
+      if (str === null || str === undefined)
+        return
       var mdy = str.split('-');
       return new Date(mdy[0], mdy[1]-1, mdy[2]); 
     }

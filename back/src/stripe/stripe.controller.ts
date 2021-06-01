@@ -15,7 +15,4 @@ export class PaymentController {
     console.log ('post controller')
     return this.paymentService.create(paymentCreateDto);
   }
-
-   
-
 }
