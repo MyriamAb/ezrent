@@ -1,6 +1,8 @@
-import { Controller, Post, Body, Get, Patch, Delete, Param, HttpStatus } from '@nestjs/common';
+import { Controller, Post, Body, Get, Patch, Delete, Param, HttpStatus, UseGuards } from '@nestjs/common';
 import { ReservationService } from './reservation.service';
 import { Reservation } from './reservation.entity';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard'
+
 
 @Controller('reservations')
 export class ReservationController {
@@ -17,6 +19,7 @@ export class ReservationController {
     }
 
     @Post()
+    @UseGuards(JwtAuthGuard)
     async postReservation(@Body() reservation: Reservation) {
         const postedReservation= await this.service.postReservation(reservation);
         return {
@@ -27,6 +30,7 @@ export class ReservationController {
     }
 
     @Patch(':id')
+    @UseGuards(JwtAuthGuard)
     async update(@Param() params,
            @Body() reservation: Reservation) {
         const updatedReservation = await this.service.updateReservation(params.id, reservation);
@@ -38,6 +42,7 @@ export class ReservationController {
     }
 
     @Delete(':id')
+    @UseGuards(JwtAuthGuard)
     deleteRent(@Param() params) {
         return this.service.deleteReservation(params.id)
     }

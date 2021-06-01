@@ -1,12 +1,15 @@
-import { Controller, Post, Body, Get, Patch, Delete, Param, HttpService, HttpStatus } from '@nestjs/common';
+import { Controller, Post, Body, Get, Patch, Delete, Param, HttpService, HttpStatus, UseGuards } from '@nestjs/common';
 import { ReviewsService } from './reviews.service';
 import { Review } from './review.entity';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard'
+
 
 @Controller('reviews')
 export class ReviewsController {
     constructor(private reviewsService: ReviewsService) { }
 
     @Post()
+    @UseGuards(JwtAuthGuard)
     async post(
         @Body('grade') reviewGrade: number,
         @Body('comment') reviewComment: string,
