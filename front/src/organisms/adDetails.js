@@ -1,6 +1,7 @@
 import React, { useCallback } from "react";
 import { Icon, Item, Grid, Container, Header, Image } from "semantic-ui-react";
 import Comments from '../molecules/comments'
+import Reviews_Public from '../organisms/profile/public/reviews_public'
 import useRentals from "../context/rentals"
 import useReservations from '../context/reservation'
 import CalendarType from '../atoms/calendar'
@@ -165,8 +166,9 @@ function AdDetails(props) {
           </Grid.Row>
         </Grid>
         <Grid>
-          <Comments/>
-        </Grid>
+          <Reviews_Public id={user.id}/>
+{/*           <Comments/>
+ */}        </Grid>
     </Container>
     </div>
 
