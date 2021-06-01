@@ -182,6 +182,21 @@ export function RentalsProvider({ children }) {
     }
   }
 
+  function selectRentalsByActivities(id, tab){
+    console.log("entree rental by activities : ")
+    var result = []
+    tab.forEach(filter =>{
+      activities.forEach(element => {
+        if( element.rental_id == id && element[filter.value] === true)
+        result.push(element)
+      })
+    })
+    if(result.length === 0)
+      return false
+    else
+      return true 
+  }
+
   useEffect(()=>{
     setResultSearch(allRentals)
   },[allRentals])
@@ -195,7 +210,7 @@ export function RentalsProvider({ children }) {
   }
   
   return (
-    <RentalsContext.Provider value={{allRentals, activities, resultSearch, getRental, getMyRentals, getRentalById, postAd, search, searchAddress, editRentals, address }}>
+    <RentalsContext.Provider value={{allRentals, activities, resultSearch, getRental, getMyRentals, getRentalById, postAd, search, searchAddress, editRentals, selectRentalsByActivities, address }}>
         {children}
     </RentalsContext.Provider>
   )
