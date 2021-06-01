@@ -6,7 +6,8 @@ export function ReservationsProvider({ children }) {
   const userContext = useUser();
   const [allReservations, setAllReservations] = useState(null)
   const [Reservation, setReservation]= useState(null)
-  const [refresh, setRefresh] = useState(false);
+  const [refresh, setRefresh] = useState(false)
+
 
   useEffect(()=> {
       fetch('http://localhost:5000/reservations', {
@@ -21,7 +22,6 @@ export function ReservationsProvider({ children }) {
   }, [refresh]);
 
   function getReservation(id) {
-    console.log('entre context')
     fetch('http://localhost:5000/reservations/' + id, {
       method: "get",
       headers: {

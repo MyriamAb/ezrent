@@ -36,7 +36,6 @@ function Search(props) {
 }
 
   useEffect(() => {
-    console.log(data)
     setGlobalFilter([])
     if (data.search != ""){
        globalFilter.push("`${item.title.toLowerCase()}`.includes(data.search.toLowerCase())" )

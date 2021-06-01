@@ -50,7 +50,6 @@ export function UserProvider({ children }) {
     const [refresh, setRefresh] = useState(false)
 
   function register(data) {
-    console.log('regiter')
       fetch('http://localhost:5000/users', {
           method: "POST",
           headers: {
@@ -60,18 +59,17 @@ export function UserProvider({ children }) {
           body: JSON.stringify({
             "name": `${data.firstname} ${data.lastname}`,
             "email": data.email,
-            "password": data.password,
-            
+            "password": data.password
           })
         })
         .then(response => response.json())
         .then(setMsg({registerOk : "Please, confirm your registration by checking your email"}))
         .then(data => {
+          console.log(data)
             if(data.statusCode && data.statusCode === 200)
               history.push({pathname:'/login'})
         })
-        
-        .catch(err => console.log("error"))  
+        .catch(err => console.log(err))  
   }
 
   const login = useCallback((data) => {
@@ -173,7 +171,6 @@ export function UserProvider({ children }) {
     useEffect(()=> {
       if(!user || user === null || user.statusCode == 401)
         return
-      console.log(user)
       fetch('http://localhost:5000/users/' + user.id, {
           method: "get",
           headers: {

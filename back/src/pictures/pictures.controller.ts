@@ -1,11 +1,13 @@
-import { Controller, Post, Body, Get, Patch, Delete, Param, HttpService, HttpStatus } from '@nestjs/common';
+import { Controller, Post, Body, Get, Patch, Delete, Param, HttpService, HttpStatus, UseGuards } from '@nestjs/common';
 import { PicturesService } from './pictures.service';
 import { Picture } from './picture.entity';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('pictures')
 export class PicturesController {
     constructor(private picturesService: PicturesService) { }
     
+    @UseGuards(JwtAuthGuard)
     @Post()
     async post(
         @Body('image_name') pictureName: string,
@@ -27,6 +29,11 @@ export class PicturesController {
     @Get(':id')
     async get(@Param() params) {
         return this.picturesService.getPicture(params.id);
+    }
+
+    @Get()
+    getPictures(picture: Picture) {
+        return this.picturesService.getPictures(picture);
     }
 
     @Delete(':id')

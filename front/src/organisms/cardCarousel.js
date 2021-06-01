@@ -16,10 +16,9 @@ function CardCarousel() {
   else {
     for (let i = 0; i < rentals.length; i++) {
       cardItem.push(
-        <CardType rentals={rentals[i]} title={rentals[i].title} description={rentals[i].description} price={rentals[i].price} location={rentals[i].address} id={rentals[i].id} style={{ marginTop: '3px' }}/>
+        <CardType title={rentals[i].title} description={rentals[i].description} price={rentals[i].price} location={rentals[i].address} id={rentals[i].id} style={{ marginTop: '3px' }}/>
     )  
   }
-  
   } 
 
   return (

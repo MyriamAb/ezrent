@@ -21,14 +21,9 @@ function AdDetails(props) {
   var ownerId = ''
   const userContext = useUser()
   const [user, setUser] = useState({})
-  const [ price, setPrice] = useState('0')
+  const [picture, setPicture] = useState('')
   const [ valueCalendar, onChangeCalendar ] = useState(new Date())
-  let changePrice = (newPrice) => {
-    setPrice( newPrice )
-  }
 
-
-  
   useEffect(() => {
     const res = rentals?.find(element => element.id == id) 
     setRental(res)
@@ -48,9 +43,12 @@ function AdDetails(props) {
     setUser(userInfo)
   }, [userContext.getUserbyId, userContext, ownerId])
   
+  useEffect(() => {
+    const pictureCont = rentalsContext.getPicture(id)
+    setPicture(pictureCont)
+  },[picture])
 
   function book() {
-    console.log(rental);
     reservationContext.addReservation(rental);
     alert("You have booked this location, you'll be notified when the owner check your reservation")
   }
@@ -84,7 +82,7 @@ function AdDetails(props) {
   var EndDate = new Date(rental?.end)
   var realEndDate = EndDate?.setDate(EndDate?.getDate()+1)
    disabledDates = getDates(new Date(), new Date(rental?.start), getDates(new Date(realEndDate), new Date(2025, 0, 1)))                                                                                                          
-
+  
 
   return (
     <div style={styles.container1}>
