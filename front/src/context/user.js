@@ -171,8 +171,9 @@ export function UserProvider({ children }) {
     }, [token]);
 
     useEffect(()=> {
-      if(!user || user === null)
+      if(!user || user === null || user.statusCode == 401)
         return
+      console.log(user)
       fetch('http://localhost:5000/users/' + user.id, {
           method: "get",
           headers: {
