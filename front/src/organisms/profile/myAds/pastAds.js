@@ -18,30 +18,45 @@ export default function PastAds(){
         var mdy = datesplit.split('-');
         return new Date(mdy[0], mdy[1]-1, mdy[2]); 
     }
-
-    if(!myRentals.find(rent => (parseDate(rent.end).getTime() <= today_date.getTime() ))){
-    noAds = <Grid.Column>
-                <Header as='h1' centered> You have no past ads</Header>
-            </Grid.Column>
-    }else
+    console.log("test : ")
+    console.log(
+        !!myRentals.find(
+            rent => (
+                parseDate(rent.end).getTime() < today_date.getTime()  &&
+                reservationsContext.getReservationsByRental(rent.id).find(
+                    resa => parseDate(resa.end).getTime() < today_date.getTime()
+                )
+            )
+        )
+    )
+    
+    if(!!myRentals.find(rent => (parseDate(rent.end).getTime() < today_date.getTime())  ||
+        reservationsContext.getReservationsByRental(rent.id).find(resa =>
+        parseDate(resa.end).getTime() < today_date.getTime()))){
         noAds=""
+    }else{
+        noAds= <Grid.Column>
+                    <Header as='h1' centered> You have no past ads</Header>
+                </Grid.Column>
+    }
 
     return(
         <div>
             <Grid container columns={1} stackable>
                 {myRentals.map((rent, ind)=>(
-                    (parseDate(rent.end).getTime() < today_date.getTime()) && 
+                    ( (parseDate(rent.end).getTime() < today_date.getTime()) || 
+                    !!reservationsContext.getReservationsByRental(rent.id).find(resa =>
+                        parseDate(resa.end).getTime() < today_date.getTime())  ) &&
                     <Grid.Column> 
                         <Segment  inverted tertiary block attached='top'>
                             {rent.title} <br/>
                             <i class="map marker icon"></i> {rent.address}
                         </Segment>
                                 <Segment attached>
-                                    <Header as='h4'>REQUESTS ON THIS AD : </Header>
+                                    <Header as='h4'>PAST REQUESTS ON THIS AD : </Header>
                                     {reservationsContext.getReservationsByRental(rent.id).length >0 ?
                                     reservationsContext.getReservationsByRental(rent.id).map(reservation =>
                                         reservation.status === "RESERVATION COMPLETED" ?
-                                        
                                         <Grid >
                                             <Grid.Row>
                                                 <Grid.Column width={7}> 
@@ -62,7 +77,7 @@ export default function PastAds(){
                                                     }
                                                 </Grid.Column>
                                             </Grid.Row>
-                                        </Grid >: "") :
+                                        </Grid >: "No reservations completed on this ad") :
                                         <p>You had no reservations on this ad</p>
                                     }
                                 </Segment>
