@@ -31,5 +31,10 @@ export class ReviewsController {
         return this.reviewsService.getReviewsByUserId(params.id)
     }
 
+    @Get()
+    getAll() {
+        return this.reviewsService.getAllReviews()
+    }
+
 
 }

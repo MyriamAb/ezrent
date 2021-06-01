@@ -25,4 +25,8 @@ export class ReviewsService {
     async getReviewsByUserId(id: number) {
         return await this.reviewsRepository.find({ reviewed_id: id })
     }
+
+    async getAllReviews() {
+        return await this.reviewsRepository.find();
+    }
 }

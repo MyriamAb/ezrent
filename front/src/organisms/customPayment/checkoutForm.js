@@ -76,6 +76,8 @@ export default function CheckoutForm() {
       setError(null);
       setProcessing(false);
       setSucceeded(true);
+      ///// SENDING CONFIRMATION MAIL ///////
+      fetch("http://localhost:5000/reservations/")
     }
   };
 

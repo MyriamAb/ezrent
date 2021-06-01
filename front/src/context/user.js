@@ -46,6 +46,7 @@ export function UserProvider({ children }) {
       })
     const [statusCode, setStatusCode] = useState("");
     const [userReviews, setUserReviews] = useState(null)
+    const [allReviews, setAllReviews] = useState(null)
     const [allUsers, setAllUsers] = useState(null)
     const [refresh, setRefresh] = useState(false)
 
@@ -287,6 +288,19 @@ export function UserProvider({ children }) {
         .then(response => response.json())
         .then(data => setAllUsers(data))
     }, [token, refresh])
+  
+    useEffect(() => {
+      fetch('http://localhost:5000/reviews/', {
+          method: "GET",
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+      })
+        .then(response => response.json())
+        .then(data => setAllReviews(data))
+      console.log(allReviews)
+    }, [token, refresh])
 /*   
   const getAllUsers = useCallback(() => {
       fetch('http://localhost:5000/users/', {
@@ -334,9 +348,9 @@ export function UserProvider({ children }) {
   
       return (
         <UserContext.Provider value={{
-          token, msg, user, userProfile, userReviews, allUsers,
+          token, msg, user, userProfile, userReviews, allUsers, allReviews,
           login, login_google, login_facebook, register, editProfile,
-          logout, sendResetEmail, reset_password, getUserbyId, postReviewFromClient
+          logout, sendResetEmail, reset_password, getUserbyId, postReviewFromClient,
         }}>
             {children}
         </UserContext.Provider>
