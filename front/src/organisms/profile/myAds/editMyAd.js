@@ -15,6 +15,7 @@ function EditMyAd(props) {
   var ownerId = ''
   const userContext = useUser()
   const [edit, setEdit] = useState(false)
+  const [adPictures, setAdPictures] = useState(() => [])
   const [data, setData] = useState({
     title:"",
     description:"",
@@ -75,6 +76,24 @@ function EditMyAd(props) {
     editForm(e,false)
   }
 
+  function fileUploadInputChange(e) {
+    e.preventDefault()
+    let reader = new FileReader();
+    reader.onload = function(e) {
+      console.log("image upload : ")
+      setAdPictures(prev => [...prev, e.target.result]);
+    };
+    reader.readAsDataURL(e.target.files[0]);
+  }
+  
+  function deleteChosenPic(e, index){
+    e.preventDefault()
+    var newdata = [...adPictures]
+    newdata.splice(index, 1);
+    console.log(newdata)
+    setAdPictures(newdata) 
+  }
+
   return (
     <div style={styles.container1}>
       <Container style={styles.container}>
@@ -94,11 +113,25 @@ function EditMyAd(props) {
             </Grid.Column>
           </Grid.Row>
           <Grid.Row>
+          <Grid.Column  width={3}>
+
+          </Grid.Column>
+          <Grid.Column  width={10}>
             <Image centered style={styles.image} src={'https://storage.googleapis.com/epc-photos/photo_5a1864ac-62a4-4a09-893a-6b5b85bc0d2d.png'} />
-            <ButtonImage
-        onChange={props.onChangeImage}
-        id={props.id}
-        />
+            </Grid.Column>
+            <Grid.Column  width={3}>
+              <ButtonImage onChange={(e) => fileUploadInputChange(e)} id="adPictures" />
+              coucou : 
+              {
+                adPictures.map((pic, index) => (
+                  <div>
+                    <Image src={pic} avatar />
+                    <span> Picture {index} </span>
+                    <Button onClick={(e) => deleteChosenPic(e, index)}> <Icon name='close' /> </Button>
+                  </div>
+                ))
+              }
+            </Grid.Column>
           </Grid.Row>
         </Grid>
        <Grid celled>
@@ -115,12 +148,12 @@ function EditMyAd(props) {
             <Grid.Column width={5}>
             <Item.Header as='h5'>  Availability : </Item.Header>
               <Grid.Row>
-                {`From : ${rental?.start?.slice(0,10)}`}
+                {`From : ${rental?.start?.slice(0,10)}`} <br/>
                 {`To :  ${rental?.end?.slice(0,10)}` }
-              </Grid.Row>:
+              </Grid.Row> <br/>
               <Grid.Row> 
                 <Item.Header as='h5'>Price per day:</Item.Header>
-                  {rental?.price }
+                  $ {rental?.price }
               </Grid.Row>
             </Grid.Column>
           </Grid.Row>
