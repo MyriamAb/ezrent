@@ -128,6 +128,7 @@ export default function CheckoutForm() {
       setProcessing(false);
       setSucceeded(true);
       userContext.sendPaymentEmail();
+      reservationsContext.editRes(id, "RESERVATION COMPLETED")
     }
   };
 
