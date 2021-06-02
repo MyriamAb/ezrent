@@ -18,8 +18,8 @@ export class RentalController {
     }
 
     @Post()
-    @UseGuards(JwtAuthGuard)
-    async postRental(@Body() rental: Rental) {
+/*     @UseGuards(JwtAuthGuard)
+ */    async postRental(@Body() rental: Rental) {
         const postedRental= await this.service.postRental(rental);
         return {
             statusCode: HttpStatus.OK,
@@ -29,8 +29,8 @@ export class RentalController {
     }
 
     @Patch(':id')
-    @UseGuards(JwtAuthGuard)
-    async update(@Param() params,
+/*     @UseGuards(JwtAuthGuard)
+ */    async update(@Param() params,
            @Body() rental: Rental) {
         const updatedRental = await this.service.updateRent(params.id, rental);
         return {
@@ -41,8 +41,8 @@ export class RentalController {
     }
 
     @Delete(':id')
-    @UseGuards(JwtAuthGuard)
-    deleteRent(@Param() params) {
+/*     @UseGuards(JwtAuthGuard)
+ */    deleteRent(@Param() params) {
         return this.service.deleteRental(params.id)
     }
 }

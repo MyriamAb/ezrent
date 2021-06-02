@@ -10,8 +10,8 @@ export class PicturesController {
     constructor(private picturesService: PicturesService) { }
     
     @Post()
-    @UseGuards(JwtAuthGuard)
-    async post(
+/*     @UseGuards(JwtAuthGuard)
+ */    async post(
         @Body('image_name') pictureName: string,
         @Body('image_blob') pictureBlob: BinaryType,
         @Body('rental_id') pictureRental: number,
@@ -34,8 +34,8 @@ export class PicturesController {
     }
 
     @Delete(':id')
-    @UseGuards(JwtAuthGuard)
-    deletePicture(@Param() params) {
+/*     @UseGuards(JwtAuthGuard)
+ */    deletePicture(@Param() params) {
         const picture = this.picturesService.deletePicture(params.id)
         return {
             statusCode: HttpStatus.OK,

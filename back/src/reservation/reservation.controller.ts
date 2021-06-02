@@ -19,8 +19,8 @@ export class ReservationController {
     }
 
     @Post()
-    @UseGuards(JwtAuthGuard)
-    async postReservation(@Body() reservation: Reservation) {
+/*     @UseGuards(JwtAuthGuard)
+ */    async postReservation(@Body() reservation: Reservation) {
         const postedReservation= await this.service.postReservation(reservation);
         return {
             statusCode: HttpStatus.OK,
@@ -30,8 +30,8 @@ export class ReservationController {
     }
 
     @Patch(':id')
-    @UseGuards(JwtAuthGuard)
-    async update(@Param() params,
+/*     @UseGuards(JwtAuthGuard)
+ */    async update(@Param() params,
            @Body() reservation: Reservation) {
         const updatedReservation = await this.service.updateReservation(params.id, reservation);
         return {
@@ -42,8 +42,8 @@ export class ReservationController {
     }
 
     @Delete(':id')
-    @UseGuards(JwtAuthGuard)
-    deleteRent(@Param() params) {
+/*     @UseGuards(JwtAuthGuard)
+ */    deleteRent(@Param() params) {
         return this.service.deleteReservation(params.id)
     }
 }
