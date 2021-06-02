@@ -195,7 +195,6 @@ export function RentalsProvider({ children }) {
   }
 
   function selectRentalsByActivities(id, tab){
-    console.log("entree rental by activities : ")
     var result = []
     tab.forEach(filter =>{
       activities.forEach(element => {
@@ -238,25 +237,36 @@ export function RentalsProvider({ children }) {
     }
   }
 
+  function deletePictures(idPicture) {
+    fetch('http://localhost:5000/pictures/' + idPicture, {
+      method: "DELETE",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      },
+    })
+    .then(refreshFct())
+  }
+
   function refreshFct(){
     setRefresh(prev => (!prev))
   }
 
   function picturesById(id){
     var pic = pictures.filter(element => element.rental_id === parseInt(id))
-    /* if(pic && pic !== null && pic.length>0){
+    if(pic && pic !== null && pic.length>0){
       for(var i=0 ; i<pic.length;i++){
         if(pic[i].image_blob && pic[i].image_blob !== null )
-          pic[i].image_blob = (new Buffer.from(pic[i].image_blob.data,'base64').toString())
+          pic[i].blob = new Buffer.from(pic[i].image_blob.data,'base64').toString()
       }
-    } */
-    console.log(pic)
+    }
     return pic
   }
   
   return (
-    <RentalsContext.Provider value={{allRentals, activities, resultSearch, address, ad, postPictures, pictures, getRental, getMyRentals, getRentalById, postAd, search, searchAddress,
-       editRentals, selectRentalsByActivities, postActivities, picturesById }}>
+    <RentalsContext.Provider value={{allRentals, activities, resultSearch, address, ad, refresh, postPictures, getRental, getMyRentals, getRentalById, postAd, search, searchAddress,
+       editRentals, selectRentalsByActivities, postActivities, deletePictures, picturesById }}>
         {children}
     </RentalsContext.Provider>
   )

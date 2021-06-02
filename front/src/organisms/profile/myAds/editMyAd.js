@@ -101,6 +101,11 @@ function EditMyAd(props) {
     setAdPictures(newdata) 
   }
 
+  function deletePicDb(e, index){
+    e.preventDefault()
+    rentalsContext.deletePictures(index)
+  }
+
   return (
     <div style={styles.container1}>
       <Container style={styles.container}>
@@ -121,14 +126,18 @@ function EditMyAd(props) {
           </Grid.Row>
           <Grid.Row>
           <Grid.Column  width={3}>
-            Picture already posted : 
-          {
-            beforeAdPic.map((pic, index) => (
+            Picture posted : 
+            {beforeAdPic.map((pic, index) => (
+            edit ===false ?
               <div>
-                <Image src={pic} avatar />
+                <Image src={pic.blob} avatar />
                 <span> Picture {index} </span>
-{/*                 <Button onClick={(e) => deletePicDb(e, index)}> <Icon name='close' /> </Button>
- */}              </div>
+              </div>:
+              <div>
+                <Image src={pic.blob} avatar />
+                <span> Picture {index} </span>
+                <Button onClick={(e) => deletePicDb(e, pic.id)}> <Icon name='close' /> </Button>
+              </div>
             ))
           }
           </Grid.Column>
