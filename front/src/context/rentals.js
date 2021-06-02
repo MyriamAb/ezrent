@@ -16,7 +16,7 @@ export function RentalsProvider({ children }) {
   const [activities, setActivities] = useState(null)
   const [refresh, setRefresh] = useState(false);
   const [msg, setMsg]= useState({editAdOK:""})
-  const [pictures, setPictures] = useState()
+  const [pictures, setPictures] = useState([])
 
 
   useEffect(()=> {
@@ -41,7 +41,7 @@ export function RentalsProvider({ children }) {
       })
         .then(response => response.json())
         .then(data => setPictures(data))
-  }, [])
+  }, [refresh])
 
   useEffect(()=> {
     fetch('http://localhost:5000/activity', {
@@ -218,32 +218,45 @@ export function RentalsProvider({ children }) {
   }
 
   function postPictures(data, adPics) {
-        for ( let i = 0; i < adPics.length; i++ ) {
-      fetch('http://localhost:5000/pictures', {
-        method: "POST",
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + token
-        },
-        body: JSON.stringify({
-          image_name: 'cla',
-          rental_id: data?.data.id,
-          image_blob: adPics[i]
-        })
+    for ( let i = 0; i < adPics.length; i++ ) {
+    fetch('http://localhost:5000/pictures', {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      },
+      body: JSON.stringify({
+        image_name: data.image_name + '_' 
+        +  Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
+        rental_id: data?.data.id,
+        image_blob: adPics[i]
       })
-      .then(response => response.json())
-      .then(res => setPictures(res))
+    })
+    .then(response => response.json())
+    .then(refreshFct())
     }
   }
 
-function refreshFct(){
+  function refreshFct(){
     setRefresh(prev => (!prev))
+  }
+
+  function picturesById(id){
+    var pic = pictures.filter(element => element.rental_id === parseInt(id))
+    /* if(pic && pic !== null && pic.length>0){
+      for(var i=0 ; i<pic.length;i++){
+        if(pic[i].image_blob && pic[i].image_blob !== null )
+          pic[i].image_blob = (new Buffer.from(pic[i].image_blob.data,'base64').toString())
+      }
+    } */
+    console.log(pic)
+    return pic
   }
   
   return (
     <RentalsContext.Provider value={{allRentals, activities, resultSearch, address, ad, postPictures, pictures, getRental, getMyRentals, getRentalById, postAd, search, searchAddress,
-       editRentals, selectRentalsByActivities, postActivities }}>
+       editRentals, selectRentalsByActivities, postActivities, picturesById }}>
         {children}
     </RentalsContext.Provider>
   )

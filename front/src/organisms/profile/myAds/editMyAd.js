@@ -24,6 +24,7 @@ function EditMyAd(props) {
     start:"",
     end:""
   })
+  const beforeAdPic = rentalsContext.picturesById(id)
 
   useEffect(() => {
     const res = rentals?.find(element => element.id == id) 
@@ -73,6 +74,12 @@ function EditMyAd(props) {
   function editAd(e){
     console.log("entrée edit : "); console.log(data)
     rentalsContext.editRentals(id, data)
+    if(adPictures.length>0){
+        rentalsContext.postPictures({
+          image_name: 'rental'+ id,
+          data: {id: id},
+        }, adPictures)
+    }
     editForm(e,false)
   }
 
@@ -114,22 +121,35 @@ function EditMyAd(props) {
           </Grid.Row>
           <Grid.Row>
           <Grid.Column  width={3}>
-
+            Picture already posted : 
+          {
+            beforeAdPic.map((pic, index) => (
+              <div>
+                <Image src={pic} avatar />
+                <span> Picture {index} </span>
+{/*                 <Button onClick={(e) => deletePicDb(e, index)}> <Icon name='close' /> </Button>
+ */}              </div>
+            ))
+          }
           </Grid.Column>
           <Grid.Column  width={10}>
             <Image centered style={styles.image} src={'https://storage.googleapis.com/epc-photos/photo_5a1864ac-62a4-4a09-893a-6b5b85bc0d2d.png'} />
             </Grid.Column>
             <Grid.Column  width={3}>
-              <ButtonImage onChange={(e) => fileUploadInputChange(e)} id="adPictures" />
-              coucou : 
-              {
-                adPictures.map((pic, index) => (
-                  <div>
-                    <Image src={pic} avatar />
-                    <span> Picture {index} </span>
-                    <Button onClick={(e) => deleteChosenPic(e, index)}> <Icon name='close' /> </Button>
-                  </div>
-                ))
+              {edit ===false ?
+              "":
+              <div>
+                <ButtonImage onChange={(e) => fileUploadInputChange(e)} id="adPictures" />
+                New pictures : 
+                {adPictures.map((pic, index) => (
+                    <div>
+                      <Image src={pic} avatar />
+                      <span> Picture {index} </span>
+                      <Button onClick={(e) => deleteChosenPic(e, index)}> <Icon name='close' /> </Button>
+                    </div>
+                  ))
+                }
+              </div>
               }
             </Grid.Column>
           </Grid.Row>
