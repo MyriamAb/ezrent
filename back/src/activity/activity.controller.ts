@@ -18,8 +18,8 @@ export class ActivityController {
     }
 
     @Post()
-/*     @UseGuards(JwtAuthGuard)
- */    async postActivity(@Body() activity: Activity){
+    @UseGuards(JwtAuthGuard)
+    async postActivity(@Body() activity: Activity){
         const postedActivity= await this.service.postActivity(activity);
         return {
             statusCode: HttpStatus.OK,
@@ -29,8 +29,8 @@ export class ActivityController {
     }
     
     @Delete(':id')
-/*     @UseGuards(JwtAuthGuard)
- */    deleteActivity(@Param() params) {
+    @UseGuards(JwtAuthGuard)
+    deleteActivity(@Param() params) {
         return this.service.deleteActivity(params.id)
     }
 }

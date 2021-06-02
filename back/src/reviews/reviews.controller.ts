@@ -9,8 +9,8 @@ export class ReviewsController {
     constructor(private reviewsService: ReviewsService) { }
 
     @Post()
-/*     @UseGuards(JwtAuthGuard)
- */    async post(
+    @UseGuards(JwtAuthGuard)
+    async post(
         @Body('grade') reviewGrade: number,
         @Body('comment') reviewComment: string,
         @Body('reviewed_id') reviewedId: number,

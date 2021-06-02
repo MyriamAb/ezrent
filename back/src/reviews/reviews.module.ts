@@ -14,6 +14,7 @@ import { jwtConstants } from '../auth/constants';
   }),
   ],
   providers: [ReviewsService],
-  controllers: [ReviewsController, JwtModule]
+  controllers: [ReviewsController],
+  exports: [JwtModule]
 })
 export class ReviewsModule {}

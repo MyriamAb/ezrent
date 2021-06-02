@@ -59,7 +59,7 @@ export class UsersController {
     }
 
     @Patch(':id')
-    /* @UseGuards(JwtAuthGuard) */
+    @UseGuards(JwtAuthGuard)
     async update(
         @Param('id') userId: number,
         @Body('name') userName: string,
@@ -94,7 +94,7 @@ export class UsersController {
     }
 
     @Delete(':id')
-    /* @UseGuards(JwtAuthGuard) */
+    @UseGuards(JwtAuthGuard)
     deleteUser(@Param('id') userId: number) {
         const user = this.usersService.deleteUser(userId);
         return {

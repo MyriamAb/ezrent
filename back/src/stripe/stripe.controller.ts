@@ -12,8 +12,8 @@ export class PaymentController {
 /*   @UsePipes(new ValidationPipe({ whitelist: true }))
  */
   @Post('/create-payment-intent')
-/*   @UseGuards(JwtAuthGuard)
- */  create(
+  @UseGuards(JwtAuthGuard)
+  create(
     @Body() paymentCreateDto: PaymentCreateDto)
   {
     console.log ('post controller')
