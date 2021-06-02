@@ -15,7 +15,6 @@ export function RentalsProvider({ children }) {
   const [resultSearch, setResultSearch] = useState(null)
   const [activities, setActivities] = useState(null)
   const [pictures, setPictures] = useState()
-  const [picture, setPicture] = useState()
 
 
   useEffect(()=> {
@@ -30,31 +29,17 @@ export function RentalsProvider({ children }) {
           .then(data => setAllRentals(data))
   }, []);
 
-  async function getPicture(rental_id) {
-    await fetch('http://localhost:5000/pictures/'+ rental_id, 
-    {
-      method: "get",
-        headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-        }
-    })
-        .then(response => response.json())
-        .then(data => setPicture(data))
-        return picture
-  }
-
   useEffect(()=> {
     fetch('http://localhost:5000/pictures', {
-      method: "get",
+      method: "GET",
        headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
-      },
+        }
       })
         .then(response => response.json())
         .then(data => setPictures(data))
-  }, [allRentals])
+  }, [])
 
   function postAd (data, adPics) {
     setDataAd(data)
@@ -204,7 +189,7 @@ export function RentalsProvider({ children }) {
   }
   
   return (
-    <RentalsContext.Provider value={{allRentals, activities, resultSearch, getRental, getMyRentals, getRentalById, postAd, search, searchAddress, address, ad, postPictures, postActivities, pictures, picture, getPicture }}>
+    <RentalsContext.Provider value={{allRentals, activities, resultSearch, getRental, getMyRentals, getRentalById, postAd, search, searchAddress, address, ad, postPictures, postActivities, pictures }}>
         {children}
     </RentalsContext.Provider>
   )

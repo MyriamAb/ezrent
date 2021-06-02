@@ -19,26 +19,14 @@ export class PaymentService {
     console.log(customer)
     return customer.id;
   }
-
-   /* async paymentInfo({}) {
-    const paymentMethod = await this.stripeClient.confimCardPayment(clientSecret,{
-      type: 'card',
-      card: {
-        number: '4242424242424242',
-        exp_month: 5,
-        exp_year: 2022,
-        cvc: '314',
-      }
-    })
-     return paymentMethod
-  } */
      
   async create(stripe) {
+    console.log('enter create back')
+    const amount = stripe.items[0].nbDay * stripe.items[0].price * 100
+    console.log(amount)
     const paymentIntent = await this.stripeClient.paymentIntents.create({
-      amount: 10000,
-      currency: "usd",
-/*       payment_method_types: ["card"]
- */    
+      amount: amount,
+      currency: 'eur'
     });
     ({
       clientSecret: paymentIntent.client_secret

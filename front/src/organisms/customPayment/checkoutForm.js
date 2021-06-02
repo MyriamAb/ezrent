@@ -1,9 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
+import {useParams} from 'react-router'
 import {
   CardElement,
   useStripe,
   useElements
 } from "@stripe/react-stripe-js";
+import '../../styles/stylesPayment.css';
+import { Header } from 'semantic-ui-react'
+import useReservations from '../../context/reservation'
+
+
 
 export default function CheckoutForm() {
   const [succeeded, setSucceeded] = useState(false);
@@ -13,27 +19,67 @@ export default function CheckoutForm() {
   const [clientSecret, setClientSecret] = useState('');
   const stripe = useStripe();
   const elements = useElements();
-
-  useEffect(() => {
-    // Create PaymentIntent as soon as the page loads
-    window
-      .fetch("http://localhost:5000/create-payment-intent", {
-        method: "POST",
-        headers: {
-
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({items: [{ id: "xl-tshirt" }]})
-      })
-      .then(res => {
-        return res.json();
-      })
-      .then(data => {
-        setClientSecret(data.client_secret);
-      });
-  }, []);
+  const { id } = useParams();
+  const reservationsContext = useReservations()
+  const reservation = reservationsContext?.reservation ?? null
   
-  console.log(clientSecret);
+  useEffect(() => {
+    reservationsContext?.getReservation(id)
+    dayNumber()
+  }, [id])
+  console.log(reservation[0]?.price)
+
+  const dayNumber = useCallback(() => {
+    function datediff(start, end) {
+      if (start === null || end === null || start === undefined || end === undefined)
+          return
+        return Math.round((end-start)/(1000 * 60 * 60 * 24));
+    }
+    function parseDate(str) {
+      if (str === null || str === undefined)
+        return
+      var mdy = str.split('-');
+      return new Date(mdy[0], mdy[1]-1, mdy[2]); 
+    }
+    if (datediff === null || datediff === undefined || parseDate === null || parseDate === undefined)
+        return
+
+      const nbDay= datediff(parseDate(reservation[0]?.start.slice(0,10)), parseDate(reservation[0]?.end.slice(0,10)))
+  
+      console.log(nbDay)
+      return nbDay
+    
+    
+  },[reservation])
+  
+  useEffect(() => {
+    if (reservation[0]) {
+      window
+        .fetch("http://localhost:5000/create-payment-intent", {
+          method: "POST",
+          headers: {
+  
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            items: [{
+              id: reservation[0]?.id,
+              price: parseFloat(reservation[0]?.price),
+              nbDay: dayNumber()
+            }]
+          })
+        })
+        .then(res => {
+          return res.json();
+        })
+        .then(data => {
+          setClientSecret(data.client_secret);
+        });
+    }
+    // Create PaymentIntent as soon as the page loads
+  }, [reservation, dayNumber]);
+  
+  
   const cardStyle = {
     style: {
       base: {
@@ -80,30 +126,36 @@ export default function CheckoutForm() {
   };
 
   return (
-    <form id="payment-form" onSubmit={handleSubmit}>
-      <CardElement id="card-element" options={cardStyle} onChange={handleChange} />
-      <button
-        disabled={processing || disabled || succeeded}
-        id="submit"
-      >
-        <span id="button-text">
-          {processing ? (
-            <div className="spinner" id="spinner"></div>
-          ) : (
-            "Pay now"
-          )}
-        </span>
-      </button>
-      {/* Show any error that happens when processing the payment */}
-      {error && (
-        <div className="card-error" role="alert">
-          {error}
-        </div>
-      )}
-      {/* Show a success message upon completion */}
-      <p className={succeeded ? "result-message" : "result-message hidden"}>
-        Payment succeeded
-      </p>
-    </form>
+    <div>
+    <Header>         
+      Payment Checkout
+    </Header>
+   
+      <form id="payment-form" onSubmit={handleSubmit}>
+        <CardElement id="card-element" options={cardStyle} onChange={handleChange} />
+        <button
+          disabled={processing || disabled || succeeded}
+          id="submit"
+        >
+          <span id="button-text">
+            {processing ? (
+              <div className="spinner" id="spinner"></div>
+            ) : (
+              "Pay now"
+            )}
+          </span>
+        </button>
+        {/* Show any error that happens when processing the payment */}
+        {error && (
+          <div className="card-error" role="alert">
+            {error}
+          </div>
+        )}
+        {/* Show a success message upon completion */}
+        <p className={succeeded ? "result-message" : "result-message hidden"}>
+          Payment succeeded
+        </p>
+        </form>
+    </div>
   );
 }

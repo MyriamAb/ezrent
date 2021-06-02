@@ -52,7 +52,7 @@ export default function InProcessAds(){
                                                 <Button.Or />
                                                 <RefuseClient reservationId={reservation.id} clientName={userContext.getUserbyId(reservation.client_id)["name"]}/>
                                             </Button.Group> :
-                                            reservation.status === "WAITING FOR CLIENT'S PAIEMENT" ?
+                                            reservation.status === "WAITING FOR CLIENT'S PAYMENT" ?
                                             <Icon color='green' name='wait' size='big'/>:
                                             reservation.status === "REFUSED" || reservation.status === "CANCELLED" ?
                                             <Icon color='red' name='close' size='big'/> :

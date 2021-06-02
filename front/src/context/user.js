@@ -169,7 +169,7 @@ export function UserProvider({ children }) {
     }, [token]);
 
     useEffect(()=> {
-      if(!user || user === null || user.statusCode == 401)
+      if(!user || user === null || user.statusCode === 401)
         return
       fetch('http://localhost:5000/users/' + user.id, {
           method: "get",
