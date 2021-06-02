@@ -9,6 +9,7 @@ import RatingType from '../atoms/rate'
 import { useEffect, useState} from 'react'
 import ButtonType from '../atoms/button'
 import useUser from '../context/user'
+
 /* import PaymentMethod from '../organisms/customPayment/paymentMethod'
  */
 function AdDetails(props) {
@@ -16,28 +17,30 @@ function AdDetails(props) {
   const rentalsContext = useRentals()
   const reservationContext = useReservations()
   var rentals = rentalsContext?.allRentals ?? null;
+  var pictures = rentalsContext?.pictures ?? null
   const [rental, setRental] = useState({})
   const { id } = useParams()
   var ownerId = ''
   const userContext = useUser()
   const [user, setUser] = useState({})
-  const [ price, setPrice] = useState('0')
+  const [picture, setPicture] = useState('')
   const [ valueCalendar, onChangeCalendar ] = useState(new Date())
-  let changePrice = (newPrice) => {
-    setPrice( newPrice )
-  }
 
-
-  
   useEffect(() => {
     const res = rentals?.find(element => element.id == id) 
     setRental(res)
-    
+    const pic = pictures?.find(element => element.rental_id == id)
+    setPicture(
+      pic?.image_blob === null ||  pic?.image_blob === undefined ? 
+                        "/noPicture.png":
+    typeof(pic?.image_blob) === 'string' ?
+    pic?.image_blob :
+    new Buffer.from(pic?.image_blob.data,'base64').toString())
       if (res === null || res === undefined)
         return
        ownerId = res.owner_id
 
-  }, [id, rentals, ownerId, userContext])
+  }, [id, rentals, ownerId, userContext, pictures])
   
   useEffect(() => {
     const userInfo = userContext?.getUserbyId(ownerId)
@@ -48,9 +51,7 @@ function AdDetails(props) {
     setUser(userInfo)
   }, [userContext.getUserbyId, userContext, ownerId])
   
-
   function book() {
-    console.log(rental);
     reservationContext.addReservation(rental);
     alert("You have booked this location, you'll be notified when the owner check your reservation")
   }
@@ -84,7 +85,7 @@ function AdDetails(props) {
   var EndDate = new Date(rental?.end)
   var realEndDate = EndDate?.setDate(EndDate?.getDate()+1)
    disabledDates = getDates(new Date(), new Date(rental?.start), getDates(new Date(realEndDate), new Date(2025, 0, 1)))                                                                                                          
-
+  
 
   return (
     <div style={styles.container1}>
@@ -100,7 +101,7 @@ function AdDetails(props) {
             </Grid.Column>
           </Grid.Row>
           <Grid.Row>
-            <Image centered style={styles.image} src={'https://storage.googleapis.com/epc-photos/photo_5a1864ac-62a4-4a09-893a-6b5b85bc0d2d.png'} />
+            <Image centered style={styles.image} src={picture} />
           </Grid.Row>
         </Grid>
        <Grid celled>

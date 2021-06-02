@@ -16,6 +16,8 @@ export function RentalsProvider({ children }) {
   const [activities, setActivities] = useState(null)
   const [refresh, setRefresh] = useState(false);
   const [msg, setMsg]= useState({editAdOK:""})
+  const [pictures, setPictures] = useState()
+
 
   useEffect(()=> {
       fetch('http://localhost:5000/rentals', {
@@ -30,6 +32,18 @@ export function RentalsProvider({ children }) {
   }, [refresh]);
 
   useEffect(()=> {
+    fetch('http://localhost:5000/pictures', {
+      method: "GET",
+       headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+        }
+      })
+        .then(response => response.json())
+        .then(data => setPictures(data))
+  }, [])
+
+  useEffect(()=> {
     fetch('http://localhost:5000/activity', {
       method: "get",
        headers: {
@@ -41,7 +55,8 @@ export function RentalsProvider({ children }) {
         .then(data => setActivities(data))
   }, [allRentals, refresh]);
 
-  function postAd (data) {
+
+  function postAd (data, adPics) {
     setDataAd(data)
     fetch('http://localhost:5000/rentals', {
       method: "POST",
@@ -64,12 +79,11 @@ export function RentalsProvider({ children }) {
       })
     })
     .then(response=>response.json())
-    .then(res=>setAd(res))
+    .then(res=>(setAd(res), postPictures(res, adPics), postActivities(res, data)))
   }
 
   // Add services to db activities
-  useEffect(()=>{
-    if (ad && dataAd) {
+    function postActivities (res, data) {
       var vacation = false
       var party = false
       var photo_shooting = false
@@ -77,8 +91,7 @@ export function RentalsProvider({ children }) {
       var seminaries = false
       var business_trip = false
       var other = false
-
-      dataAd.services?.forEach(element => {
+      data.services.forEach(element => {
         if (String(element) === 'Vacation') {
           return vacation = true
         }
@@ -109,7 +122,7 @@ export function RentalsProvider({ children }) {
           'Authorization': 'Bearer ' + token
         },
         body: JSON.stringify({
-          rental_id: ad?.data?.id,
+          rental_id: res?.data?.id,
           vacation: vacation,
           party: party,
           photo_shooting: photo_shooting,
@@ -122,7 +135,6 @@ export function RentalsProvider({ children }) {
       .then(response => response.json())
       .then(data => setAllRentals(data))
     }
-  }, [dataAd, ad])
 
   async function getRental(id) {
     fetch('http://localhost:5000/rentals/' +id, {
@@ -205,12 +217,33 @@ export function RentalsProvider({ children }) {
     setResultSearch(result)
   }
 
-  function refreshFct(){
+  function postPictures(data, adPics) {
+        for ( let i = 0; i < adPics.length; i++ ) {
+      fetch('http://localhost:5000/pictures', {
+        method: "POST",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify({
+          image_name: 'cla',
+          rental_id: data?.data.id,
+          image_blob: adPics[i]
+        })
+      })
+      .then(response => response.json())
+      .then(res => setPictures(res))
+    }
+  }
+
+function refreshFct(){
     setRefresh(prev => (!prev))
   }
   
   return (
-    <RentalsContext.Provider value={{allRentals, activities, resultSearch, getRental, getMyRentals, getRentalById, postAd, search, searchAddress, editRentals, selectRentalsByActivities, address }}>
+    <RentalsContext.Provider value={{allRentals, activities, resultSearch, address, ad, postPictures, pictures, getRental, getMyRentals, getRentalById, postAd, search, searchAddress,
+       editRentals, selectRentalsByActivities, postActivities }}>
         {children}
     </RentalsContext.Provider>
   )

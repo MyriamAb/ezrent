@@ -19,7 +19,6 @@ export class UsersController {
         ) {
         console.log('postcontroller')
         try {
-            
             const stripeCustomerId = await this.paymentService.createStripeCustomer();
             console.log(stripeCustomerId)
             const confirmationCode = this.usersService.createEmailToken();

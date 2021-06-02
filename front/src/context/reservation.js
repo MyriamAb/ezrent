@@ -5,7 +5,7 @@ const ReservationsContext = createContext();
 export function ReservationsProvider({ children }) {
   const userContext = useUser();
   const [allReservations, setAllReservations] = useState(null)
-  const [Reservation, setReservation]= useState(null)
+  const [reservation, setReservation]= useState([])
   const [refresh, setRefresh] = useState(false);
 
   useEffect(()=> {
@@ -20,7 +20,7 @@ export function ReservationsProvider({ children }) {
           .then(data => setAllReservations(data))
   }, [refresh]);
 
-  function getReservation(id) {
+  async function getReservation(id) {
     console.log('entre context')
     fetch('http://localhost:5000/reservations/' + id, {
       method: "get",
@@ -30,7 +30,8 @@ export function ReservationsProvider({ children }) {
       },
     })
       .then(response => response.json())
-      .then(data => setReservation(data)) 
+      .then(data => setReservation(data))
+    
   }
 
   function addReservation(data) {
@@ -48,7 +49,7 @@ export function ReservationsProvider({ children }) {
         "client_id": userContext.user.id,
         "client_review": false,
         "price": data.price,
-        "status": "Pending",
+        "status": "WAITING FOR OWNER'S APPROVAL",
         "rental_id": data.id
       })
     })
@@ -113,7 +114,7 @@ export function ReservationsProvider({ children }) {
     <ReservationsContext.Provider value={{
       allReservations, getReservation, getMyReservations,
       getReservationsByRental, editRes, addReservation,
-      updateReservationReview
+      updateReservationReview, reservation
     }}>
         {children}
     </ReservationsContext.Provider>
