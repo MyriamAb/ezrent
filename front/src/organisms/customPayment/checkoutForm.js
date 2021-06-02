@@ -61,7 +61,6 @@ export default function CheckoutForm() {
         .fetch("http://localhost:5000/create-payment-intent", {
           method: "POST",
           headers: {
-  
             "Content-Type": "application/json",
             'Authorization': 'Bearer ' + userContext.token
           },
