@@ -202,6 +202,31 @@ export class UsersService {
         }
         return user;
     }
+
+    async sendPaymentMail(name, email) {
+        const Nodemailer = require("nodemailer");
+        process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
+        const transport = Nodemailer.createTransport({
+            host: "smtp.mailtrap.io",
+            port: 2525,
+            auth: {
+                user: "a4d15c48ccd1ba",
+                pass: "fe7ca2d17c37c4"
+            }
+        });
+        console.log("Check");
+        transport.sendMail({
+            from: "GIRLPOWER",
+            to: email,
+            subject: "Payment Confirmation",
+            html: `<h1>Payment confirmation</h1>
+            <h2>Hello ${name}</h2>
+            <p>Your payment for your reservation has been successful, you can find your bill on the link below !<p>
+            <a href=http://google.com> Click here</a>
+            </div>`,
+        }).catch(err => console.log(err));
+    }
     
     /* async updateStripe(
         userId: string,

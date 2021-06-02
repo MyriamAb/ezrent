@@ -141,4 +141,16 @@ export class UsersController {
         }
     }
 
+    @Post('paymentmail/')
+    async sendPaymentMail(
+        @Body('name') userName: string,
+        @Body('email') userEmail: string,
+    ) {
+        const user = await this.usersService.sendPaymentMail(
+            userName,
+            userEmail
+        )
+        
+    }
+
 }

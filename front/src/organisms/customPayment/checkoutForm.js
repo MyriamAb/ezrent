@@ -8,7 +8,7 @@ import {
 import '../../styles/stylesPayment.css';
 import { Container, Header, Segment, SegmentGroup } from 'semantic-ui-react'
 import useReservations from '../../context/reservation'
-
+import useUser from '../../context/user'
 
 
 export default function CheckoutForm() {
@@ -22,6 +22,7 @@ export default function CheckoutForm() {
   const { id } = useParams();
   const reservationsContext = useReservations()
   const reservation = reservationsContext?.reservation ?? null
+  const userContext = useUser()
   
   useEffect(() => {
     reservationsContext?.getReservation(id)
@@ -124,6 +125,7 @@ export default function CheckoutForm() {
       setError(null);
       setProcessing(false);
       setSucceeded(true);
+      userContext.sendPaymentEmail();
     }
   };
 
