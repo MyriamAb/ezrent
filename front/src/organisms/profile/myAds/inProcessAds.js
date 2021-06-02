@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react'
+import {Link} from "react-router-dom";
 import { Grid, Segment, Header, Button, Icon } from 'semantic-ui-react'
 import useRentals from '../../../context/rentals'
 import useUser from '../../../context/user'
@@ -26,15 +27,17 @@ export default function InProcessAds(){
                 myRentals.map((rent, ind)=>(
                     (parseDate(rent.end).getTime() >= today_date.getTime()) && 
                     <Grid.Column  key={ind}> 
-                        <Header as='h3' block attached='top'>{rent.title}</Header>
-                        <Segment attached>
+                        <Segment inverted tertiary block attached='top'>
                             <Grid>
                                 <Grid.Row >
-                                    <Grid.Column width={9}>
+                                    <Grid.Column width={11}>
+                                        {rent.title}<br/>
                                         <i class="map marker icon"></i>{rent.address}
                                     </Grid.Column>
-                                    <Grid.Column width={7}>
-                                        <a href={"/myads/" + rent.id}>Details</a>
+                                    <Grid.Column width={5}>
+                                        <Link to={"/myads/" + rent.id}>
+                                            <Button>See and edit your ad</Button>   
+                                        </Link>
                                     </Grid.Column>
                                 </Grid.Row>
                             </Grid>

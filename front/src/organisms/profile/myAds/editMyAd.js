@@ -4,6 +4,7 @@ import useRentals from "../../../context/rentals"
 import useReservations from '../../../context/reservation'
 import { useParams } from "react-router"
 import useUser from '../../../context/user'
+import ButtonImage from '../../../atoms/buttonImage'
 
 function EditMyAd(props) {
   const rentalsContext = useRentals()
@@ -94,6 +95,10 @@ function EditMyAd(props) {
           </Grid.Row>
           <Grid.Row>
             <Image centered style={styles.image} src={'https://storage.googleapis.com/epc-photos/photo_5a1864ac-62a4-4a09-893a-6b5b85bc0d2d.png'} />
+            <ButtonImage
+        onChange={props.onChangeImage}
+        id={props.id}
+        />
           </Grid.Row>
         </Grid>
        <Grid celled>
