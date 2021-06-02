@@ -12,23 +12,26 @@ import ButtonType from '../atoms/button'
 import useUser from '../context/user'
 
 /* import PaymentMethod from '../organisms/customPayment/paymentMethod'
- */
+*/
+let tmpbook = []
 function AdDetails(props) {
   var disabledDates = []
   const rentalsContext = useRentals()
   const reservationContext = useReservations()
-  var rentals = rentalsContext?.allRentals ?? null;
+  var rentals = rentalsContext?.allRentals ?? null
   var pictures = rentalsContext?.pictures ?? null
+  var reservations = reservationContext?.allReservations ?? null
   const [rental, setRental] = useState({})
   const { id } = useParams()
   var ownerId = ''
   const userContext = useUser()
   const [user, setUser] = useState({})
   const [picture, setPicture] = useState('')
-  const [ price, setPrice] = useState(0)
+  const [resa, setResa] = useState([])
+  const [price, setPrice] = useState(0)
   const [valueCalendar, onChangeCalendar] = useState(new Date())
   const [duration, setDuration] = useState(null)
-  
+
   useEffect(() => {
     const res = rentals?.find(element => element.id == id) 
     setRental(res)
@@ -42,9 +45,16 @@ function AdDetails(props) {
       if (res === null || res === undefined)
         return
        ownerId = res.owner_id
-
-  }, [id, rentals, ownerId, userContext, pictures])
-  
+      }, [id, rentals, ownerId, userContext, pictures])
+      
+      useEffect(() => {
+        for (let i=0; i < reservations?.length; i++) {
+          if(reservations[i].rental_id == id && reservations[i].status == 'RESERVATION COMPLETED'){
+            tmpbook.push({start: reservations[i].start, end:reservations[i].end, id:reservations[i].id })
+            setResa(tmpbook)
+           }
+         }
+        },[reservations])
   useEffect(() => {
     const userInfo = userContext?.getUserbyId(ownerId)
 
@@ -65,7 +75,8 @@ function AdDetails(props) {
   }, [duration])
 
   function book() {
-    reservationContext.addReservation(rental);
+    reservationContext.addReservation(rental)
+    console.log(rental)
     alert("You have booked this location, you'll be notified when the owner check your reservation")
   }
 
@@ -101,8 +112,14 @@ function AdDetails(props) {
     }
   var EndDate = new Date(rental?.end)
   var realEndDate = EndDate?.setDate(EndDate?.getDate()+1)
-   disabledDates = getDates(new Date(), new Date(rental?.start), getDates(new Date(realEndDate), new Date(2025, 0, 1)))                                                                                                          
-  
+   if (resa?.length > 0 ) {
+     for (let i = 0; i<resa.length; i++){
+       disabledDates = getDates(new Date(), new Date(rental?.start), getDates(new Date(resa[i]?.start), new Date(resa[i]?.end)), getDates(new Date(realEndDate), new Date(2025, 0, 1)))                                                                                                          
+     }
+   }
+   else {
+     disabledDates = getDates(new Date(), new Date(rental?.start), getDates(new Date(realEndDate), new Date(2021, 7, 1)))                                                                                                          
+   }
 
   return (
     <div style={styles.container1}>

@@ -35,6 +35,7 @@ export function ReservationsProvider({ children }) {
   }
 
   function addReservation(data) {
+    console.log(data)
     fetch('http://localhost:5000/reservations/', {
       method: "post",
       headers: {
