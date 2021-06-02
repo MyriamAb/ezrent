@@ -288,7 +288,7 @@ export function RentalsProvider({ children }) {
   }
   
   return (
-    <RentalsContext.Provider value={{allRentals, activities, resultSearch, address, ad, refresh, msg, postPictures, getRental, getMyRentals, getRentalById, postAd, search, searchAddress,
+    <RentalsContext.Provider value={{allRentals, activities, resultSearch, address, ad, refresh, msg, pictures, postPictures, getRental, getMyRentals, getRentalById, postAd, search, searchAddress,
        editRentals, selectRentalsByActivities, postActivities, deletePictures, picturesByRentalId, deleteAd, editMsg }}>
         {children}
     </RentalsContext.Provider>
