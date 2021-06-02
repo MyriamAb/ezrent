@@ -47,7 +47,7 @@ export default function PastAds(){
                 {myRentals.map((rent, ind)=>(
                     ( (parseDate(rent.end).getTime() < today_date.getTime()) || 
                     !!reservationsContext.getReservationsByRental(rent.id).find(resa =>
-                        parseDate(resa.end).getTime() < today_date.getTime())  ) &&
+                        parseDate(resa.end).getTime() < today_date.getTime())  ) ?
                     <Grid.Column> 
                         <Segment  inverted tertiary block attached='top'>
                             <Grid>
@@ -66,9 +66,12 @@ export default function PastAds(){
                         </Segment>
                         <Segment attached>
                             <Header as='h4'>PAST REQUESTS ON THIS AD : </Header>
-                            {reservationsContext.getReservationsByRental(rent.id).length >0 ?
+                            {reservationsContext.getReservationsByRental(rent.id).length >0 &&
+                            !!reservationsContext.getReservationsByRental(rent.id).find(resa =>
+                                parseDate(resa.end).getTime() < today_date.getTime()) ?
                             reservationsContext.getReservationsByRental(rent.id).map(reservation =>
-                                reservation.status === "RESERVATION COMPLETED" ?
+                                reservation.status === "RESERVATION COMPLETED" &&  
+                                parseDate(reservation.end).getTime() < today_date.getTime() &&
                                 <Grid >
                                     <Grid.Row>
                                         <Grid.Column width={7}> 
@@ -89,11 +92,12 @@ export default function PastAds(){
                                             }
                                         </Grid.Column>
                                     </Grid.Row>
-                                </Grid >: "No reservations completed on this ad") :
+                                </Grid >) :
                                 <p>You had no reservations on this ad</p>
                             }
                         </Segment>
-                    </Grid.Column>
+                    </Grid.Column> :
+                    ""
                 ))}
                  <Grid.Column> 
                     {noAds}

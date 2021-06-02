@@ -44,8 +44,10 @@ export default function InProcessAds(){
                         </Segment>
                         <Segment attached>
                             <Header as='h4'>REQUESTS ON THIS AD : </Header>
-                            {reservationsContext.getReservationsByRental(rent.id).length >0 ?
-                            reservationsContext.getReservationsByRental(rent.id).map(reservation => 
+                            {reservationsContext.getReservationsByRental(rent.id).length >0 &&
+                            !!reservationsContext.getReservationsByRental(rent.id).find(resa =>
+                                parseDate(resa.end).getTime() >= today_date.getTime()) ?
+                                reservationsContext.getReservationsByRental(rent.id).map(reservation => 
                                 <Grid >
                                         {parseDate(reservation.end).getTime() >= today_date.getTime() ?
                                         <Grid.Row>
@@ -75,7 +77,7 @@ export default function InProcessAds(){
                                                 }
                                             </Grid.Column>
                                         </Grid.Row>:
-                                        <p>No reservation in process</p>}
+                                        ""}
                                     </Grid > 
                                 ) :
                                 <p>No reservations on this ad</p>

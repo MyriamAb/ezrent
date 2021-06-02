@@ -34,6 +34,19 @@ export function ReservationsProvider({ children }) {
     
   }
 
+  async function deleteReservation(id) {
+    fetch('http://localhost:5000/reservations/' + id, {
+      method: "DELETE",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+    })
+      .then(response => response.json())
+      .then(Refreshfct())
+      .catch(err => console.log(err))    
+  }
+
   function addReservation(data) {
     fetch('http://localhost:5000/reservations/', {
       method: "post",
@@ -114,7 +127,7 @@ export function ReservationsProvider({ children }) {
     <ReservationsContext.Provider value={{
       allReservations, getReservation, getMyReservations,
       getReservationsByRental, editRes, addReservation,
-      updateReservationReview, reservation
+      updateReservationReview, deleteReservation, reservation
     }}>
         {children}
     </ReservationsContext.Provider>

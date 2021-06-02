@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Icon, Item, Grid, Container, Header, Image, Form, TextArea, Input, Button } from "semantic-ui-react";
+import { Icon, Item, Grid, Container, Header, Image, Form, TextArea, Input, Button, Message } from "semantic-ui-react";
 import useRentals from "../../../context/rentals"
 import useReservations from '../../../context/reservation'
 import { useParams } from "react-router"
 import useUser from '../../../context/user'
 import ButtonImage from '../../../atoms/buttonImage'
+import ConfirmDeleteAd from './confirmDeleteAd'
 
 function EditMyAd(props) {
   const rentalsContext = useRentals()
@@ -24,7 +25,8 @@ function EditMyAd(props) {
     start:"",
     end:""
   })
-  const beforeAdPic = rentalsContext.picturesById(id)
+  const beforeAdPic = rentalsContext.picturesByRentalId(id)
+  const [message, setMessage] = useState({editAdOK:"", deleteImpossible:""})
 
   useEffect(() => {
     const res = rentals?.find(element => element.id == id) 
@@ -46,6 +48,25 @@ function EditMyAd(props) {
       end:rental?.end
     })
   },[rental])
+
+   
+  useEffect(() => {
+
+/*     if(rentalsContext.msg.editAdOK !== ""){
+      setMessage({editAdOK: <Message positive><Message.Header>{rentalsContext.msg.editAdOK}</Message.Header></Message>})
+      setTimeout(() => {
+        setMessage({editAdOK:""})
+      }, 20000);
+    } */
+
+    if(rentalsContext.msg.deleteImpossible !== ""){
+      setMessage({deleteImpossible: <Message negative><Message.Header>{rentalsContext.msg.deleteImpossible}</Message.Header></Message>})
+      setTimeout(() => {
+        setMessage({deleteImpossible:""})
+        }, 20000);
+    }
+  },[rentalsContext.msg])
+
 
   const styles = {
     container: {
@@ -72,7 +93,6 @@ function EditMyAd(props) {
   }
 
   function editAd(e){
-    console.log("entrée edit : "); console.log(data)
     rentalsContext.editRentals(id, data)
     if(adPictures.length>0){
         rentalsContext.postPictures({
@@ -97,7 +117,6 @@ function EditMyAd(props) {
     e.preventDefault()
     var newdata = [...adPictures]
     newdata.splice(index, 1);
-    console.log(newdata)
     setAdPictures(newdata) 
   }
 
@@ -151,7 +170,7 @@ function EditMyAd(props) {
                 <ButtonImage onChange={(e) => fileUploadInputChange(e)} id="adPictures" />
                 New pictures : 
                 {adPictures.map((pic, index) => (
-                    <div>
+                  <div>
                       <Image src={pic} avatar />
                       <span> Picture {index} </span>
                       <Button onClick={(e) => deleteChosenPic(e, index)}> <Icon name='close' /> </Button>
@@ -191,12 +210,15 @@ function EditMyAd(props) {
         {edit ===false ?
           <Button content="Click to edit" icon='edit' labelPosition='left' onClick={(e) => editForm(e, true)}/>
           :
-        <div>
+          <div>
           <Button content="Edit the ad" icon='edit' labelPosition='left'  onClick={(e) => editAd(e)} positive/>
           <Button content="Cancel" onClick={(e) => editForm(e, false)}/>
         </div>
         }
-        </Grid>
+        <ConfirmDeleteAd id={id}/>
+        </Grid> 
+        {message.editAdOK}<br/>
+        {message.deleteImpossible}
     </Container>
     </div>
   )

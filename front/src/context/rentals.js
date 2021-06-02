@@ -1,9 +1,11 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import useUser from './user'
+import useReservations from './reservation'
 
 const RentalsContext = createContext();
 
 export function RentalsProvider({ children }) {
+  const reservationsContext = useReservations()
   const [allRentals, setAllRentals] = useState(null)
   const [rental, setRental]= useState(null)
   const UserContext = useUser()
@@ -15,7 +17,7 @@ export function RentalsProvider({ children }) {
   const [resultSearch, setResultSearch] = useState(null)
   const [activities, setActivities] = useState(null)
   const [refresh, setRefresh] = useState(false);
-  const [msg, setMsg]= useState({editAdOK:""})
+  const [msg, setMsg]= useState({editAdOK:"", deleteImpossible:""})
   const [pictures, setPictures] = useState([])
 
 
@@ -171,9 +173,8 @@ export function RentalsProvider({ children }) {
         body: JSON.stringify(body_update)
       })
       .then(response => response.json())
-      .then(data => console.log(data))
       .then(refreshFct())
-      .then(setMsg({editAdOK : "Your ad is successfully updated"}))
+      .then(setMsg({editAdOK : "Update successful"}))
   }
 
   async function searchAddress(inputValue) {
@@ -249,11 +250,29 @@ export function RentalsProvider({ children }) {
     .then(refreshFct())
   }
 
+  function deleteAd(idAd) {
+    const picAd = picturesByRentalId(idAd)
+    fetch('http://localhost:5000/rentals/' + idAd, {
+      method: "DELETE",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      },
+    })
+    .then(
+      picAd.forEach(element => 
+        deletePictures(element.id))
+    )
+    .then(refreshFct())
+    .catch(err => console.log(err))
+  }
+
   function refreshFct(){
     setRefresh(prev => (!prev))
   }
 
-  function picturesById(id){
+  function picturesByRentalId(id){
     var pic = pictures.filter(element => element.rental_id === parseInt(id))
     if(pic && pic !== null && pic.length>0){
       for(var i=0 ; i<pic.length;i++){
@@ -263,10 +282,14 @@ export function RentalsProvider({ children }) {
     }
     return pic
   }
+
+  function editMsg(msg){
+    setMsg(msg)
+  }
   
   return (
-    <RentalsContext.Provider value={{allRentals, activities, resultSearch, address, ad, refresh, postPictures, getRental, getMyRentals, getRentalById, postAd, search, searchAddress,
-       editRentals, selectRentalsByActivities, postActivities, deletePictures, picturesById }}>
+    <RentalsContext.Provider value={{allRentals, activities, resultSearch, address, ad, refresh, msg, postPictures, getRental, getMyRentals, getRentalById, postAd, search, searchAddress,
+       editRentals, selectRentalsByActivities, postActivities, deletePictures, picturesByRentalId, deleteAd, editMsg }}>
         {children}
     </RentalsContext.Provider>
   )
