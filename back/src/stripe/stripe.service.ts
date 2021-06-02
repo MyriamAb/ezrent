@@ -11,12 +11,10 @@ export class PaymentService {
 
   async createStripeCustomer()
   {
-    console.log('created customer')
     const customer = await this.stripeClient.customers.create({
       description: 'My First Test Customer (created for API docs)',
     });
     ({stripeCustomerId: customer.id})
-    console.log(customer)
     return customer.id;
   }
      

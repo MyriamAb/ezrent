@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Patch, Delete, Param, HttpService, HttpStatus, UseGuards } from '@nestjs/common';
+import { Controller, Post, Body, Get, Patch, Delete, Param, HttpService, HttpStatus, UseGuards} from '@nestjs/common';
 import { PicturesService } from './pictures.service';
 import { Picture } from './picture.entity';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
@@ -9,6 +9,7 @@ export class PicturesController {
     
     @UseGuards(JwtAuthGuard)
     @Post()
+    @UseGuards(JwtAuthGuard)
     async post(
         @Body('image_name') pictureName: string,
         @Body('image_blob') pictureBlob: BinaryType,
@@ -37,6 +38,7 @@ export class PicturesController {
     }
 
     @Delete(':id')
+    @UseGuards(JwtAuthGuard)
     deletePicture(@Param() params) {
         const picture = this.picturesService.deletePicture(params.id)
         return {

@@ -1,6 +1,7 @@
 import React, { useCallback } from "react";
 import { Icon, Item, Grid, Container, Header, Image } from "semantic-ui-react";
 import Comments from '../molecules/comments'
+import Reviews_Public from '../organisms/profile/public/reviews_public'
 import useRentals from "../context/rentals"
 import useReservations from '../context/reservation'
 import CalendarType from '../atoms/calendar'
@@ -24,8 +25,10 @@ function AdDetails(props) {
   const userContext = useUser()
   const [user, setUser] = useState({})
   const [picture, setPicture] = useState('')
-  const [ valueCalendar, onChangeCalendar ] = useState(new Date())
-
+  const [ price, setPrice] = useState(0)
+  const [valueCalendar, onChangeCalendar] = useState(new Date())
+  const [duration, setDuration] = useState(null)
+  
   useEffect(() => {
     const res = rentals?.find(element => element.id == id) 
     setRental(res)
@@ -51,9 +54,23 @@ function AdDetails(props) {
     setUser(userInfo)
   }, [userContext.getUserbyId, userContext, ownerId])
   
+
+  useEffect(() => {
+    setDuration(datediff(valueCalendar[0], valueCalendar[1]))
+  }, [valueCalendar])
+
+  useEffect(() => {
+    if (duration)
+      setPrice(duration * rental.price)
+  }, [duration])
+
   function book() {
     reservationContext.addReservation(rental);
     alert("You have booked this location, you'll be notified when the owner check your reservation")
+  }
+
+  function datediff(first, second) {
+    return Math.round((second-first)/(1000*60*60*24));
   }
 
   const styles = {
@@ -128,7 +145,7 @@ function AdDetails(props) {
                 />
               </Grid.Row>
               <Grid.Row> 
-              <Item.Header as='h5'>Price per day:</Item.Header>
+              <Item.Header as='h5'>Price per day :</Item.Header>
                {rental?.price}
               </Grid.Row>
             </Grid.Column>
@@ -142,7 +159,9 @@ function AdDetails(props) {
                 <Grid.Column>
                   <Grid columns={2}>
                     <Grid.Column>
-                      {user.name}
+                      <a href={"http://localhost:3000/user/" + user.id}>
+                            {user.name}
+                        </a> <br/>
                     </Grid.Column>
                     <Grid.Column>
                       {user.email}
@@ -156,18 +175,18 @@ function AdDetails(props) {
             </Grid.Column>
             <Grid.Column width={5}>
               <Grid.Row>
-                Total price:
-                2222 €
+                {"Total price : " + price + " €"}
               </Grid.Row>
                <Grid.Row>
-                  <ButtonType color='green' content="Booked" size='large' onClick={e => book()} />
+                  <ButtonType color='green' content="Book" size='large' onClick={e => book()} />
               </Grid.Row>
             </Grid.Column>
           </Grid.Row>
         </Grid>
         <Grid>
-          <Comments/>
-        </Grid>
+          <Reviews_Public id={user.id}/>
+{/*           <Comments/>
+ */}        </Grid>
     </Container>
     </div>
 

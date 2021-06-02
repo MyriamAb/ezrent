@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Header from './organisms/header'
 import Footer from './organisms/footer'
 import Profile from "./organisms/profile/profile"
+import User from './organisms/profile/public/user'
 import Home from "./organisms/home"
 import Login from './organisms/login'
 import Register from './organisms/register'
@@ -24,7 +25,7 @@ const promise = loadStripe("pk_test_51IsNySAQArDV5cBDQy5GSkkhHV2FX283JHxwG4L2XiU
 function App() {
   return (
     <Router>
-      <GoogleApiProvider>
+      <GoogleApiProvider clientId={'814535166282-uj0rs7jnubeqglcaie0lm4j0gg8625pi.apps.googleusercontent.com'}>
       <Elements stripe={promise}>    
         <UserProvider>
           <RentalsProvider>
@@ -32,7 +33,8 @@ function App() {
           <Header />
           <Switch>
             <Route exact path='/' component={Home} />
-            <Route path='/profile' component={Profile}/>
+            <Route path='/profile' component={Profile} />
+            <Route path='/user/:id' component={User} />      
             <Route path='/login' component={Login}/>
             <Route path='/register' component={Register}/>
             <Route path='/addetails/:id' component={AdDetails}/>

@@ -43,11 +43,14 @@ export default function PastAds(){
                                         <Grid >
                                             <Grid.Row>
                                                 <Grid.Column width={7}> 
-                                                    {userContext.getUserbyId(reservation.client_id) &&
-                                                    userContext.getUserbyId(reservation.client_id)["name"]} <br/>
+     {/*                                                {userContext.getUserbyId(reservation.client_id) &&
+                                                    userContext.getUserbyId(reservation.client_id)["name"]} <br/> */}
+                                                    <a href={"http://localhost:3000/user/" + reservation.client_id}>
+                                                            {userContext.getUserbyId(reservation.client_id) &&
+                                                            userContext.getUserbyId(reservation.client_id)["name"]}
+                                                    </a> <br/>
                                                     {` From : ${reservation.start.slice(0, 10)}`} <br/>
                                                     {`To : ${reservation.end.slice(0, 10)} `}
-                                                
                                                 </Grid.Column>
                                                 <Grid.Column width={5}>
                                                     STATUS : <br/>

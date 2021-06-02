@@ -46,6 +46,7 @@ export function UserProvider({ children }) {
       })
     const [statusCode, setStatusCode] = useState("");
     const [userReviews, setUserReviews] = useState(null)
+    const [allReviews, setAllReviews] = useState(null)
     const [allUsers, setAllUsers] = useState(null)
     const [refresh, setRefresh] = useState(false)
 
@@ -236,8 +237,22 @@ export function UserProvider({ children }) {
         email: email
       })
     })
-    /* .then(alert("Email has been sent ! Please, check your mailbox to reset your password")) */
   }, []);
+
+  const sendPaymentEmail = useCallback(() => {
+    fetch('http://localhost:5000/users/paymentmail', {
+      method: 'post',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      },
+      body: JSON.stringify({
+        name: user.username,
+        email: user.email,
+      })
+    })
+  }, [])
 
   const reset_password = useCallback((password, token_id) => {
     fetch('http://localhost:5000/users/resetpassword/', {
@@ -283,7 +298,34 @@ export function UserProvider({ children }) {
         })
         .then(response => response.json())
         .then(data => setAllUsers(data))
-    },[token])
+    }, [token, refresh])
+  
+    useEffect(() => {
+      fetch('http://localhost:5000/reviews/', {
+          method: "GET",
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+      })
+        .then(response => response.json())
+        .then(data => setAllReviews(data))
+      console.log(allReviews)
+    }, [token, refresh])
+/*   
+  const getAllUsers = useCallback(() => {
+      fetch('http://localhost:5000/users/', {
+          method: "GET",
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token
+          },
+        })
+        .then(response => response.json())
+        .then(data => setAllUsers(data))
+      return allUsers
+  }, []) */
 
     const getUserbyId= useCallback((id) => {
       if(allUsers !== null){
@@ -317,9 +359,9 @@ export function UserProvider({ children }) {
   
       return (
         <UserContext.Provider value={{
-          token, msg, user, userProfile, userReviews, allUsers,
+          token, msg, user, userProfile, userReviews, allUsers, allReviews,
           login, login_google, login_facebook, register, editProfile,
-          logout, sendResetEmail, reset_password, getUserbyId, postReviewFromClient
+          logout, sendResetEmail, reset_password, getUserbyId, postReviewFromClient, sendPaymentEmail
         }}>
             {children}
         </UserContext.Provider>

@@ -9,6 +9,7 @@ function Login() {
     const userContext = useUser();
 
     const onSuccess = (res) => {
+        console.log(res)
         userContext.login_google(res.profileObj.email, res.profileObj.name)
         
     };

@@ -10,7 +10,11 @@ export default function Reviews(){
           {userContext.userReviews != null && userContext.allUsers != null ? userContext.userReviews.map((rev, ind)=>(
                 <Grid.Column>
                     <Segment key={ind}> 
-                        {userContext.getUserbyId(rev.reviewer_id)["name"]} <br/>
+                      {/* {userContext.getUserbyId(rev.reviewer_id)["name"]} <br/> */}
+                        <a href={"http://localhost:3000/user/" + rev.reviewer_id}>
+                            {userContext.getUserbyId(rev.reviewer_id) &&
+                            userContext.getUserbyId(rev.reviewer_id)["name"]}
+                        </a> <br/>
                         <Rating icon='star' defaultRating={rev.grade} maxRating={5} /> <br/>
                         Posted on {rev.created_at.slice(0, 10)}<br/><br/>
                         {rev.comment}
