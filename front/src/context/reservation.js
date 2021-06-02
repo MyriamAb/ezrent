@@ -39,7 +39,8 @@ export function ReservationsProvider({ children }) {
       method: "post",
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + userContext.token
       },
       body: JSON.stringify({
         "start": data.start,
@@ -64,6 +65,8 @@ export function ReservationsProvider({ children }) {
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + userContext.token
+
         },
         body: JSON.stringify(body_update)
       })
@@ -104,6 +107,7 @@ export function ReservationsProvider({ children }) {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + userContext.token
       },
       body: JSON.stringify(body)
     })
