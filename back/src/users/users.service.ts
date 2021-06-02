@@ -7,12 +7,13 @@ import { InjectStripe } from 'nestjs-stripe';
 import Stripe from 'stripe';
 
 import { JwtService } from '@nestjs/jwt'
+import { PaymentService } from 'src/stripe/stripe.service';
 
 
 @Injectable()
 export class UsersService {
     constructor(@InjectRepository(User) private usersRepository: Repository<User>,
-                @InjectStripe() private readonly stripeClient: Stripe,
+               private paymentService: PaymentService,
                 private jwtService: JwtService) {}
 
     async insertUser(
@@ -40,10 +41,12 @@ export class UsersService {
         if (user) {
             return user;
         }
+        const stripeCustomerId = await this.paymentService.createStripeCustomer();
         const createdUser = new User();
         createdUser.name = name;
         createdUser.email = email;
         createdUser.status = "Active";
+        createdUser.stripeCustomerId= stripeCustomerId
         const result = await this.usersRepository.save(createdUser);
         return result;
 

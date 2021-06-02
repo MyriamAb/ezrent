@@ -6,7 +6,7 @@ import {
   useElements
 } from "@stripe/react-stripe-js";
 import '../../styles/stylesPayment.css';
-import { Header } from 'semantic-ui-react'
+import { Container, Header, Segment, SegmentGroup } from 'semantic-ui-react'
 import useReservations from '../../context/reservation'
 
 
@@ -52,6 +52,8 @@ export default function CheckoutForm() {
     
   },[reservation])
   
+  const amount = dayNumber() * reservation[0]?.price * 100
+
   useEffect(() => {
     if (reservation[0]) {
       window
@@ -126,36 +128,49 @@ export default function CheckoutForm() {
   };
 
   return (
-    <div>
-    <Header>         
-      Payment Checkout
-    </Header>
-   
-      <form id="payment-form" onSubmit={handleSubmit}>
-        <CardElement id="card-element" options={cardStyle} onChange={handleChange} />
-        <button
-          disabled={processing || disabled || succeeded}
-          id="submit"
-        >
-          <span id="button-text">
-            {processing ? (
-              <div className="spinner" id="spinner"></div>
-            ) : (
-              "Pay now"
-            )}
-          </span>
-        </button>
-        {/* Show any error that happens when processing the payment */}
-        {error && (
-          <div className="card-error" role="alert">
-            {error}
-          </div>
-        )}
-        {/* Show a success message upon completion */}
-        <p className={succeeded ? "result-message" : "result-message hidden"}>
-          Payment succeeded
-        </p>
-        </form>
-    </div>
+    <Container fluid id="background-container">
+
+      <div id="container" >
+        <Segment as="h2" inverted  id="header">         
+          <h2>Payment Checkout</h2>
+          </Segment>
+          <SegmentGroup horizontal>
+          <Segment >
+              <h4>
+                TOTAL RESERVATION FOR {dayNumber()} DAYS:
+              </h4>
+          </Segment>
+            <Segment>
+              {amount} €
+          </Segment>
+          </SegmentGroup>
+
+        <form id="payment-form" onSubmit={handleSubmit}>
+          <CardElement id="card-element" options={cardStyle} onChange={handleChange} />
+          <button
+            disabled={processing || disabled || succeeded}
+            id="submit"
+          >
+            <span id="button-text">
+              {processing ? (
+                <div className="spinner" id="spinner"></div>
+              ) : (
+                "Pay now"
+              )}
+            </span>
+          </button>
+          {/* Show any error that happens when processing the payment */}
+          {error && (
+            <div className="card-error" role="alert">
+              {error}
+            </div>
+          )}
+          {/* Show a success message upon completion */}
+          <p className={succeeded ? "result-message" : "result-message hidden"}>
+            Payment succeeded
+          </p>
+          </form>
+      </div>
+    </Container>
   );
 }

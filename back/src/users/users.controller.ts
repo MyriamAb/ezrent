@@ -17,11 +17,9 @@ export class UsersController {
         @Body('phone') userPhone: string,
     
         ) {
-        console.log('postcontroller')
         try {
             
             const stripeCustomerId = await this.paymentService.createStripeCustomer();
-            console.log(stripeCustomerId)
             const confirmationCode = this.usersService.createEmailToken();
             const user = await this.usersService.insertUser(
                 userName,
