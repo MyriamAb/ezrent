@@ -62,7 +62,8 @@ export default function CheckoutForm() {
           method: "POST",
           headers: {
   
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            'Authorization': 'Bearer ' + userContext.token
           },
           body: JSON.stringify({
             items: [{
@@ -126,6 +127,7 @@ export default function CheckoutForm() {
       setProcessing(false);
       setSucceeded(true);
       userContext.sendPaymentEmail();
+      reservationsContext.editRes(id, "RESERVATION COMPLETED")
     }
   };
 
