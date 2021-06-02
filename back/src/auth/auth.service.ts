@@ -2,12 +2,14 @@ import { Injectable, Request, Response, Res, HttpStatus } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { PaymentService } from 'src/stripe/stripe.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private usersService: UsersService, 
-    private jwtService: JwtService
+    private jwtService: JwtService,
+     private paymentService: PaymentService
   ) {}
 
   async validateUser(email: string, pass: string): Promise<any> {
@@ -35,7 +37,6 @@ export class AuthService {
   }
 
   async login_google(user: any) {
-    console.log(user)
     const res = await this.usersService.findOrCreate(user.name, user.email);
     const payload = { username: res.name, id: res.id, email: res.email };
     return {

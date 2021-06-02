@@ -172,7 +172,7 @@ export function UserProvider({ children }) {
     }, [token]);
 
     useEffect(()=> {
-      if(!user || user === null || user.statusCode == 401)
+      if(!user || user === null || user.statusCode === 401)
         return
       console.log(user)
       fetch('http://localhost:5000/users/' + user.id, {
@@ -240,8 +240,22 @@ export function UserProvider({ children }) {
         email: email
       })
     })
-    /* .then(alert("Email has been sent ! Please, check your mailbox to reset your password")) */
   }, []);
+
+  const sendPaymentEmail = useCallback(() => {
+    fetch('http://localhost:5000/users/paymentmail', {
+      method: 'post',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      },
+      body: JSON.stringify({
+        name: user.username,
+        email: user.email,
+      })
+    })
+  }, [])
 
   const reset_password = useCallback((password, token_id) => {
     fetch('http://localhost:5000/users/resetpassword/', {
@@ -350,7 +364,7 @@ export function UserProvider({ children }) {
         <UserContext.Provider value={{
           token, msg, user, userProfile, userReviews, allUsers, allReviews,
           login, login_google, login_facebook, register, editProfile,
-          logout, sendResetEmail, reset_password, getUserbyId, postReviewFromClient,
+          logout, sendResetEmail, reset_password, getUserbyId, postReviewFromClient, sendPaymentEmail
         }}>
             {children}
         </UserContext.Provider>

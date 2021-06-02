@@ -38,7 +38,7 @@ function App() {
             <Route path='/login' component={Login}/>
             <Route path='/register' component={Register}/>
             <Route path='/addetails/:id' component={AdDetails}/>
-            <Route path='/checkoutform' component={CheckoutForm} />
+            <Route path='/checkoutform/:id' component={CheckoutForm} />
             <Route path='/password/:id' component={Password} />
             <Route path='/password' component={PasswordEmail} />
           </Switch>

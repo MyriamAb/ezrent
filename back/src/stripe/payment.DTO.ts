@@ -16,6 +16,10 @@ export class PaymentCreateDto {
   @IsString()
   type: '';
 
+  @IsNotEmpty()
+  @IsString()
+  description: '';
+
 }
 
 // ... other DTOs
