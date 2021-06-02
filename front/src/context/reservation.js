@@ -34,8 +34,7 @@ export function ReservationsProvider({ children }) {
     
   }
 
-  function addReservation(data) {
-    console.log(data)
+  function addReservation(data, valueCalendar, realEndDate) {
     fetch('http://localhost:5000/reservations/', {
       method: "post",
       headers: {
@@ -44,8 +43,8 @@ export function ReservationsProvider({ children }) {
         'Authorization': 'Bearer ' + userContext.token
       },
       body: JSON.stringify({
-        "start": data.start,
-        "end": data.end,
+        "start": valueCalendar[0],
+        "end": realEndDate,
         "owner_id": data.owner_id,
         "owner_review": false,
         "client_id": userContext.user.id,

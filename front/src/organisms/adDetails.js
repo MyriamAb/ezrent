@@ -75,8 +75,8 @@ function AdDetails(props) {
   }, [duration])
 
   function book() {
-    reservationContext.addReservation(rental)
-    console.log(rental)
+    var realEndDate = new Date(valueCalendar[1]).setDate(new Date(valueCalendar[1]).getDate()-1)
+    reservationContext.addReservation(rental, valueCalendar, new Date(realEndDate))
     alert("You have booked this location, you'll be notified when the owner check your reservation")
   }
 
