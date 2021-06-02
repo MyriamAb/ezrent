@@ -61,8 +61,8 @@ export default function CheckoutForm() {
         .fetch("http://localhost:5000/create-payment-intent", {
           method: "POST",
           headers: {
-  
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            'Authorization': 'Bearer ' + userContext.token
           },
           body: JSON.stringify({
             items: [{
@@ -101,6 +101,8 @@ export default function CheckoutForm() {
     }
   };
 
+  console.log("This is secret : ")
+  console.log(clientSecret)
   const handleChange = async (event) => {
     // Listen for changes in the CardElement
     // and display any errors as the customer types their card details
