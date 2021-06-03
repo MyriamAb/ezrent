@@ -80,7 +80,7 @@ export default function PastAds(){
                                 parseDate(reservation.end).getTime() < today_date.getTime() &&
                                 <Grid >
                                     <Grid.Row>
-                                        <Grid.Column width={7}>
+                                        <Grid.Column width={6}>
                                             <a href={"http://localhost:3000/user/" + reservation.client_id}> 
                                             {userContext.getUserbyId(reservation.client_id) &&
                                             userContext.getUserbyId(reservation.client_id)["name"]} 
@@ -93,11 +93,11 @@ export default function PastAds(){
                                             Price : <br/> 
                                             {getPrice(reservation.start, reservation.end, reservation.price) + " €"}
                                         </Grid.Column>
-                                        <Grid.Column width={5}>
+                                        <Grid.Column width={4}>
                                             STATUS : <br/>
                                             {reservation.status}
                                         </Grid.Column>
-                                        <Grid.Column width={4}>
+                                        <Grid.Column width={3}>
                                             {reservation.owner_review === false ?
                                             <Review id={reservation.id} isClient={false} reviewer_id={reservation.owner_id} reviewed_id={reservation.client_id}/> :
                                             "Reviewed"
