@@ -1,6 +1,7 @@
 import React, { useCallback } from "react";
 import { Icon, Item, Grid, Container, Header, Image } from "semantic-ui-react";
 import Comments from '../molecules/comments'
+import Reviews_Public from '../organisms/profile/public/reviews_public'
 import useRentals from "../context/rentals"
 import useReservations from '../context/reservation'
 import CalendarType from '../atoms/calendar'
@@ -11,20 +12,25 @@ import ButtonType from '../atoms/button'
 import useUser from '../context/user'
 
 /* import PaymentMethod from '../organisms/customPayment/paymentMethod'
- */
+*/
+let tmpbook = []
 function AdDetails(props) {
   var disabledDates = []
   const rentalsContext = useRentals()
   const reservationContext = useReservations()
-  var rentals = rentalsContext?.allRentals ?? null;
+  var rentals = rentalsContext?.allRentals ?? null
   var pictures = rentalsContext?.pictures ?? null
+  var reservations = reservationContext?.allReservations ?? null
   const [rental, setRental] = useState({})
   const { id } = useParams()
   var ownerId = ''
   const userContext = useUser()
   const [user, setUser] = useState({})
   const [picture, setPicture] = useState('')
-  const [ valueCalendar, onChangeCalendar ] = useState(new Date())
+  const [resa, setResa] = useState([])
+  const [price, setPrice] = useState(0)
+  const [valueCalendar, onChangeCalendar] = useState(new Date())
+  const [duration, setDuration] = useState(null)
 
   useEffect(() => {
     const res = rentals?.find(element => element.id == id) 
@@ -39,9 +45,16 @@ function AdDetails(props) {
       if (res === null || res === undefined)
         return
        ownerId = res.owner_id
-
-  }, [id, rentals, ownerId, userContext, pictures])
-  
+      }, [id, rentals, ownerId, userContext, pictures])
+      
+      useEffect(() => {
+        for (let i=0; i < reservations?.length; i++) {
+          if(reservations[i].rental_id == id && reservations[i].status == 'RESERVATION COMPLETED'){
+            tmpbook.push({start: reservations[i].start, end:reservations[i].end, id:reservations[i].id })
+            setResa(tmpbook)
+           }
+         }
+        },[reservations])
   useEffect(() => {
     const userInfo = userContext?.getUserbyId(ownerId)
 
@@ -51,9 +64,24 @@ function AdDetails(props) {
     setUser(userInfo)
   }, [userContext.getUserbyId, userContext, ownerId])
   
+
+  useEffect(() => {
+    setDuration(datediff(valueCalendar[0], valueCalendar[1]))
+  }, [valueCalendar])
+
+  useEffect(() => {
+    if (duration)
+      setPrice(duration * rental.price)
+  }, [duration])
+
   function book() {
-    reservationContext.addReservation(rental);
+    var realEndDate = new Date(valueCalendar[1]).setDate(new Date(valueCalendar[1]).getDate()-1)
+    reservationContext.addReservation(rental, valueCalendar, new Date(realEndDate))
     alert("You have booked this location, you'll be notified when the owner check your reservation")
+  }
+
+  function datediff(first, second) {
+    return Math.round((second-first)/(1000*60*60*24));
   }
 
   const styles = {
@@ -84,8 +112,14 @@ function AdDetails(props) {
     }
   var EndDate = new Date(rental?.end)
   var realEndDate = EndDate?.setDate(EndDate?.getDate()+1)
-   disabledDates = getDates(new Date(), new Date(rental?.start), getDates(new Date(realEndDate), new Date(2025, 0, 1)))                                                                                                          
-  
+   if (resa?.length > 0 ) {
+     for (let i = 0; i<resa.length; i++){
+       disabledDates = getDates(new Date(), new Date(rental?.start), getDates(new Date(resa[i]?.start), new Date(resa[i]?.end)), getDates(new Date(realEndDate), new Date(2025, 0, 1)))                                                                                                          
+     }
+   }
+   else {
+     disabledDates = getDates(new Date(), new Date(rental?.start), getDates(new Date(realEndDate), new Date(2021, 7, 1)))                                                                                                          
+   }
 
   return (
     <div style={styles.container1}>
@@ -128,7 +162,7 @@ function AdDetails(props) {
                 />
               </Grid.Row>
               <Grid.Row> 
-              <Item.Header as='h5'>Price per day:</Item.Header>
+              <Item.Header as='h5'>Price per day :</Item.Header>
                {rental?.price}
               </Grid.Row>
             </Grid.Column>
@@ -142,7 +176,9 @@ function AdDetails(props) {
                 <Grid.Column>
                   <Grid columns={2}>
                     <Grid.Column>
-                      {user.name}
+                      <a href={"http://localhost:3000/user/" + user.id}>
+                            {user.name}
+                        </a> <br/>
                     </Grid.Column>
                     <Grid.Column>
                       {user.email}
@@ -156,18 +192,18 @@ function AdDetails(props) {
             </Grid.Column>
             <Grid.Column width={5}>
               <Grid.Row>
-                Total price:
-                2222 €
+                {"Total price : " + price + " €"}
               </Grid.Row>
                <Grid.Row>
-                  <ButtonType color='green' content="Booked" size='large' onClick={e => book()} />
+                  <ButtonType color='green' content="Book" size='large' onClick={e => book()} />
               </Grid.Row>
             </Grid.Column>
           </Grid.Row>
         </Grid>
         <Grid>
-          <Comments/>
-        </Grid>
+          <Reviews_Public id={user.id}/>
+{/*           <Comments/>
+ */}        </Grid>
     </Container>
     </div>
 

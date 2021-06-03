@@ -1,6 +1,7 @@
-import { Controller, Post, Body, Get, Patch, Delete, Param, HttpStatus } from '@nestjs/common';
+import { Controller, Post, Body, Get, Patch, Delete, Param, HttpStatus, UseGuards } from '@nestjs/common';
 import { ActivityService } from './activity.service';
 import { Activity } from './activity.entity';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('activity')
 export class ActivityController {
@@ -17,6 +18,7 @@ export class ActivityController {
     }
 
     @Post()
+    @UseGuards(JwtAuthGuard)
     async postActivity(@Body() activity: Activity){
         const postedActivity= await this.service.postActivity(activity);
         return {
@@ -27,6 +29,7 @@ export class ActivityController {
     }
     
     @Delete(':id')
+    @UseGuards(JwtAuthGuard)
     deleteActivity(@Param() params) {
         return this.service.deleteActivity(params.id)
     }

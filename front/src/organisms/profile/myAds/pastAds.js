@@ -74,9 +74,11 @@ export default function PastAds(){
                                 parseDate(reservation.end).getTime() < today_date.getTime() &&
                                 <Grid >
                                     <Grid.Row>
-                                        <Grid.Column width={7}> 
+                                        <Grid.Column width={7}>
+                                            <a href={"http://localhost:3000/user/" + reservation.client_id}> 
                                             {userContext.getUserbyId(reservation.client_id) &&
-                                            userContext.getUserbyId(reservation.client_id)["name"]} <br/>
+                                            userContext.getUserbyId(reservation.client_id)["name"]} 
+                                            </a><br/>
                                             {` From : ${reservation.start.slice(0, 10)}`} <br/>
                                             {`To : ${reservation.end.slice(0, 10)} `}
                                         

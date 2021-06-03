@@ -1,8 +1,9 @@
-import { Controller, Post, Body, Get, Patch, Delete, Param, HttpStatus } from '@nestjs/common';
+import { Controller, Post, Body, Get, Patch, Delete, Param, HttpStatus, Redirect, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import * as bcrypt from 'bcrypt';
 import { User } from './user.entity';
 import { PaymentService } from '../stripe/stripe.service'
+import { JwtAuthGuard } from '../auth/jwt-auth.guard'
 
 @Controller('users')
 export class UsersController {
@@ -17,10 +18,8 @@ export class UsersController {
         @Body('phone') userPhone: string,
     
         ) {
-        console.log('postcontroller')
         try {
             const stripeCustomerId = await this.paymentService.createStripeCustomer();
-            console.log(stripeCustomerId)
             const confirmationCode = this.usersService.createEmailToken();
             const user = await this.usersService.insertUser(
                 userName,
@@ -57,6 +56,7 @@ export class UsersController {
     }
 
     @Patch(':id')
+    @UseGuards(JwtAuthGuard)
     async update(
         @Param('id') userId: number,
         @Body('name') userName: string,
@@ -91,6 +91,7 @@ export class UsersController {
     }
 
     @Delete(':id')
+    @UseGuards(JwtAuthGuard)
     deleteUser(@Param('id') userId: number) {
         const user = this.usersService.deleteUser(userId);
         return {
@@ -101,6 +102,7 @@ export class UsersController {
     }
 
     @Get('confirm/:confirmationCode')
+    @Redirect('http://localhost:3000/login')
     changeStatus(@Param('confirmationCode') confirmationCode: string) {
         const user = this.usersService.verifyUser(confirmationCode);
         return {
@@ -140,6 +142,18 @@ export class UsersController {
             statusCode: HttpStatus.NOT_FOUND,
             message: 'User not found'
         }
+    }
+
+    @Post('paymentmail/')
+    async sendPaymentMail(
+        @Body('name') userName: string,
+        @Body('email') userEmail: string,
+    ) {
+        const user = await this.usersService.sendPaymentMail(
+            userName,
+            userEmail
+        )
+        
     }
 
 }

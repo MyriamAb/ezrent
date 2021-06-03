@@ -27,6 +27,7 @@
     "@nestjs/passport": "^7.1.5",
     "@nestjs/platform-express": "^7.6.15",
     "@nestjs/typeorm": "^7.1.5",
+    "@types/bcrypt": "^5.0.0",
     "@types/passport-facebook": "^2.1.10",
     "bcrypt": "^5.0.1",
     "class-validator": "^0.13.1",

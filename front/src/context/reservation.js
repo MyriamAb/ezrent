@@ -47,16 +47,17 @@ export function ReservationsProvider({ children }) {
       .catch(err => console.log(err))    
   }
 
-  function addReservation(data) {
+  function addReservation(data, valueCalendar, realEndDate) {
     fetch('http://localhost:5000/reservations/', {
       method: "post",
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + userContext.token
       },
       body: JSON.stringify({
-        "start": data.start,
-        "end": data.end,
+        "start": valueCalendar[0],
+        "end": realEndDate,
         "owner_id": data.owner_id,
         "owner_review": false,
         "client_id": userContext.user.id,
@@ -77,6 +78,8 @@ export function ReservationsProvider({ children }) {
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + userContext.token
+
         },
         body: JSON.stringify(body_update)
       })
@@ -117,6 +120,7 @@ export function ReservationsProvider({ children }) {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + userContext.token
       },
       body: JSON.stringify(body)
     })
