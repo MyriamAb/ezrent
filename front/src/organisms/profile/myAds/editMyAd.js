@@ -6,6 +6,8 @@ import { useParams } from "react-router"
 import useUser from '../../../context/user'
 import ButtonImage from '../../../atoms/buttonImage'
 import ConfirmDeleteAd from './confirmDeleteAd'
+import ImageCarousel from '../../../molecules/imageCarousel'
+
 
 function EditMyAd(props) {
   const rentalsContext = useRentals()
@@ -144,7 +146,7 @@ function EditMyAd(props) {
             </Grid.Column>
           </Grid.Row>
           <Grid.Row>
-          <Grid.Column  width={3}>
+          <Grid.Column  width={4}>
             Picture posted : 
             {beforeAdPic.map((pic, index) => (
             edit ===false ?
@@ -160,26 +162,26 @@ function EditMyAd(props) {
             ))
           }
           </Grid.Column>
-          <Grid.Column  width={10}>
-            <Image centered style={styles.image} src={'https://storage.googleapis.com/epc-photos/photo_5a1864ac-62a4-4a09-893a-6b5b85bc0d2d.png'} />
-            </Grid.Column>
-            <Grid.Column  width={3}>
-              {edit ===false ?
-              "":
-              <div>
-                <ButtonImage onChange={(e) => fileUploadInputChange(e)} id="adPictures" />
-                New pictures : 
-                {adPictures.map((pic, index) => (
-                  <div>
-                      <Image src={pic} avatar />
-                      <span> Picture {index} </span>
-                      <Button onClick={(e) => deleteChosenPic(e, index)}> <Icon name='close' /> </Button>
-                    </div>
-                  ))
-                }
-              </div>
+          <Grid.Column  width={8}>
+            <ImageCarousel rental_id={rental?.id}/>
+          </Grid.Column>
+          <Grid.Column  width={4}>
+            {edit ===false ?
+            "":
+            <div>
+              <ButtonImage onChange={(e) => fileUploadInputChange(e)} id="adPictures" />
+              New pictures : 
+              {adPictures.map((pic, index) => (
+                <div>
+                    <Image src={pic} avatar />
+                    <span> Picture {index} </span>
+                    <Button onClick={(e) => deleteChosenPic(e, index)}> <Icon name='close' /> </Button>
+                  </div>
+                ))
               }
-            </Grid.Column>
+            </div>
+            }
+          </Grid.Column>
           </Grid.Row>
         </Grid>
        <Grid celled>

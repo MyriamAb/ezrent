@@ -189,7 +189,7 @@ export function RentalsProvider({ children }) {
     }
   }
   function getRentalById(id){
-    if(allRentals !== null){
+    if(allRentals && allRentals!== null){
       const rental = allRentals.find(el => el.id == id)
       return rental
     }

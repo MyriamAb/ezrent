@@ -30,7 +30,7 @@ export default function InProcessReservations(){
       noResa=""
     }else{
       noResa= <Grid.Column>
-                    <Header as='h1' centered> You have no resas</Header>
+                    <Header as='h1' centered> You have no reservations yet</Header>
                 </Grid.Column>
     }
 
