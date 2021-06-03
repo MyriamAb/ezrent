@@ -11,7 +11,7 @@ function renderData(rentals) {
         cardItem.push(<Card></Card>)
     }
     else {
-        for (let i = 0; i < rentals.length; i++) {
+        for (let i=0; i <rentals.length; i++) {
         cardItem.push(
             <CardType title={rentals[i].title} description={rentals[i].description} price={rentals[i].price} location={rentals[i].address} id={rentals[i].id} style={{ marginTop: '3px' }}/>
         )  
@@ -53,11 +53,20 @@ function CardCarousel() {
     const handleClick = (event) => {
         setcurrentPage(Number(event.target.id))
     }
+
+    function parseDate(str) {
+      var datesplit = str.slice(0, 10);
+      var mdy = datesplit.split('-');
+      return new Date(mdy[0], mdy[1]-1, mdy[2]); 
+    }
     
     if(rentals !== null && rentals !== undefined){
       for( let i=1;i <= Math.ceil(rentals.length / itemsPerPage); i ++){ 
         pages.push(i)
       }
+      rentals.sort(function(a,b){
+        return(new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+      });
     }
     
     const indexOfLastItem = currentPage * itemsPerPage
