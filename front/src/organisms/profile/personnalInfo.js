@@ -22,7 +22,7 @@ export default function PersonnalInfo(){
     useEffect(()=>{
       if(!userContext.userProfile)
         return
-      // console.log(userContext.userProfile.profile_picture)
+
       setData({
         email : userContext.userProfile.email,
         name: userContext.userProfile.name,
@@ -36,8 +36,7 @@ export default function PersonnalInfo(){
         password_confirm: "",
       })
     }, [userContext.userProfile])
-// console.log(data)
-/*     console.log("data")  ; console.log( userContext.userProfile) */
+
   useEffect(() => {
     if(userContext.msg.editProfileOK !== ""){
       setMessage({editProfileOK: <div class="ui success message"><div class="header">{userContext.msg.editProfileOK}</div></div>})

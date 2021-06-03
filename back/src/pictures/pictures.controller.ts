@@ -3,12 +3,11 @@ import { PicturesService } from './pictures.service';
 import { Picture } from './picture.entity';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
-
-
 @Controller('pictures')
 export class PicturesController {
     constructor(private picturesService: PicturesService) { }
     
+    @UseGuards(JwtAuthGuard)
     @Post()
     @UseGuards(JwtAuthGuard)
     async post(
@@ -31,6 +30,11 @@ export class PicturesController {
     @Get(':id')
     async get(@Param() params) {
         return this.picturesService.getPicture(params.id);
+    }
+
+    @Get()
+    getPictures(picture: Picture) {
+        return this.picturesService.getPictures(picture);
     }
 
     @Delete(':id')

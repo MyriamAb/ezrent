@@ -36,7 +36,7 @@ export class RentalController {
         return {
             statusCode: HttpStatus.OK,
             message: 'Rental updated successfully',
-            user: updatedRental,
+            rental: updatedRental,
         };
     }
 

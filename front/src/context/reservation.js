@@ -33,7 +33,20 @@ export function ReservationsProvider({ children }) {
     
   }
 
-  function addReservation(data) {
+  async function deleteReservation(id) {
+    fetch('http://localhost:5000/reservations/' + id, {
+      method: "DELETE",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+    })
+      .then(response => response.json())
+      .then(Refreshfct())
+      .catch(err => console.log(err))    
+  }
+
+  function addReservation(data, valueCalendar, realEndDate) {
     fetch('http://localhost:5000/reservations/', {
       method: "post",
       headers: {
@@ -42,8 +55,8 @@ export function ReservationsProvider({ children }) {
         'Authorization': 'Bearer ' + userContext.token
       },
       body: JSON.stringify({
-        "start": data.start,
-        "end": data.end,
+        "start": valueCalendar,
+        "end": realEndDate,
         "owner_id": data.owner_id,
         "owner_review": false,
         "client_id": userContext?.user?.id,
@@ -117,7 +130,7 @@ export function ReservationsProvider({ children }) {
     <ReservationsContext.Provider value={{
       allReservations, getReservation, getMyReservations,
       getReservationsByRental, editRes, addReservation,
-      updateReservationReview, reservation
+      updateReservationReview, deleteReservation, reservation
     }}>
         {children}
     </ReservationsContext.Provider>

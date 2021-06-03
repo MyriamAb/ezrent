@@ -1,19 +1,21 @@
 import AdPartie1 from '../molecules/createAdContentP1'
 import AdPartie2 from '../molecules/createAdContentP2'
-import React, { useState } from 'react'
-import { Modal, Image } from 'semantic-ui-react'
+import React, { useEffect, useState } from 'react'
+import { Modal, Image, Icon } from 'semantic-ui-react'
 import Button from '../atoms/button'
 import useRentals from '../context/rentals'
-import Moment from 'moment';
+import Moment from 'moment'
 
+let tampon = []
 export default function ModalMultiple(props) {
   const rentalsContext = useRentals()
   const [firstOpen, setFirstOpen] = useState(false)
   const [secondOpen, setSecondOpen] = useState(false)
   const [adPics, setAdPics] = useState([])
-  var tabImage = []
+  const [tabImage, setTabImage] = useState([])
+
   function submit(data){
-    rentalsContext.postAd(data)
+    rentalsContext.postAd(data, adPics)
   }
   const [data, setData]= useState({
     address: '',
@@ -58,38 +60,38 @@ export default function ModalMultiple(props) {
   function fileUploadInputChange(e) {
     e.preventDefault()
     let reader = new FileReader();
-    reader.onload = function(e) {
-      adPics.push(e.target.result)
-    };
+    reader.addEventListener ("load", function() {
+      tampon.push(reader.result)
+      setAdPics(tampon)
+    })
     reader.readAsDataURL(e.target.files[0])
-    // console.log(adPics)
-    displayPicture()
   }
+  useEffect(()=>{
+    displayPicture()
+  },[adPics])
 
   function displayPicture(){
-    // console.log('function')
-    if (adPics === null) {
-      // console.log('null')
+    if (adPics == null) {
       tabImage=(<Image/>)
-      // console.log('null')
     }
     else {
-      // console.log(adPics)
-      // console.log(adPics.length)
-      for (let i = 0; i < adPics.length; i++) {
-        // console.log('for')
-        // console.log(i)
-        tabImage.push(
-          <Image src={adPics[i]} />
+      let tmp = [...tabImage]
+      for (let i = 0; i < adPics?.length; i++) {
+        tmp.push(
+          <Icon.Group size="big" key={adPics[i]}>
+          <Image src={adPics[i]}/>
+          <Icon corner='top right' name='close' onClick={e => deletePicture(e, adPics[i])}/>
+        </Icon.Group>
         )
-        // console.log(tabImage)
       }
+      setTabImage(tmp)
     }
     return tabImage
   }
-
-  //  console.log(tabImage)
-
+  function deletePicture(e, rowid)  
+{   
+    console.log('cla')
+}
   return (
     <>
       <Button onClick={() => setFirstOpen(true)} content="Add an ad"></Button>
@@ -147,7 +149,7 @@ export default function ModalMultiple(props) {
               icon='check'
               content='All Done'
               basic color='green'
-              onClick={() => {setSecondOpen(false); setFirstOpen(false); submit(data)}}
+              onClick={() => {setSecondOpen(false); setFirstOpen(false); submit(data, adPics)}}
             />
           </Modal.Actions>
         </Modal>

@@ -24,6 +24,10 @@ export class PicturesService {
         return await this.picturesRepository.find({rental_id: id})
     }
 
+    async getPictures(picture: Picture): Promise<Picture[]> {
+        return await this.picturesRepository.find()
+    }
+
     async deletePicture(id: number) {
         const deletedPicture = await this.picturesRepository.findOne(id);
         const result = await this.picturesRepository.remove(deletedPicture);
