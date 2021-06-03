@@ -14,6 +14,7 @@ import useUser from '../context/user'
 /* import PaymentMethod from '../organisms/customPayment/paymentMethod'
 */
 let tmpbook = []
+let displayAct = []
 function AdDetails(props) {
   var disabledDates = []
   var rangeDates = []
@@ -21,6 +22,7 @@ function AdDetails(props) {
   const reservationContext = useReservations()
   var rentals = rentalsContext?.allRentals ?? null
   var pictures = rentalsContext?.pictures ?? null
+  var activities = rentalsContext?.activities ?? null
   var reservations = reservationContext?.allReservations ?? null
   const [rental, setRental] = useState({})
   const { id } = useParams()
@@ -29,6 +31,7 @@ function AdDetails(props) {
   const [user, setUser] = useState({})
   const [picture, setPicture] = useState('')
   const [resa, setResa] = useState([])
+  const [activitie, setActivitie] = useState('')
   const [price, setPrice] = useState(0)
   const [valueCalendar, onChangeCalendar] = useState(new Date())
   const [duration, setDuration] = useState(null)
@@ -48,24 +51,79 @@ function AdDetails(props) {
        ownerId = res.owner_id
       }, [id, rentals, ownerId, userContext, pictures])
       
-      useEffect(() => {
-        for (let i=0; i < reservations?.length; i++) {
-          if(reservations[i].rental_id == id && reservations[i].status == 'RESERVATION COMPLETED'){
-            tmpbook.push({start: reservations[i].start, end:reservations[i].end, id:reservations[i].id })
-            setResa(tmpbook)
-           }
-         }
-        },[reservations])
+  useEffect(() => {
+    for (let i=0; i < reservations?.length; i++) {
+      if(reservations[i].rental_id == id && reservations[i].status == 'RESERVATION COMPLETED'){
+        tmpbook.push({start: reservations[i].start, end:reservations[i].end, id:reservations[i].id })
+        setResa(tmpbook)
+        }
+      }
+    },[reservations])
+
+  useEffect(() => {
+    const act = activities?.find(element => element.rental_id == id)
+    setActivitie(act)
+    console.log(activitie)
+    if (activitie?.vacation == 1){
+      displayAct.push(
+        <p>
+        <Icon color='yellow' name='sun' size='big'/>
+          Vacation
+        </p>)
+    }
+    if (activitie?.party == 1){
+      displayAct.push(
+        <p>
+        <Icon color='pink' name='glass martini' size='big'/>
+          Party
+        </p>)
+    }
+    if (activitie?.photo_shooting == 1){
+      displayAct.push(
+        <p>
+        <Icon color='purple' name='photo' size='big'/>
+          Photo shooting
+        </p>)
+    }
+    if (activitie?.movie_shooting == 1){
+      displayAct.push(
+        <p>
+        <Icon color='green' name='video camera' size='big'/>
+          Movie shooting
+        </p>)
+    }
+    if (activitie?.seminaries == 1){
+      displayAct.push(
+        <p>
+        <Icon color='grey' name='users' size='big'/>
+          Seminaries
+        </p>)
+    }
+    if (activitie?.business_trip == 1){
+      displayAct.push(
+        <p>
+        <Icon color='yellow' name='building outline' size='big'/>
+          Business Trip
+        </p>)
+    }    
+    if (activitie?.other == 1){
+      displayAct.push(
+        <p>
+        <Icon color='dark' name='ellipsis horizontal' size='big'/>
+          Other
+        </p>)
+    }
+    return displayAct
+  },[activities])
+
   useEffect(() => {
     const userInfo = userContext?.getUserbyId(ownerId)
-
     if (userInfo === null || userInfo === undefined)
-      return
-   
+    return
+    
     setUser(userInfo)
   }, [userContext.getUserbyId, userContext, ownerId])
   
-
   useEffect(() => {
     setDuration(datediff(valueCalendar[0], valueCalendar[1]))
   }, [valueCalendar])
@@ -144,7 +202,7 @@ function AdDetails(props) {
    else {
      disabledDates = getDates(new Date(), new Date(rental?.start), getDates(new Date(realEndDate), new Date(2023, 0, 1)))                                                                                                          
    }
-
+   console.log(displayAct)
   return (
     <div style={styles.container1}>
       <Container style={styles.container}>
@@ -169,6 +227,10 @@ function AdDetails(props) {
               <p>
               {rental?.description}
               </p>
+              <Item.Header as='h5'>Activities:</Item.Header>
+              <div>
+              {displayAct}
+              </div>
             </Grid.Column>
             <Grid.Column width={5}>
               <Grid.Row>
