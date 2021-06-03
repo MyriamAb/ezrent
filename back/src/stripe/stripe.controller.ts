@@ -14,7 +14,8 @@ export class PaymentController {
   @Post('/create-payment-intent')
   @UseGuards(JwtAuthGuard)
   create(
-    @Body() paymentCreateDto: PaymentCreateDto)
+    @Body() paymentCreateDto: PaymentCreateDto,
+    @Body () items: Array<any>)
   {
     console.log ('post controller')
     return this.paymentService.create(paymentCreateDto);

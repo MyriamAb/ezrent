@@ -41,7 +41,6 @@ function App() {
             <Route path='/register' component={Register}/>
             <Route path='/addetails/:id' component={AdDetails}/>
             <Route path='/myads/:id' component={EditMyAd}/>
-            <Route path='/checkoutform' component={CheckoutForm} />
             <Route path='/checkoutform/:id' component={CheckoutForm} />
             <Route path='/password/:id' component={Password} />
             <Route path='/password' component={PasswordEmail} />

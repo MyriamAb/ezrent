@@ -148,10 +148,16 @@ export class UsersController {
     async sendPaymentMail(
         @Body('name') userName: string,
         @Body('email') userEmail: string,
+        @Body('amount') amount: number,
+        @Body('nbDay') nbDay: number
     ) {
+       
+        
         const user = await this.usersService.sendPaymentMail(
             userName,
-            userEmail
+            userEmail,
+            amount,
+            nbDay
         )
         
     }

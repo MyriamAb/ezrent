@@ -10,23 +10,20 @@ function ImageCarousel(props) {
   const pictures = rentalsContext.picturesByRentalId(props.rental_id)
   var slide = []
   var nbSlides = pictures.length === 0 ? 1 : pictures.length
-  var rentalImages = []
   
   if (pictures === null || pictures.length === 0 ) {
-    console.log("entree dans le if nul 0")
     slide.push(<ImageSlide src="/noPicture.png" href={"/addetails/" + props.rental_id}/>)
   }
   else {
     pictures.forEach((el, i) => {
         slide.push(
-          <ImageSlide key={i} index={i} src={el.blob} href={"/addetails/" + el.rental_id} rentals={props.rentals_id}/>
+          <ImageSlide styleImage={props.styleImage} styles={props.style} key={i} index={i} src={el.blob} href={"/addetails/" + el.rental_id} rentals={props.rentals_id}/>
           )
         
     })
   }
   
   return (
-
   <CarouselProvider
     naturalSlideWidth={1}
     naturalSlideHeight={1}
@@ -37,6 +34,7 @@ function ImageCarousel(props) {
         {slide}
       </Slider>
     <CustomDotGroup slides={nbSlides} />
+      <br/>
   </CarouselProvider>
   )
 }
