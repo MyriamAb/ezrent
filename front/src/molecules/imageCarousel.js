@@ -37,6 +37,7 @@ function ImageCarousel(props) {
         {slide}
       </Slider>
     <CustomDotGroup slides={nbSlides} />
+      <br/>
   </CarouselProvider>
   )
 }
