@@ -43,7 +43,7 @@ export function ReservationsProvider({ children }) {
         'Authorization': 'Bearer ' + userContext.token
       },
       body: JSON.stringify({
-        "start": valueCalendar[0],
+        "start": valueCalendar,
         "end": realEndDate,
         "owner_id": data.owner_id,
         "owner_review": false,

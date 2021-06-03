@@ -16,6 +16,7 @@ import useUser from '../context/user'
 let tmpbook = []
 function AdDetails(props) {
   var disabledDates = []
+  var rangeDates = []
   const rentalsContext = useRentals()
   const reservationContext = useReservations()
   var rentals = rentalsContext?.allRentals ?? null
@@ -76,10 +77,33 @@ function AdDetails(props) {
 
   function book() {
     var realEndDate = new Date(valueCalendar[1]).setDate(new Date(valueCalendar[1]).getDate()-1)
-    reservationContext.addReservation(rental, valueCalendar, new Date(realEndDate))
-    alert("You have booked this location, you'll be notified when the owner check your reservation")
+    var currentDate = valueCalendar[0]
+    var check = false
+    var addDays = function(days) {
+      var date = new Date(this.valueOf());
+      date.setDate(date.getDate() + days);
+      return date;
+    };
+    while (currentDate <= valueCalendar[1]) {
+      rangeDates.push(currentDate);
+      currentDate = addDays.call(currentDate, 1);
+    }
+    disabledDates.forEach(element => {
+      rangeDates.forEach(el => {
+        if(element.getTime() === el.getTime()){  
+          return check = true
+        }
+      })
+    })
+    if (check == false) {
+      reservationContext.addReservation(rental, valueCalendar[0], new Date(realEndDate))
+      alert("You have booked this location, you'll be notified when the owner check your reservation")
+    }
+    else {
+      alert("Please select days whitout a day off")
+    }
   }
-
+  
   function datediff(first, second) {
     return Math.round((second-first)/(1000*60*60*24));
   }
@@ -114,11 +138,11 @@ function AdDetails(props) {
   var realEndDate = EndDate?.setDate(EndDate?.getDate()+1)
    if (resa?.length > 0 ) {
      for (let i = 0; i<resa.length; i++){
-       disabledDates = getDates(new Date(), new Date(rental?.start), getDates(new Date(resa[i]?.start), new Date(resa[i]?.end)), getDates(new Date(realEndDate), new Date(2025, 0, 1)))                                                                                                          
+       disabledDates = getDates(new Date(), new Date(rental?.start), getDates(new Date(resa[i]?.start), new Date(resa[i]?.end)), getDates(new Date(realEndDate), new Date(2023, 0, 1)))                                                                                                          
      }
    }
    else {
-     disabledDates = getDates(new Date(), new Date(rental?.start), getDates(new Date(realEndDate), new Date(2021, 7, 1)))                                                                                                          
+     disabledDates = getDates(new Date(), new Date(rental?.start), getDates(new Date(realEndDate), new Date(2023, 0, 1)))                                                                                                          
    }
 
   return (
@@ -202,8 +226,8 @@ function AdDetails(props) {
         </Grid>
         <Grid>
           <Reviews_Public id={user.id}/>
-{/*           <Comments/>
- */}        </Grid>
+        {/* <Comments/> */}
+   </Grid>
     </Container>
     </div>
 
