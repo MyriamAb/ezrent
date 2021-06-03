@@ -6,7 +6,7 @@ import {
   useElements
 } from "@stripe/react-stripe-js";
 import '../../styles/stylesPayment.css';
-import { Container, Header, Segment, SegmentGroup } from 'semantic-ui-react'
+import { Container, Message, Segment, SegmentGroup } from 'semantic-ui-react'
 import useReservations from '../../context/reservation'
 import useUser from '../../context/user'
 
@@ -23,12 +23,20 @@ export default function CheckoutForm() {
   const reservationsContext = useReservations()
   const reservation = reservationsContext?.reservation ?? null
   const userContext = useUser()
-  
+  const userProfile = userContext?.userProfile ?? null
+  const price = reservation[0]?.price
+
+  const getUserStripeId = useCallback(()=>{
+    if (userProfile === null || userProfile === undefined)
+      return
+    return userProfile.stripeCustomerId
+  }, [userProfile])  
+
   useEffect(() => {
     reservationsContext?.getReservation(id)
     dayNumber()
   }, [id])
-  console.log(reservation[0]?.price)
+ 
 
   const dayNumber = useCallback(() => {
     function datediff(start, end) {
@@ -47,7 +55,6 @@ export default function CheckoutForm() {
 
       const nbDay= datediff(parseDate(reservation[0]?.start.slice(0,10)), parseDate(reservation[0]?.end.slice(0,10)))
   
-      console.log(nbDay)
       return nbDay
     
     
@@ -55,6 +62,7 @@ export default function CheckoutForm() {
   
   const amount = dayNumber() * reservation[0]?.price * 100
 
+  // Create PaymentIntent as soon as the page loads
   useEffect(() => {
     if (reservation[0]) {
       window
@@ -67,8 +75,10 @@ export default function CheckoutForm() {
           body: JSON.stringify({
             items: [{
               id: reservation[0]?.id,
-              price: parseFloat(reservation[0]?.price),
-              nbDay: dayNumber()
+              price: parseFloat(price),
+              nbDay: dayNumber(),
+              customer: getUserStripeId(),
+              receipt_email: 'test@test.com'
             }]
           })
         })
@@ -79,8 +89,7 @@ export default function CheckoutForm() {
           setClientSecret(data.client_secret);
         });
     }
-    // Create PaymentIntent as soon as the page loads
-  }, [reservation, dayNumber]);
+  }, [reservation, dayNumber, getUserStripeId]);
   
   
   const cardStyle = {
@@ -101,8 +110,7 @@ export default function CheckoutForm() {
     }
   };
 
-  console.log("This is secret : ")
-  console.log(clientSecret)
+
   const handleChange = async (event) => {
     // Listen for changes in the CardElement
     // and display any errors as the customer types their card details
@@ -119,7 +127,6 @@ export default function CheckoutForm() {
         card: elements.getElement(CardElement)
       }
     });
-    console.log(payload);
     if (payload.error) {
       setError(`Payment failed ${payload.error.message}`);
       setProcessing(false);
@@ -127,7 +134,8 @@ export default function CheckoutForm() {
       setError(null);
       setProcessing(false);
       setSucceeded(true);
-      userContext.sendPaymentEmail();
+      userContext.sendPaymentEmail(amount, dayNumber());
+      reservationsContext.editRes(id, "RESERVATION COMPLETED")
     }
   };
 
@@ -170,9 +178,9 @@ export default function CheckoutForm() {
             </div>
           )}
           {/* Show a success message upon completion */}
-          <p className={succeeded ? "result-message" : "result-message hidden"}>
+          <Message success className={succeeded ? "result-message" : "result-message hidden"}>
             Payment succeeded
-          </p>
+          </Message>
           </form>
       </div>
     </Container>

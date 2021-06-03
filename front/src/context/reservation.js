@@ -21,7 +21,6 @@ export function ReservationsProvider({ children }) {
   }, [refresh]);
 
   async function getReservation(id) {
-    console.log('entre context')
     fetch('http://localhost:5000/reservations/' + id, {
       method: "get",
       headers: {
@@ -47,7 +46,7 @@ export function ReservationsProvider({ children }) {
         "end": data.end,
         "owner_id": data.owner_id,
         "owner_review": false,
-        "client_id": userContext.user.id,
+        "client_id": userContext?.user?.id,
         "client_review": false,
         "price": data.price,
         "status": "WAITING FOR OWNER'S APPROVAL",
