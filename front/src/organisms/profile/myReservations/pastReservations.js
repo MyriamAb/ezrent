@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { Grid, Segment, Header, Icon } from 'semantic-ui-react'
+import { Grid, Segment, Header, Icon, Button } from 'semantic-ui-react'
 import useRentals from '../../../context/rentals'
 import useUser from '../../../context/user'
 import useReservations from '../../../context/reservation'
@@ -19,9 +19,16 @@ export default function PastReservations(){
         return new Date(mdy[0], mdy[1]-1, mdy[2]); 
     }
 
-    if(!myReservations.find(reserv => parseDate(reserv.end).getTime() <= today_date.getTime()))
-        noAds = "No ads here"
-    else
+    function deleteReservation(e, id){
+        e.preventDefault()
+        reservationsContext.deleteReservation(id)
+    }
+
+    if(!myReservations.find(reserv => parseDate(reserv.end).getTime() <= today_date.getTime())){
+        noAds = <Grid.Column>
+                    <Header as='h1' centered> You have no past reservations </Header>
+                </Grid.Column>
+    }else
         noAds=""
 
     return(
@@ -29,7 +36,7 @@ export default function PastReservations(){
             <Grid container columns={1} stackable>
                 {myReservations.map((reserv, ind)=>(
                     (parseDate(reserv.end).getTime() < today_date.getTime() || reserv.status ==="CANCELLED"
-                    && rentalsContext.allRentals ) &&
+                    && rentalsContext.allRentals ) ?
                     <Grid.Column>
                         <Segment>
                             <Grid >
@@ -54,7 +61,24 @@ export default function PastReservations(){
                                 </Grid.Row>
                             </Grid>
                         </Segment>
-                    </Grid.Column>
+                    </Grid.Column> : 
+                    reserv.status ==="UNAVAILABLE" ?
+                    <Grid.Column>
+                        <Segment>
+                            <Grid>
+                                <Grid.Row>
+                                <Grid.Column width={12} >
+                                    {`You tried to book from  ${reserv.start.slice(0,10)}
+                                     to  ${reserv.end.slice(0,10)}
+                                    but the owner cancelled his ad`}.
+                                </Grid.Column>
+                                <Grid.Column width={4} >
+                                    <Button onClick={(e)=>deleteReservation(e, reserv.id)}>Delete</Button>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            </Grid>
+                        </Segment>
+                    </Grid.Column> : ""
                 ))}
                 <Grid.Column> 
                     {noAds}
