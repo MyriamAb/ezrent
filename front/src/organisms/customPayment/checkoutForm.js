@@ -9,7 +9,7 @@ import '../../styles/stylesPayment.css';
 import { Container, Message, Segment, SegmentGroup } from 'semantic-ui-react'
 import useReservations from '../../context/reservation'
 import useUser from '../../context/user'
-
+import { useHistory } from 'react-router-dom';
 
 export default function CheckoutForm() {
   const [succeeded, setSucceeded] = useState(false);
@@ -25,6 +25,7 @@ export default function CheckoutForm() {
   const userContext = useUser()
   const userProfile = userContext?.userProfile ?? null
   const price = reservation[0]?.price
+  const history = useHistory();
 
   const getUserStripeId = useCallback(()=>{
     if (userProfile === null || userProfile === undefined)
@@ -42,7 +43,7 @@ export default function CheckoutForm() {
     function datediff(start, end) {
       if (start === null || end === null || start === undefined || end === undefined)
           return
-        return Math.round((end-start)/(1000 * 60 * 60 * 24));
+        return Math.round((end-start)/(1000 * 60 * 60 * 24)+1);
     }
     function parseDate(str) {
       if (str === null || str === undefined)
@@ -55,13 +56,13 @@ export default function CheckoutForm() {
 
       const nbDay= datediff(parseDate(reservation[0]?.start.slice(0,10)), parseDate(reservation[0]?.end.slice(0,10)))
   
+      console.log(nbDay)
       return nbDay
     
     
   },[reservation])
   
-  const amount = dayNumber() * reservation[0]?.price * 100
-
+  const amount = dayNumber() * reservation[0]?.price
   // Create PaymentIntent as soon as the page loads
   useEffect(() => {
     if (reservation[0]) {
@@ -136,6 +137,10 @@ export default function CheckoutForm() {
       setSucceeded(true);
       userContext.sendPaymentEmail(amount, dayNumber());
       reservationsContext.editRes(id, "RESERVATION COMPLETED")
+      setTimeout(() => {
+        history.push({pathname: '/profile'})
+      }, 2000);
+      
     }
   };
 
@@ -179,7 +184,7 @@ export default function CheckoutForm() {
           )}
           {/* Show a success message upon completion */}
           <Message success className={succeeded ? "result-message" : "result-message hidden"}>
-            Payment succeeded
+            Payment succeeded. You'll be redirect in a few second.
           </Message>
           </form>
       </div>
