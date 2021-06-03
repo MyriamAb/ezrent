@@ -15,7 +15,7 @@ function renderData(rentals) {
         cardItem.push(
             <CardType title={rentals[i].title} description={rentals[i].description} price={rentals[i].price} location={rentals[i].address} id={rentals[i].id} style={{ marginTop: '3px' }}/>
         )  
-    }
+      }
     } 
 
     return (
@@ -35,7 +35,6 @@ function renderData(rentals) {
         </Grid>
     </div>
     )  
-    
 }
 
 export default CardCarousel;
