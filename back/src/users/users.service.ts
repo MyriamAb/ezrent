@@ -62,9 +62,19 @@ export class UsersService {
                 "name",
                 "email",
                 "phone",
-                "profile_picture"
+                "profile_picture",
+                "stripeCustomerId"
             ],
             where: [{ "id": _id}]
+        });
+    }
+
+     async getStripeId(email: string): Promise<User[]> {
+        return await this.usersRepository.find({
+            select: [
+                "stripeCustomerId"
+            ],
+            where: [{ "email": email}]
         });
     }
 
@@ -203,7 +213,7 @@ export class UsersService {
         return user;
     }
 
-    async sendPaymentMail(name, email) {
+    async sendPaymentMail(name, email, amount, nbDay) {
         const Nodemailer = require("nodemailer");
         process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
@@ -223,7 +233,9 @@ export class UsersService {
             html: `<h1>Payment confirmation</h1>
             <h2>Hello ${name}</h2>
             <p>Your payment for your reservation has been successful, you can find your bill on the link below !<p>
-            <a href=http://google.com> Click here</a>
+            Here, the summary:
+            You just paid for a reservation for ${nbDay} days for ${amount} €.
+            You can find you're reservation details in <a href=http://localhost:3000/profile/>Profile</a>
             </div>`,
         }).catch(err => console.log(err));
     }

@@ -186,7 +186,8 @@ export function UserProvider({ children }) {
           name: data[0].name,
           email: data[0].email,
           phone: data[0].phone, 
-          profile_picture: data[0].profile_picture
+          profile_picture: data[0].profile_picture,
+          stripeCustomerId:data[0].stripeCustomerId
         }))
     }, [token, user]);
 
@@ -239,7 +240,7 @@ export function UserProvider({ children }) {
     })
   }, []);
 
-  const sendPaymentEmail = useCallback(() => {
+  const sendPaymentEmail = useCallback((amount, nbDay) => {
     fetch('http://localhost:5000/users/paymentmail', {
       method: 'post',
       headers: {
@@ -250,6 +251,8 @@ export function UserProvider({ children }) {
       body: JSON.stringify({
         name: user.username,
         email: user.email,
+        amount: amount,
+        nbDay: nbDay,          
       })
     })
   }, [])
@@ -311,20 +314,7 @@ export function UserProvider({ children }) {
         .then(data => setAllReviews(data))
       console.log(allReviews)
     }, [token, refresh])
-/*   
-  const getAllUsers = useCallback(() => {
-      fetch('http://localhost:5000/users/', {
-          method: "GET",
-          headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
-              'Authorization': 'Bearer ' + token
-          },
-        })
-        .then(response => response.json())
-        .then(data => setAllUsers(data))
-      return allUsers
-  }, []) */
+
 
     const getUserbyId= useCallback((id) => {
       if(allUsers !== null){

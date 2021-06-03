@@ -53,21 +53,22 @@ function EditMyAd(props) {
 
    
   useEffect(() => {
-
-/*     if(rentalsContext.msg.editAdOK !== ""){
+    if(rentalsContext.msg.editAdOK !== ""){
       setMessage({editAdOK: <Message positive><Message.Header>{rentalsContext.msg.editAdOK}</Message.Header></Message>})
       setTimeout(() => {
         setMessage({editAdOK:""})
       }, 20000);
-    } */
+    }
+  },[rentalsContext.msg.editAdOK])
 
-    if(rentalsContext.msg.deleteImpossible !== ""){
+    useEffect(() => {
+    if(rentalsContext.msg.deleteImpossible !== "" && rentalsContext.msg.deleteImpossible !== undefined){
       setMessage({deleteImpossible: <Message negative><Message.Header>{rentalsContext.msg.deleteImpossible}</Message.Header></Message>})
       setTimeout(() => {
         setMessage({deleteImpossible:""})
         }, 20000);
     }
-  },[rentalsContext.msg])
+  },[rentalsContext.msg.deleteImpossible])
 
 
   const styles = {
@@ -219,8 +220,9 @@ function EditMyAd(props) {
         }
         <ConfirmDeleteAd id={id}/>
         </Grid> 
-        {message.editAdOK}<br/>
+        {message.editAdOK}
         {message.deleteImpossible}
+        <br/><br/><br/><br/>
     </Container>
     </div>
   )
