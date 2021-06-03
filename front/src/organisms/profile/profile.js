@@ -31,7 +31,6 @@ function Profile() {
  
   return (
   <div>
-    <Review/>
     <AddAd/>
       <Tab menu={{ fluid: true, vertical: true, tabular: false }} onTabChange={handleChange} panes={panes} activeIndex={ location }/>
   </div>)

@@ -5,8 +5,8 @@ import {
   useStripe,
   useElements
 } from "@stripe/react-stripe-js";
-/* import '../../styles/stylesPayment.css';
- */import { Container, Header, Segment, SegmentGroup } from 'semantic-ui-react'
+//import '../../styles/stylesPayment.css';
+import { Container, Header, Segment, SegmentGroup } from 'semantic-ui-react'
 import useReservations from '../../context/reservation'
 import useUser from '../../context/user'
 
@@ -101,6 +101,8 @@ export default function CheckoutForm() {
     }
   };
 
+  console.log("This is secret : ")
+  console.log(clientSecret)
   const handleChange = async (event) => {
     // Listen for changes in the CardElement
     // and display any errors as the customer types their card details

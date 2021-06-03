@@ -11,13 +11,15 @@ import Register from './organisms/register'
 import Password from './organisms/password/password'
 import PasswordEmail from './organisms/password/password_email'
 import AdDetails from './organisms/adDetails'
+import EditMyAd from './organisms/profile/myAds/editMyAd'
 import { RentalsProvider } from './context/rentals';
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import CheckoutForm from "./organisms/customPayment/checkoutForm";
 import { GoogleApiProvider } from 'react-gapi';
 import { UserProvider } from './context/user'
-import { ReservationsProvider } from './context/reservation';
+import { ReservationsProvider } from './context/reservation'
+
 
 const promise = loadStripe("pk_test_51IsNySAQArDV5cBDQy5GSkkhHV2FX283JHxwG4L2XiUmWfnF4og6GSznds1vfnuho1svtriLC0uZMi93WnVL9sUq00vQPVDzMJ ");
 
@@ -29,7 +31,7 @@ function App() {
       <Elements stripe={promise}>    
         <UserProvider>
           <RentalsProvider>
-            <ReservationsProvider>
+              <ReservationsProvider>
           <Header />
           <Switch>
             <Route exact path='/' component={Home} />
@@ -38,12 +40,14 @@ function App() {
             <Route path='/login' component={Login}/>
             <Route path='/register' component={Register}/>
             <Route path='/addetails/:id' component={AdDetails}/>
+            <Route path='/myads/:id' component={EditMyAd}/>
+            <Route path='/checkoutform' component={CheckoutForm} />
             <Route path='/checkoutform/:id' component={CheckoutForm} />
             <Route path='/password/:id' component={Password} />
             <Route path='/password' component={PasswordEmail} />
           </Switch>
           <Footer/>
-            </ReservationsProvider>
+              </ReservationsProvider>
           </RentalsProvider>
         </UserProvider>
        </Elements>

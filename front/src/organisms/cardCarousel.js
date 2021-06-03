@@ -10,20 +10,15 @@ function CardCarousel() {
   var rentals = rentalsContext?.resultSearch ?? null;
   var totalPages= rentals?.length / 10
  
-
   if (rentals === null) {
     cardItem=(<Card></Card>)
   }
   else {
     for (let i = 0; i < rentals.length; i++) {
       cardItem.push(
-       
-          <CardType rentals={rentals[i]} title={rentals[i].title} description={rentals[i].description} price={rentals[i].price} location={rentals[i].address} id={rentals[i].id} style={{ marginTop: '3px' }}/>
-        
-        
+        <CardType title={rentals[i].title} description={rentals[i].description} price={rentals[i].price} location={rentals[i].address} id={rentals[i].id} style={{ marginTop: '3px' }}/>
     )  
   }
-  
   } 
 
   return (

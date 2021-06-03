@@ -13,9 +13,7 @@ export default function InProcessReservations(){
   const myRentals = rentalsContext.getMyRentals(userContext.user.id)
   const myReservations = reservationsContext.getMyReservations(userContext.user.id)
   const [open, setOpen] = useState(false)
-
-    console.log(myReservations)
-
+  var noResa = ""
 
   function parseDate(str) {
     var datesplit = str.slice(0, 10);
@@ -27,12 +25,21 @@ export default function InProcessReservations(){
     reservationsContext.editRes(id, status)
   }
 
+  if(!!myReservations.find(resa => parseDate(resa.end).getTime() >= today_date.getTime()
+    && resa.status !=="CANCELLED" && resa.status !=="UNAVAILABLE")){
+      noResa=""
+    }else{
+      noResa= <Grid.Column>
+                    <Header as='h1' centered> You have no reservations yet</Header>
+                </Grid.Column>
+    }
+
   return(
     <div>
       <Grid container columns={1} stackable>
-        {myReservations.find(el => parseDate(el.end).getTime() >= today_date.getTime()) ?
+        {
         myReservations.map((reserv, ind)=>(
-          (parseDate(reserv.end).getTime() >= today_date.getTime() && reserv.status !=="CANCELLED") 
+          (parseDate(reserv.end).getTime() >= today_date.getTime() && reserv.status !=="CANCELLED" && reserv.status !=="UNAVAILABLE") 
           && rentalsContext.allRentals &&
           <Grid.Column  key={ind}> 
             <Header as='h3' block attached='top'>{rentalsContext.getRentalById(reserv.rental_id).title}</Header>
@@ -56,6 +63,8 @@ export default function InProcessReservations(){
                     <Button primary href={"/checkoutForm/" + reserv.id}> Payment </Button> :
                     reserv.status === "REFUSED" || reserv.status === "CANCELLED"?
                     <Icon color='red' name='close' size='big'/> :
+                    reserv.status === "UNAVAILABLE" ?
+                    <Icon color='red' name='warning sign' size='big'/> :
                     <Icon color='green' name='check' size='big'/> 
                     }
                    
@@ -63,6 +72,7 @@ export default function InProcessReservations(){
                   <Grid.Column width={2}>
                   {
                     reserv.status !== "REFUSED" &&
+                    reserv.status !== "UNAVAILABLE" &&
                     reserv.status !== "RESERVATION COMPLETED" && 
                     reserv.status !== "CANCELLED" ?
                   <Button onClick={() => cancelReservation(reserv.id, "CANCELLED")} negative> Cancel the reservation </Button>:
@@ -72,11 +82,11 @@ export default function InProcessReservations(){
                 </Grid.Row>
               </Grid >
             </Segment>
-          </Grid.Column> 
-          )):
+          </Grid.Column>
+          ))}
           <Grid.Column>
-            <Header as='h1' centered> No reservations in process</Header>
-          </Grid.Column>}
+            <Header as='h1' centered> {noResa}</Header>
+          </Grid.Column>
       </Grid>
     </div>
   )
