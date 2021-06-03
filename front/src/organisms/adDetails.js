@@ -1,6 +1,5 @@
 import React, { useCallback } from "react";
 import { Icon, Item, Grid, Container, Header, Image } from "semantic-ui-react";
-import Comments from '../molecules/comments'
 import Reviews_Public from '../organisms/profile/public/reviews_public'
 import useRentals from "../context/rentals"
 import useReservations from '../context/reservation'
@@ -10,6 +9,7 @@ import RatingType from '../atoms/rate'
 import { useEffect, useState} from 'react'
 import ButtonType from '../atoms/button'
 import useUser from '../context/user'
+import ImageCarousel from '../molecules/imageCarousel'
 
 /* import PaymentMethod from '../organisms/customPayment/paymentMethod'
 */
@@ -63,7 +63,6 @@ function AdDetails(props) {
   useEffect(() => {
     const act = activities?.find(element => element.rental_id == id)
     setActivitie(act)
-    console.log(activitie)
     if (activitie?.vacation == 1){
       displayAct.push(
         <p>
@@ -176,6 +175,7 @@ function AdDetails(props) {
     image: {
       width: 500,
       height: 500,
+      marginLeft: 340
     }
   }
     //Make a range with 2 dates
@@ -202,7 +202,6 @@ function AdDetails(props) {
    else {
      disabledDates = getDates(new Date(), new Date(rental?.start), getDates(new Date(realEndDate), new Date(2023, 0, 1)))                                                                                                          
    }
-   console.log(displayAct)
   return (
     <div style={styles.container1}>
       <Container style={styles.container}>
@@ -217,7 +216,7 @@ function AdDetails(props) {
             </Grid.Column>
           </Grid.Row>
           <Grid.Row>
-            <Image centered style={styles.image} src={picture} />
+            <ImageCarousel styleImage={styles.image} rental_id={id} />
           </Grid.Row>
         </Grid>
        <Grid celled>

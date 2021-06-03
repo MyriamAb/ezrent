@@ -7,7 +7,7 @@ function CardType(props) {
   return (
     <Card>
       <Card.Content>
-        <ImageCarousel rental_id={props.id}/>
+        <ImageCarousel rental_id={props.id} styleImage={props.styleImage}/>
         <Card.Header>{props.title}</Card.Header>
         <Card.Meta>{props.price} €</Card.Meta>
         <Card.Description>

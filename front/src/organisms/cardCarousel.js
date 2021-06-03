@@ -4,7 +4,7 @@ import CardType from "../molecules/cardType";
 import "pure-react-carousel/dist/react-carousel.es.css"
 import useRentals from '../context/rentals'
 
-function CardCarousel() {
+function CardCarousel(props) {
   var cardItem= []  
   const rentalsContext = useRentals()
   var rentals = rentalsContext?.resultSearch ?? null;
@@ -16,7 +16,7 @@ function CardCarousel() {
   else {
     for (let i = 0; i < rentals.length; i++) {
       cardItem.push(
-        <CardType title={rentals[i].title} description={rentals[i].description} price={rentals[i].price} location={rentals[i].address} id={rentals[i].id} style={{ marginTop: '3px' }}/>
+        <CardType title={rentals[i].title} description={rentals[i].description} price={rentals[i].price} location={rentals[i].address} id={rentals[i].id} style={{ marginTop: '3px' }} styleImage={props.styleImage}/>
     )  
   }
   } 

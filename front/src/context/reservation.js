@@ -18,8 +18,8 @@ export function ReservationsProvider({ children }) {
         })
           .then(response => response.json())
           .then(data => setAllReservations(data))
-  }, [refresh]);
-
+  }, [refresh])
+  
   async function getReservation(id) {
     console.log('entre context')
     fetch('http://localhost:5000/reservations/' + id, {

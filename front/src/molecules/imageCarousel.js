@@ -17,7 +17,7 @@ function ImageCarousel(props) {
   else {
     pictures.forEach((el, i) => {
         slide.push(
-          <ImageSlide key={i} index={i} src={el.blob} href={"/addetails/" + el.rental_id} rentals={props.rentals_id}/>
+          <ImageSlide styleImage={props.styleImage} styles={props.style} key={i} index={i} src={el.blob} href={"/addetails/" + el.rental_id} rentals={props.rentals_id}/>
           )
         
     })
