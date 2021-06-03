@@ -49,6 +49,7 @@ export function UserProvider({ children }) {
     const [allReviews, setAllReviews] = useState(null)
     const [allUsers, setAllUsers] = useState(null)
     const [refresh, setRefresh] = useState(false)
+    const [profileLocation, setprofileLocation] = useState(0)
 
   function register(data) {
       fetch('http://localhost:5000/users', {
@@ -345,12 +346,18 @@ export function UserProvider({ children }) {
   function refreshFct(){
     setRefresh(prev => (!prev))
   }
+
+  function profile(e, location) {
+    e.preventDefault()
+    setprofileLocation(location)
+    history.push('/profile')
+  }
   
       return (
         <UserContext.Provider value={{
           token, msg, user, userProfile, userReviews, allUsers, allReviews,
           login, login_google, login_facebook, register, editProfile,
-          logout, sendResetEmail, reset_password, getUserbyId, postReviewFromClient, sendPaymentEmail
+          logout, sendResetEmail, reset_password, getUserbyId, postReviewFromClient, sendPaymentEmail, profile, profileLocation
         }}>
             {children}
         </UserContext.Provider>

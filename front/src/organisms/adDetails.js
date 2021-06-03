@@ -1,6 +1,5 @@
 import React, { useCallback } from "react";
 import { Icon, Item, Grid, Container, Header, Image } from "semantic-ui-react";
-import Comments from '../molecules/comments'
 import Reviews_Public from '../organisms/profile/public/reviews_public'
 import useRentals from "../context/rentals"
 import useReservations from '../context/reservation'
@@ -10,10 +9,12 @@ import RatingType from '../atoms/rate'
 import { useEffect, useState} from 'react'
 import ButtonType from '../atoms/button'
 import useUser from '../context/user'
+import ImageCarousel from '../molecules/imageCarousel'
 
 /* import PaymentMethod from '../organisms/customPayment/paymentMethod'
 */
 let tmpbook = []
+let displayAct = []
 function AdDetails(props) {
   var disabledDates = []
   var rangeDates = []
@@ -21,6 +22,7 @@ function AdDetails(props) {
   const reservationContext = useReservations()
   var rentals = rentalsContext?.allRentals ?? null
   var pictures = rentalsContext?.pictures ?? null
+  var activities = rentalsContext?.activities ?? null
   var reservations = reservationContext?.allReservations ?? null
   const [rental, setRental] = useState({})
   const { id } = useParams()
@@ -29,6 +31,7 @@ function AdDetails(props) {
   const [user, setUser] = useState({})
   const [picture, setPicture] = useState('')
   const [resa, setResa] = useState([])
+  const [activitie, setActivitie] = useState('')
   const [price, setPrice] = useState(0)
   const [valueCalendar, onChangeCalendar] = useState(new Date())
   const [duration, setDuration] = useState(null)
@@ -48,24 +51,78 @@ function AdDetails(props) {
        ownerId = res.owner_id
       }, [id, rentals, ownerId, userContext, pictures])
       
-      useEffect(() => {
-        for (let i=0; i < reservations?.length; i++) {
-          if(reservations[i].rental_id == id && reservations[i].status == 'RESERVATION COMPLETED'){
-            tmpbook.push({start: reservations[i].start, end:reservations[i].end, id:reservations[i].id })
-            setResa(tmpbook)
-           }
-         }
-        },[reservations])
+  useEffect(() => {
+    for (let i=0; i < reservations?.length; i++) {
+      if(reservations[i].rental_id == id && reservations[i].status == 'RESERVATION COMPLETED'){
+        tmpbook.push({start: reservations[i].start, end:reservations[i].end, id:reservations[i].id })
+        setResa(tmpbook)
+        }
+      }
+    },[reservations])
+
+  useEffect(() => {
+    const act = activities?.find(element => element.rental_id == id)
+    setActivitie(act)
+    if (activitie?.vacation == 1){
+      displayAct.push(
+        <p>
+        <Icon color='yellow' name='sun' size='big'/>
+          Vacation
+        </p>)
+    }
+    if (activitie?.party == 1){
+      displayAct.push(
+        <p>
+        <Icon color='pink' name='glass martini' size='big'/>
+          Party
+        </p>)
+    }
+    if (activitie?.photo_shooting == 1){
+      displayAct.push(
+        <p>
+        <Icon color='purple' name='photo' size='big'/>
+          Photo shooting
+        </p>)
+    }
+    if (activitie?.movie_shooting == 1){
+      displayAct.push(
+        <p>
+        <Icon color='green' name='video camera' size='big'/>
+          Movie shooting
+        </p>)
+    }
+    if (activitie?.seminaries == 1){
+      displayAct.push(
+        <p>
+        <Icon color='grey' name='users' size='big'/>
+          Seminaries
+        </p>)
+    }
+    if (activitie?.business_trip == 1){
+      displayAct.push(
+        <p>
+        <Icon color='yellow' name='building outline' size='big'/>
+          Business Trip
+        </p>)
+    }    
+    if (activitie?.other == 1){
+      displayAct.push(
+        <p>
+        <Icon color='dark' name='ellipsis horizontal' size='big'/>
+          Other
+        </p>)
+    }
+    return displayAct
+  },[activities])
+
   useEffect(() => {
     const userInfo = userContext?.getUserbyId(ownerId)
-
     if (userInfo === null || userInfo === undefined)
-      return
-   
+    return
+    
     setUser(userInfo)
   }, [userContext.getUserbyId, userContext, ownerId])
   
-
   useEffect(() => {
     setDuration(datediff(valueCalendar[0], valueCalendar[1]))
   }, [valueCalendar])
@@ -118,6 +175,7 @@ function AdDetails(props) {
     image: {
       width: 500,
       height: 500,
+      marginLeft: 340
     }
   }
     //Make a range with 2 dates
@@ -144,7 +202,6 @@ function AdDetails(props) {
    else {
      disabledDates = getDates(new Date(), new Date(rental?.start), getDates(new Date(realEndDate), new Date(2023, 0, 1)))                                                                                                          
    }
-
   return (
     <div style={styles.container1}>
       <Container style={styles.container}>
@@ -159,7 +216,7 @@ function AdDetails(props) {
             </Grid.Column>
           </Grid.Row>
           <Grid.Row>
-            <Image centered style={styles.image} src={picture} />
+            <ImageCarousel styleImage={styles.image} rental_id={id} />
           </Grid.Row>
         </Grid>
        <Grid celled>
@@ -169,6 +226,10 @@ function AdDetails(props) {
               <p>
               {rental?.description}
               </p>
+              <Item.Header as='h5'>Activities:</Item.Header>
+              <div>
+              {displayAct}
+              </div>
             </Grid.Column>
             <Grid.Column width={5}>
               <Grid.Row>

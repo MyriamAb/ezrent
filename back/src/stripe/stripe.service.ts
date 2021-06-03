@@ -21,8 +21,6 @@ export class PaymentService {
      
   async create(stripe) {
     const amount = stripe.items[0].nbDay * stripe.items[0].price * 100
-    console.log('service')
-    console.log(stripe)
     const stripeCustomerId = await stripe.items[0].customer
     const receipt_email = await stripe.items[0].receipt_email
     const paymentIntent = await this.stripeClient.paymentIntents.create({
@@ -34,7 +32,6 @@ export class PaymentService {
     ({
       clientSecret: paymentIntent.client_secret
     })
-    console.log(paymentIntent)
     return paymentIntent
   }
 
@@ -42,8 +39,6 @@ export class PaymentService {
      const invoice = await this.stripeClient.invoices.create({
        customer: stripe,
      });
-    console.log('stripe service')
-    console.log(invoice)
   }
  
 }

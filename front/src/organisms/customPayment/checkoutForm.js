@@ -27,6 +27,7 @@ export default function CheckoutForm() {
   const price = reservation[0]?.price
   const history = useHistory();
 
+  
   const getUserStripeId = useCallback(()=>{
     if (userProfile === null || userProfile === undefined)
       return
@@ -55,8 +56,6 @@ export default function CheckoutForm() {
         return
 
       const nbDay= datediff(parseDate(reservation[0]?.start.slice(0,10)), parseDate(reservation[0]?.end.slice(0,10)))
-  
-      console.log(nbDay)
       return nbDay
     
     

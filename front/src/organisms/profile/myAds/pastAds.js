@@ -19,6 +19,12 @@ export default function PastAds(){
         var mdy = datesplit.split('-');
         return new Date(mdy[0], mdy[1]-1, mdy[2]); 
     }
+    function getPrice(start, end, pricePerDay) {
+        var duration = (Math.round((parseDate(end) - parseDate(start)) / (1000 * 60 * 60 * 24)) + 1);
+        var price = duration * pricePerDay;
+        return price;
+    };
+    
     console.log("test : ")
     console.log(
         !!myRentals.find(
@@ -74,7 +80,7 @@ export default function PastAds(){
                                 parseDate(reservation.end).getTime() < today_date.getTime() &&
                                 <Grid >
                                     <Grid.Row>
-                                        <Grid.Column width={7}>
+                                        <Grid.Column width={6}>
                                             <a href={"http://localhost:3000/user/" + reservation.client_id}> 
                                             {userContext.getUserbyId(reservation.client_id) &&
                                             userContext.getUserbyId(reservation.client_id)["name"]} 
@@ -83,11 +89,15 @@ export default function PastAds(){
                                             {`To : ${reservation.end.slice(0, 10)} `}
                                         
                                         </Grid.Column>
-                                        <Grid.Column width={5}>
+                                        <Grid.Column width={3}>
+                                            Price : <br/> 
+                                            {getPrice(reservation.start, reservation.end, reservation.price) + " €"}
+                                        </Grid.Column>
+                                        <Grid.Column width={4}>
                                             STATUS : <br/>
                                             {reservation.status}
                                         </Grid.Column>
-                                        <Grid.Column width={4}>
+                                        <Grid.Column width={3}>
                                             {reservation.owner_review === false ?
                                             <Review id={reservation.id} isClient={false} reviewer_id={reservation.owner_id} reviewed_id={reservation.client_id}/> :
                                             "Reviewed"
