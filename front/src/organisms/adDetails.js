@@ -57,6 +57,9 @@ function AdDetails(props) {
 
   function book() {
     console.log(rental);
+    var booked = rental;
+    booked.start = valueCalendar[0]
+    booked.end = valueCalendar[1];
     reservationContext.addReservation(rental);
     alert("You have booked this location, you'll be notified when the owner check your reservation")
   }

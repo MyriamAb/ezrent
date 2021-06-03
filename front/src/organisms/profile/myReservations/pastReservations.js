@@ -17,7 +17,18 @@ export default function PastReservations(){
         var datesplit = str.slice(0, 10);
         var mdy = datesplit.split('-');
         return new Date(mdy[0], mdy[1]-1, mdy[2]); 
-    }
+    };
+
+    function getPrice(start, end, pricePerDay) {
+
+        console.log(parseDate(start))
+        console.log(parseDate(end))
+        var duration = (Math.round((parseDate(end) - parseDate(start)) / (1000 * 60 * 60 * 24)) + 1);
+        console.log("duration is ")
+        console.log(duration)
+        var price = duration * pricePerDay;
+        return price;
+    };
 
     if(!myReservations.find(reserv => parseDate(reserv.end).getTime() <= today_date.getTime()))
         noAds = "No ads here"
@@ -34,15 +45,19 @@ export default function PastReservations(){
                         <Segment>
                             <Grid >
                                 <Grid.Row >
-                                    <Grid.Column width={5}> 
+                                    <Grid.Column width={4}> 
                                         <Header as='h4'>{rentalsContext.getRentalById(reserv.rental_id).title}</Header>
                                         {rentalsContext.getRentalById(reserv.rental_id).address}
                                     </Grid.Column>
-                                    <Grid.Column width={8}>
+                                    <Grid.Column width={7}>
                                         STATUS : <br/>
                                         {reserv.status}
                                     </Grid.Column>
-                                    <Grid.Column width={3} >
+                                    <Grid.Column width={3}>
+                                        Price : <br/> 
+                                        {getPrice(reserv.start, reserv.end, reserv.price) + " €"}
+                                    </Grid.Column>
+                                    <Grid.Column width={2} >
                                     {
                                         reserv.client_review === false && reserv.status ==="CANCELLED"?
                                         "" :

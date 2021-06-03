@@ -5,8 +5,8 @@ import {
   useStripe,
   useElements
 } from "@stripe/react-stripe-js";
-import '../../styles/stylesPayment.css';
-import { Container, Header, Segment, SegmentGroup } from 'semantic-ui-react'
+/* import '../../styles/stylesPayment.css';
+ */import { Container, Header, Segment, SegmentGroup } from 'semantic-ui-react'
 import useReservations from '../../context/reservation'
 import useUser from '../../context/user'
 
