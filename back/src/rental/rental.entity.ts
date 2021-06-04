@@ -8,7 +8,7 @@ export class Rental {
     @Column()
     title: string;
 
-    @Column()
+    @Column({length: 10000})
     description: string;
 
     @Column()
