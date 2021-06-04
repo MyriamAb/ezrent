@@ -22,7 +22,7 @@ function ImageCarousel(props) {
         
     })
   }
-  
+
   return (
   <CarouselProvider
     naturalSlideWidth={1.1}

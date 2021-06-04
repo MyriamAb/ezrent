@@ -339,7 +339,7 @@ export function UserProvider({ children }) {
         reviewer_id: reviewer,
       })
     })
-    .then(refreshFct)
+    .then(refreshFct())
     }, [])
 
 
