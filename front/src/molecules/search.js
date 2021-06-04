@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react'
+import { Container, Grid, Segment, Menu } from 'semantic-ui-react'
 import InputType from '../atoms/input'
 import Select from 'react-select'
 import Checkbox from '../atoms/checkbox'
@@ -100,15 +101,46 @@ function Search(props) {
 
   },[data, checked])
 
+  const customStyles = {
+    option: (provided, state) => ({
+      ...provided,
+      borderBottom: '2px dotted grey',
+/*       color: state.isSelected ? 'yellow' : 'black',
+      backgroundColor: state.isSelected ? 'green' : 'white' */
+    }),
+    control: (provided) => ({
+      ...provided,
+      width:"35%",
+      opacity: 0.8
+    })
+  }
+  
+
   return (
+    <div>
     <div style={props.style}>
-      <InputType onChange={(e)=>handle(e)} icon="search" iconPlaceholder="right" type="text" name="search" placeholder="Search" style={{width:200}}/>
-      <InputType onChange={(e)=>handle(e)} icon="map marker alternate" iconPlaceholder="right" type="text" name="location" placeholder="Location" style={{width:200}} />
-      <InputType onChange={(e)=>handle(e)} icon="euro sign" iconPlaceholder="right" type="text" name="minPrice" placeholder="Min Price" style={{width:100}}/>
-      <InputType onChange={(e)=>handle(e)} icon="euro sign" iconPlaceholder="right" type="text" name="maxPrice" placeholder="Max Price" style={{ width: 100 }} />
-      <InputType  onChange={(e)=>handle(e)} type="date" name="dateFrom" placeholder="From" style={{width:100}}/>
-      <InputType  onChange={(e)=>handle(e)} type="date" name="dateTo" placeholder="To" style={{width:100}}/>
-      <Select closeMenuOnSelect={false} isMulti options={optionService} hideSelectedOptions={false} backspaceRemovesValue={false} onChange={e => handleCheckBox(e) } style={{ width: 100 }} />
+      <InputType onChange={(e)=>handle(e)} icon="search" iconPlaceholder="right" type="text" name="search" placeholder="Search" style={{width:220}}/>
+      <InputType onChange={(e)=>handle(e)} icon="map marker alternate" iconPlaceholder="right" type="text" name="location" placeholder="Location" style={{width:175}} />
+      <InputType onChange={(e)=>handle(e)} icon="euro sign" iconPlaceholder="right" type="text" name="minPrice" placeholder="Min Price" style={{width:120}}/>
+      <InputType onChange={(e)=>handle(e)} icon="euro sign" iconPlaceholder="right" type="text" name="maxPrice" placeholder="Max Price" style={{ width: 120 }} />
+      <InputType  onChange={(e)=>handle(e)} type="text" name="dateFrom" placeholder="Check In" style={{width:125}}
+      onFocus={(e) => (e.currentTarget.type = "date")}
+      onBlur={(e) => (e.currentTarget.type = "text")}/>
+      <InputType  onChange={(e)=>handle(e)} type="text" name="dateTo" placeholder="Check Out" style={{width:125}}
+      onFocus={(e) => (e.currentTarget.type = "date")}
+      onBlur={(e) => (e.currentTarget.type = "text")}/>
+    </div>
+    <Grid centered>
+      <Grid.Row>
+      <Grid.Column width={6}></Grid.Column>
+        <Grid.Column width={6}>
+          <Select closeMenuOnSelect={false} isMulti options={optionService} hideSelectedOptions={false} 
+          backspaceRemovesValue={false} onChange={e => handleCheckBox(e) } style={{ width: 100 }}
+          styles = { customStyles } placeholder={"Choose activities"} />
+        </Grid.Column>
+        <Grid.Column width={2}></Grid.Column>
+      </Grid.Row>
+    </Grid>
  </div>
     
   )
