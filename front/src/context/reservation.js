@@ -13,7 +13,8 @@ export function ReservationsProvider({ children }) {
         method: "get",
          headers: {
           'Accept': 'application/json',
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + userContext.token
         },
         })
           .then(response => response.json())
@@ -26,7 +27,8 @@ export function ReservationsProvider({ children }) {
       method: "get",
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + userContext.token
       },
     })
       .then(response => response.json())
@@ -39,7 +41,8 @@ export function ReservationsProvider({ children }) {
       method: "DELETE",
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + userContext.token
       },
     })
       .then(response => response.json())

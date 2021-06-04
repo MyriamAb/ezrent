@@ -16,6 +16,8 @@ const InputType =  (props) =>
     aria-controls={props.controls}
     id={props.id}
     className={props.className}
+    onFocus={props.onFocus}
+    onBlur={props.onBlur}
 
 />
 
