@@ -133,7 +133,8 @@ function AdDetails(props) {
   }, [duration])
 
   function book() {
-    var realEndDate = new Date(valueCalendar[1]).setDate(new Date(valueCalendar[1]).getDate()-1)
+    var realStartDate = new Date(valueCalendar[0]).setDate(new Date(valueCalendar[0]).getDate() + 1)
+    var realEndDate = new Date(valueCalendar[1]).setDate(new Date(valueCalendar[1]).getDate())
     var currentDate = valueCalendar[0]
     var check = false
     var addDays = function(days) {
@@ -153,7 +154,7 @@ function AdDetails(props) {
       })
     })
     if (check == false) {
-      reservationContext.addReservation(rental, valueCalendar[0], new Date(realEndDate))
+      reservationContext.addReservation(rental, new Date(realStartDate), new Date(realEndDate))
       alert("You have booked this location, you'll be notified when the owner check your reservation")
     }
     else {
