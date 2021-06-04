@@ -174,9 +174,9 @@ function AdDetails(props) {
       backgroundImage: `url('https://i.ibb.co/LCFVjr4/background-home-resize.jpg')`
     },
     image: {
-      width: 500,
+/*       width: 500,
       height: 500,
-      marginLeft: 340
+      marginLeft: 340 */
     }
   }
     //Make a range with 2 dates
@@ -217,7 +217,11 @@ function AdDetails(props) {
             </Grid.Column>
           </Grid.Row>
           <Grid.Row>
-            <ImageCarousel styleImage={styles.image} rental_id={id} />
+          <Grid.Column  width={4}></Grid.Column>
+          <Grid.Column  width={8}>
+            <ImageCarousel rental_id={id} />
+            </Grid.Column>
+            <Grid.Column  width={4}></Grid.Column>
           </Grid.Row>
         </Grid>
        <Grid celled>

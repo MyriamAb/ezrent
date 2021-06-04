@@ -25,7 +25,7 @@ function ImageCarousel(props) {
   
   return (
   <CarouselProvider
-    naturalSlideWidth={1}
+    naturalSlideWidth={1.1}
     naturalSlideHeight={1}
     totalSlides={nbSlides}
     styles={props.styles}
